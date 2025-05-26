@@ -3,6 +3,8 @@
 // import viteLogo from '/vite.svg'
 import './App.css'
 import {Begruessung} from './Begruessung'
+import { PublicPage } from './react/components/PublicPage'
+import { TopMenu } from './react/components/TopMenu'
 
 // function App() {
 //   const [count, setCount] = useState(0)
@@ -35,12 +37,9 @@ import {Begruessung} from './Begruessung'
 
 export function App(){
     return(
-      <div>
-        {/* <TopMenu />
-        <WorkspacePublic /> */}
-        <h1><Begruessung name="Simon" /></h1>
-        <h2><Begruessung name="Julian" /></h2>
-        <h3><Begruessung name="Julian" /></h3>
+      <div id="LandingPage">
+        <TopMenu />
+        <PublicPage />
       </div>
     )
   

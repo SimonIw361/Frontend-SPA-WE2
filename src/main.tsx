@@ -1,21 +1,22 @@
-import { StrictMode } from 'react'
+//import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './App.css'
 import {App} from './App.tsx'
-import { Login, LoginWeg } from './react/login/components/LoginComponent.tsx'
-// import ReactDOM from 'react-dom'
-// import Provider from 'react-redux'
 
-LoginWeg();
+
+import { configureStore } from '@reduxjs/toolkit'
+import { Provider } from 'react-redux'
+//import * as serviceworker from './serviceWorker'
+
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { rootReducer } from './react/reducer/RootReducer.tsx'
+
+//Quellen: https://redux.js.org/introduction/why-rtk-is-redux-today
+
+let store = configureStore({reducer: rootReducer});
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Login />
+  <Provider store={store}>
     <App />
-  </StrictMode>,
+  </Provider>,
 )
-
-// ReactDOM.render(
-//   <Provider store={store}><App /></Provider>,
-//   document.getElementById("root")
-// )
