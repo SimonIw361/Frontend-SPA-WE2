@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 //import * as serviceworker from './serviceWorker'
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { rootReducer } from './react/reducer/RootReducer.tsx'
+import { rootReducer } from './react/RootReducer.tsx'
 
 //Quellen: https://redux.js.org/introduction/why-rtk-is-redux-today
 

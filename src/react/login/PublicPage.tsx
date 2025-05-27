@@ -1,5 +1,5 @@
 import { Component } from "react";
-import  LoginButton  from "./LoginButton";
+import  LoginButton  from "./components/LoginButton";
 
 
 export class PublicPage extends Component {

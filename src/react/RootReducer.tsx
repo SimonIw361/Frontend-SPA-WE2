@@ -1,4 +1,4 @@
-import { AUTHENTICATION_ERROR, AUTHENTICATION_PENDING, AUTHENTICATION_SUCCESS, HIDE_LOGIN_DIALOG, SHOW_LOGIN_DIALOG } from "../actions/AuthenticationAction";
+import { AUTHENTICATION_ERROR, AUTHENTICATION_PENDING, AUTHENTICATION_SUCCESS, HIDE_LOGIN_DIALOG, SHOW_LOGIN_DIALOG } from "./login/state/AuthenticationAction";
 
 const initialState = {
     user: null,
@@ -27,3 +27,6 @@ export function rootReducer(state = initialState, action: any) {
     }
 
 };
+
+
+//besser auf Reducer aufteilen!!

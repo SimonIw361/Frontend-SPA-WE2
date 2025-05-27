@@ -2,7 +2,7 @@ import { Component, type ChangeEvent, type MouseEvent} from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators, type Dispatch, type UnknownAction } from "redux";
-import { authenticateUser, getHideLoginDialogAction, getShowLoginDialogAction } from "../actions/AuthenticationAction";
+import { authenticateUser, getHideLoginDialogAction, getShowLoginDialogAction } from "./state/AuthenticationAction";
 
 type Props = {
     showLoginDialog: boolean,

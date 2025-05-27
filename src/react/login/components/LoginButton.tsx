@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { getShowLoginDialogAction } from "../actions/AuthenticationAction";
+import { getShowLoginDialogAction } from "../state/AuthenticationAction";
 
 
 type Props = {
