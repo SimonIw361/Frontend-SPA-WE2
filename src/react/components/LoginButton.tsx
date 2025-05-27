@@ -10,7 +10,7 @@ type Props = {
 
 class LoginButton extends Component<Props> {
 
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
         this.showLoginDialog = this.showLoginDialog.bind(this);
     }

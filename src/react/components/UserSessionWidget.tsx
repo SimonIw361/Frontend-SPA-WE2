@@ -1,47 +1,87 @@
-import { Component } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Component, type ChangeEvent, type MouseEvent} from "react";
+import { Button, Form, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators, type Dispatch, type UnknownAction } from "redux";
-import { getHideLoginDialogAction, getShowLoginDialogAction } from "../actions/AuthenticationAction";
+import { authenticateUser, getHideLoginDialogAction, getShowLoginDialogAction } from "../actions/AuthenticationAction";
 
 type Props = {
     showLoginDialog: boolean,
-    showLoginDialogAction: Function,
-    hideLoginDialogAction: Function
+    showLoginDialogAction: () => void,
+    hideLoginDialogAction: () => void,
+    authenticateUserAction: (username:string, password: string) => void
 };
-type State = {show: boolean};
+type State = {username: string, password: string};
 
 const mapStateToProps = (state: any) => {
     return state;
 }
 
-class UserSessionWidget extends Component<Props, State>  {
-    
+class UserSessionWidget extends Component<Props, State> {
 
-    constructor(props: Props){
+
+    constructor(props: Props) {
         super(props);
-        this.state = {show: false};
+        this.state = { 
+            username: "",
+            password: ""
+        };
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        //setup();
     }
 
-    handleShow(e: React.MouseEvent){
+    // setup() {
+    //     document.addEventListener("DOMContentLoaded", () => {
+    //         let id = document.getElementById("LoginDialogUserIDText")?.addEventListener("change", (e) => {
+    //             e.target.value
+    //         })
+    //     })
+    // }
+
+    handleShow(e: MouseEvent) {
         e.preventDefault();
         //this.setState({show: true});
-        const {showLoginDialogAction} = this.props;
+        const { showLoginDialogAction } = this.props;
         showLoginDialogAction();
     }
 
-    handleClose(){
+    handleClose() {
         //this.setState({show: false});
-        const {hideLoginDialogAction} = this.props;
+        const { hideLoginDialogAction } = this.props;
         hideLoginDialogAction();
+    }
+
+    handleChange(e: ChangeEvent) {
+        //const {name, value} = e.target.value;
+        let t = e.target as HTMLInputElement;
+        let name = t.name;
+        let value = t.value;
+        switch(name){
+            case "userID":
+                this.setState({"username": value});
+                break;
+            case "password":
+                this.setState({"password": value});
+                break;
+            default:
+                console.log("Error: Fehler beim Aendern von Login State in handleChange")
+        }
+    }
+
+    handleSubmit(e: MouseEvent) {
+        e.preventDefault();
+        const {username, password} = this.state;
+        const {authenticateUserAction} = this.props;
+        //console.log("handleSubmit" + username + " " + password)
+        authenticateUserAction(username, password);
     }
 
     render() {
 
         let showDialog = this.props.showLoginDialog;
-        if(showDialog === undefined){
+        if (showDialog === undefined) {
             showDialog = false;
         }
 
@@ -52,16 +92,23 @@ class UserSessionWidget extends Component<Props, State>  {
 
             <Modal show={showDialog} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>User ID</Form.Label>
+                            <Form.Control id="LoginDialogUserIDText" type="text" placeholder="User ID" name="userID" onChange={this.handleChange}/>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control id="LoginDialogPasswordText" type="password" placeholder="Password" name="password" onChange={this.handleChange}/>
+                        </Form.Group>
+                        <Button id="PerformLoginButton" variant="primary" type="submit" onClick={this.handleSubmit}>Login</Button>
+                    </Form>
+                </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
-                        Login
-                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>
@@ -70,7 +117,8 @@ class UserSessionWidget extends Component<Props, State>  {
 
 const mapDispatchToProps = (dispatch: Dispatch<UnknownAction>) => bindActionCreators({
     showLoginDialogAction: getShowLoginDialogAction,
-    hideLoginDialogAction: getHideLoginDialogAction
+    hideLoginDialogAction: getHideLoginDialogAction,
+    authenticateUserAction: authenticateUser
 }, dispatch)
 
 const ConnectedUserSessionWidget = connect(mapStateToProps, mapDispatchToProps)(UserSessionWidget);

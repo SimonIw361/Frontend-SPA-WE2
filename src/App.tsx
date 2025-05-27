@@ -1,10 +1,12 @@
 //import { Component} from 'react' //useState
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
+import { Component } from 'react'
 import './App.css'
-import {Begruessung} from './Begruessung'
 import { PublicPage } from './react/components/PublicPage'
+import { PrivatePage } from './react/components/PrivatePage'
 import { TopMenu } from './react/components/TopMenu'
+import { connect } from 'react-redux'
 
 // function App() {
 //   const [count, setCount] = useState(0)
@@ -35,12 +37,38 @@ import { TopMenu } from './react/components/TopMenu'
 //   )
 // }
 
-export function App(){
+type Props = {
+  user: any
+}
+
+const mapStateToProps = (state: any) => {
+  return state;
+}
+
+
+
+//export function App(){
+class App extends Component<Props> {
+  render() {
+
+    const user = this.props.user;
+
+    let workspace;
+    if(user){
+      workspace = <PrivatePage />
+    }
+    else {
+      workspace = <PublicPage />
+    }
+
     return(
       <div id="LandingPage">
         <TopMenu />
-        <PublicPage />
+        {workspace}
       </div>
     )
+  }
   
 }
+
+export default connect(mapStateToProps)(App);

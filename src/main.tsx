@@ -1,8 +1,7 @@
 //import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './App.css'
-import {App} from './App.tsx'
-
+import App from './App.tsx'
 
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
@@ -13,10 +12,12 @@ import { rootReducer } from './react/reducer/RootReducer.tsx'
 
 //Quellen: https://redux.js.org/introduction/why-rtk-is-redux-today
 
+
 let store = configureStore({reducer: rootReducer});
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
-    <App />
+    <App user={undefined} /> 
   </Provider>,
 )
+//das mit undefined ist komisch, verbessern!
