@@ -1,7 +1,7 @@
 //import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './App.css'
-import App from './App.tsx'
+//import './App.css'
+import Webseite from './Webseite.tsx'
 
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
@@ -17,7 +17,7 @@ let store = configureStore({reducer: rootReducer});
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
-    <App user={undefined} /> 
+    <Webseite user={undefined} authenticationReducer={undefined}/> 
   </Provider>,
 )
 //das mit undefined ist komisch, verbessern!

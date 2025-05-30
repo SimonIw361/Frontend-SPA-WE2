@@ -5,25 +5,25 @@ export const AUTHENTICATION_PENDING = "AUTHENTICATION_PENDING";
 export const AUTHENTICATION_SUCCESS = "AUTHENTICATION_SUCCESS";
 export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR";
 
-export function getShowLoginDialogAction(){
+export function getShowLoginDialogAction() {
     return {
         type: SHOW_LOGIN_DIALOG
     }
 }
 
-export function getHideLoginDialogAction(){
+export function getHideLoginDialogAction() {
     return {
         type: HIDE_LOGIN_DIALOG
     }
 }
 
-export function getAuthenticationPendingAction(){
+export function getAuthenticationPendingAction() {
     return {
         type: AUTHENTICATION_PENDING
     }
 }
 
-export function getAuthenticationSuccessAction(userSession: any){
+export function getAuthenticationSuccessAction(userSession: any) {
     return {
         type: AUTHENTICATION_SUCCESS,
         user: userSession.user,
@@ -31,63 +31,55 @@ export function getAuthenticationSuccessAction(userSession: any){
     }
 }
 
-export function getAuthenticationErrorAction(error: any){
+export function getAuthenticationErrorAction(error: any) {
     return {
         type: AUTHENTICATION_ERROR,
         error: error
     }
 }
 
-export function authenticateUser(userID: string, password: string){
-    return (dispatch: (arg0: { type: string; user?: any; accesToken?: any; error?: any; }) => void) => {
+export function authenticateUser(userID: string, password: string) {
+    
+    return async (dispatch: any) => {
         dispatch(getAuthenticationPendingAction());
         //console.log("authUse" + userID + " " + password);
-        login(userID, password).then(
-            (            userSession: any) => {
-                const action = getAuthenticationSuccessAction(userSession);
-                dispatch(action);
-            },
-            (            error: any) => {
-                dispatch(getAuthenticationErrorAction(error));
-            }
-        )
-        .catch((error: any) => {
-            dispatch(getAuthenticationErrorAction(error));
-        })
+        try {
+            let userSession = await login(userID, password)
+            const action = getAuthenticationSuccessAction(userSession);
+            dispatch(action);
+        } catch (err) {
+            dispatch(getAuthenticationErrorAction(err));
+        }
     }
 }
 
-function login(userID: string, password: string){
+async function login(userID: string, password: string) {
     const requestOptions = {
         method: 'GET',
-        headers: {"Authorization": "Basic " + btoa(userID + ":" + password)}, //TODO: Base64 coding noch machen
+        headers: { "Authorization": "Basic " + btoa(userID + ":" + password) }, //TODO: Base64 coding noch machen
     }
-    //console.log("Login " +userID + " " + password);
-    //console.log(requestOptions);
 
-    return fetch('https://localhost:443/api/authenticate', requestOptions)
-        .then(handleResponse)
-        .then(userSession => {
-            return userSession
-        })
+    let response = await fetch('https://localhost:443/api/authenticate', requestOptions);
+    let userSession = handleResponse(response);
+    return userSession;
 }
 
-function handleResponse(response: any){
+function handleResponse(response: any) {//: {user: String, accessToken: String} {
     const authorizationHeader = response.headers.get('Authorization');
 
     return response.text().then((text: string) => {
         const data = text && JSON.parse(text);
         let token: string = ""; //TODO: unschoen
         console.log(authorizationHeader)
-        if(authorizationHeader){
+        if (authorizationHeader) {
             token = authorizationHeader.split(" ")[1];
         }
 
-        if(!response.ok){
-            if(response.status === 401){
+        if (!response.ok) {
+            if (response.status === 401) {
                 logout(); //TODO:logout machen
             }
-            const error = (data && data.message) || response.statusText;
+            const error = (data & data.message) || response.statusText;
             return Promise.reject(error);
         }
         else {
@@ -100,6 +92,6 @@ function handleResponse(response: any){
     });
 }
 
-function logout(){
+function logout() {
     console.log("TODO: Fehler sollte ausgeloggt werden")
 }

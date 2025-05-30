@@ -9,7 +9,8 @@ import { TopMenu } from './react/TopMenu'
 import { connect } from 'react-redux'
 
 type Props = {
-  user: any
+  user: any,
+  authenticationReducer: any
 }
 
 const mapStateToProps = (state: any) => {
@@ -19,10 +20,10 @@ const mapStateToProps = (state: any) => {
 
 
 //export function App(){
-class App extends Component<Props> {
+class Webseite extends Component<Props> {
   render() {
 
-    const user = this.props.user;
+    const user = this.props.authenticationReducer.user;
 
     let workspace;
     if(user){
@@ -42,4 +43,4 @@ class App extends Component<Props> {
   
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(Webseite);

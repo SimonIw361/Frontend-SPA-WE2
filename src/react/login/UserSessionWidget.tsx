@@ -8,7 +8,8 @@ type Props = {
     showLoginDialog: boolean,
     showLoginDialogAction: () => void,
     hideLoginDialogAction: () => void,
-    authenticateUserAction: (username:string, password: string) => void
+    authenticateUser: (username:string, password: string) => void,
+    authenticationReducer: any
 };
 type State = {username: string, password: string};
 
@@ -73,14 +74,14 @@ class UserSessionWidget extends Component<Props, State> {
     handleSubmit(e: MouseEvent) {
         e.preventDefault();
         const {username, password} = this.state;
-        const {authenticateUserAction} = this.props;
+        const {authenticateUser} = this.props;
         //console.log("handleSubmit" + username + " " + password)
-        authenticateUserAction(username, password);
+        authenticateUser(username, password); //eigentlich await, auf Fertigstellung muss hier aber nicht gewartet werden, mit zurueckgegebenen Wert wird ja eh nichts mehr gemacht
     }
 
     render() {
 
-        let showDialog = this.props.showLoginDialog;
+        let showDialog = this.props.authenticationReducer.showLoginDialog;
         if (showDialog === undefined) {
             showDialog = false;
         }
@@ -118,7 +119,7 @@ class UserSessionWidget extends Component<Props, State> {
 const mapDispatchToProps = (dispatch: Dispatch<UnknownAction>) => bindActionCreators({
     showLoginDialogAction: getShowLoginDialogAction,
     hideLoginDialogAction: getHideLoginDialogAction,
-    authenticateUserAction: authenticateUser
+    authenticateUser: authenticateUser
 }, dispatch)
 
 const ConnectedUserSessionWidget = connect(mapStateToProps, mapDispatchToProps)(UserSessionWidget);

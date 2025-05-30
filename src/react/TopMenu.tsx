@@ -16,7 +16,7 @@ export class TopMenu extends Component {
                             <Nav.Link href="#link">Link</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
-                    <UserSessionWidget showLoginDialog={true} showLoginDialogAction={() => {}} hideLoginDialogAction={()=>{}} authenticateUserAction={()=>{}}></UserSessionWidget>
+                    <UserSessionWidget showLoginDialog={true} showLoginDialogAction={() => {}} hideLoginDialogAction={()=>{}} authenticateUser={()=>{}} authenticationReducer={()=>{}}></UserSessionWidget>
                 </Container>
             </Navbar>
         </div>;
