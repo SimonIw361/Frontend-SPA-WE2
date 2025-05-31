@@ -21,7 +21,7 @@ class LoginButton extends Component<Props> {
     }
 
     render() {
-        return <Button variant="light" onClick={this.showLoginDialog}>Login</Button>
+        return <Button variant="primary" onClick={this.showLoginDialog}>Login</Button>
     }
 }
 

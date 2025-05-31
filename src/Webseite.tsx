@@ -17,30 +17,27 @@ const mapStateToProps = (state: any) => {
   return state;
 }
 
-
-
-//export function App(){
 class Webseite extends Component<Props> {
   render() {
 
     const user = this.props.authenticationReducer.user;
 
     let workspace;
-    if(user){
+    if (user) {
       workspace = <PrivatePage />
     }
     else {
       workspace = <PublicPage />
     }
 
-    return(
+    return (
       <div id="LandingPage">
         <TopMenu />
         {workspace}
       </div>
     )
   }
-  
+
 }
 
 export default connect(mapStateToProps)(Webseite);

@@ -8,15 +8,15 @@ export class TopMenu extends Component {
         return <div>
             <Navbar expand="lg" className="bg-body-tertiary">
                 <Container>
-                    <Navbar.Brand href="#home"><img src="/bht.svg"/></Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Brand><img src="/bht.svg"/></Navbar.Brand>
+                    {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> //kann eigentlich weg, ist nur so Menu Items
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link href="#home">Home</Nav.Link>
                             <Nav.Link href="#link">Link</Nav.Link>
                         </Nav>
-                    </Navbar.Collapse>
-                    <UserSessionWidget showLoginDialog={true} showLoginDialogAction={() => {}} hideLoginDialogAction={()=>{}} authenticateUser={()=>{}} authenticationReducer={()=>{}}></UserSessionWidget>
+                    </Navbar.Collapse> */}
+                    <UserSessionWidget showLoginDialog={true} showLoginDialogAction={() => { } } hideLoginDialogAction={() => { } } authenticateUser={() => { } } authenticationReducer={() => { } } logout={undefined}></UserSessionWidget>
                 </Container>
             </Navbar>
         </div>;
@@ -24,3 +24,4 @@ export class TopMenu extends Component {
 }
 
 //wieso muss das alles uebergeben werden bei UserSessionWidget??
+

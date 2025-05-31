@@ -1,9 +1,12 @@
+import type { Dispatch } from "redux";
+
 export const SHOW_LOGIN_DIALOG = "SHOW_LOGIN_DIALOG";
 export const HIDE_LOGIN_DIALOG = "HIDE_LOGIN_DIALOG"
 
 export const AUTHENTICATION_PENDING = "AUTHENTICATION_PENDING";
 export const AUTHENTICATION_SUCCESS = "AUTHENTICATION_SUCCESS";
 export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR";
+export const LOGOUT = "LOGOUT";
 
 export function getShowLoginDialogAction() {
     return {
@@ -23,7 +26,7 @@ export function getAuthenticationPendingAction() {
     }
 }
 
-export function getAuthenticationSuccessAction(userSession: any) {
+export function getAuthenticationSuccessAction(userSession: { user: string, accessToken: string }) {
     return {
         type: AUTHENTICATION_SUCCESS,
         user: userSession.user,
@@ -38,9 +41,15 @@ export function getAuthenticationErrorAction(error: any) {
     }
 }
 
+export function getLogoutAction(){
+    return {
+        type: LOGOUT
+    }
+}
+
 export function authenticateUser(userID: string, password: string) {
-    
-    return async (dispatch: any) => {
+
+    return async (dispatch: Dispatch) => {
         dispatch(getAuthenticationPendingAction());
         //console.log("authUse" + userID + " " + password);
         try {
@@ -60,38 +69,38 @@ async function login(userID: string, password: string) {
     }
 
     let response = await fetch('https://localhost:443/api/authenticate', requestOptions);
-    let userSession = handleResponse(response);
+    let userSession = await handleResponse(response);
     return userSession;
 }
 
-function handleResponse(response: any) {//: {user: String, accessToken: String} {
+async function handleResponse(response: Response) {//: {user: String, accessToken: String} {
     const authorizationHeader = response.headers.get('Authorization');
 
-    return response.text().then((text: string) => {
-        const data = text && JSON.parse(text);
-        let token: string = ""; //TODO: unschoen
-        console.log(authorizationHeader)
-        if (authorizationHeader) {
-            token = authorizationHeader.split(" ")[1];
-        }
+    let text = await response.text();
+    const data = text && JSON.parse(text);
+    let token: string = ""; //TODO: unschoen
+    if (authorizationHeader) {
+        token = authorizationHeader.split(" ")[1];
+    }
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                logout(); //TODO:logout machen
-            }
-            const error = (data & data.message) || response.statusText;
-            return Promise.reject(error);
+    if (!response.ok) {
+        if (response.status === 401) {
+            logout(); //TODO:logout machen
         }
-        else {
-            let userSession = {
-                user: data,
-                accessToken: token
-            }
-            return userSession;
+        const error = (data & data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    else {
+        let userSession = {
+            user: data,
+            accessToken: token
         }
-    });
+        return userSession;
+    }
 }
 
-function logout() {
-    console.log("TODO: Fehler sollte ausgeloggt werden")
+export function logout() {
+    return (dispatch: Dispatch) => {
+        dispatch(getLogoutAction());
+    }
 }
