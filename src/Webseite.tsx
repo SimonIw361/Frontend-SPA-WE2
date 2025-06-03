@@ -1,19 +1,19 @@
-//import { Component} from 'react' //useState
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import { Component } from 'react'
 import './App.css'
 import { PublicPage } from './react/login/PublicPage'
 import { PrivatePage } from './react/user/PrivatePage'
 import { TopMenu } from './react/TopMenu'
-import { connect} from 'react-redux'
+import { connect, type ConnectedProps} from 'react-redux'
+import type { RootState } from './main'
 
-type Props = {
-  user?: any,
-  authenticationReducer?: any
+// verwendete Quellen: Folien und Videos von den Vorlesungen
+// Quelle zur Definition von Props Typ: https://react-redux.js.org/using-react-redux/usage-with-typescript
+//evtl noch zu Funktionskomponente machen??
+
+interface Props extends PropsFromRedux {
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState) => {
   return state;
 }
 
@@ -39,5 +39,8 @@ class Webseite extends Component<Props> {
   }
 
 }
+const connector = connect(mapStateToProps);
 
-export default connect(mapStateToProps)(Webseite);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(Webseite);

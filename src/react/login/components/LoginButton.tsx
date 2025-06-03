@@ -1,12 +1,13 @@
 import { Component } from "react";
 import { Button } from "react-bootstrap";
-import { connect } from "react-redux";
+import { connect, type ConnectedProps } from "react-redux";
 import { getShowLoginDialogAction } from "../state/AuthenticationAction";
 
+// verwendete Quellen: Folien und Videos von den Vorlesungen
+// Quelle zur Definition von Props Typ: https://react-redux.js.org/using-react-redux/usage-with-typescript
 
-type Props = {
-    dispatch: Function;
-};
+interface Props extends PropsFromRedux {
+}
 
 class LoginButton extends Component<Props> {
 
@@ -25,4 +26,8 @@ class LoginButton extends Component<Props> {
     }
 }
 
-export default connect()(LoginButton)
+const connector = connect();
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(LoginButton);

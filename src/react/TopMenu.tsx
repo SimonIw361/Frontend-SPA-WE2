@@ -22,6 +22,3 @@ export class TopMenu extends Component {
         </div>;
     }
 }
-
-//wieso muss das alles uebergeben werden bei UserSessionWidget??
-

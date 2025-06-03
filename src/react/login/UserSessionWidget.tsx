@@ -12,7 +12,7 @@ import type { AppDispatch, RootState } from "../../main";
 // https://react-redux.js.org/using-react-redux/connect-mapdispatch
 
 interface Props extends PropsFromRedux {
-};
+}
 
 type State = {username: string, password: string}; //dieser State existiert nur in dieser Klasse, ist das was gerade in LoginDialog eingegeben ist
 

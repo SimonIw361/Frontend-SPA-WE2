@@ -1,5 +1,7 @@
 import { AUTHENTICATION_ERROR, AUTHENTICATION_PENDING, AUTHENTICATION_SUCCESS, HIDE_LOGIN_DIALOG, LOGOUT, SHOW_LOGIN_DIALOG } from "./AuthenticationAction";
 
+// verwendete Quellen: Folien und Videos von den Vorlesungen
+
 const initialState = {
     user: null,
     loginPending: false,

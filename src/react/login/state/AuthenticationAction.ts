@@ -1,5 +1,8 @@
 import type { AppDispatch } from "../../../main";
 
+// verwendete Quellen: Folien und Videos von den Vorlesungen
+// Base64 enconding: https://developer.mozilla.org/en-US/docs/Web/API/Window/btoa
+
 export const SHOW_LOGIN_DIALOG = "SHOW_LOGIN_DIALOG";
 export const HIDE_LOGIN_DIALOG = "HIDE_LOGIN_DIALOG"
 
