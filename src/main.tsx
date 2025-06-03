@@ -10,14 +10,19 @@ import { Provider } from 'react-redux'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { rootReducer } from './react/RootReducer.tsx'
 
-//Quellen: https://redux.js.org/introduction/why-rtk-is-redux-today
+// verwendete Quellen: Folien und Videos von den Vorlesungen
+// Quellen zu configureStore: https://redux.js.org/introduction/why-rtk-is-redux-today
+// Quelle zu createRoot: https://react.dev/reference/react-dom/client/createRoot
+// Quelle zu Typen: https://react-redux.js.org/using-react-redux/usage-with-typescript
 
+const store = configureStore({reducer: rootReducer});
 
-let store = configureStore({reducer: rootReducer});
-
-createRoot(document.getElementById('root')!).render(
+let root = createRoot(document.getElementById('root')!)
+root.render(
   <Provider store={store}>
-    <Webseite user={undefined} authenticationReducer={undefined}/> 
+    <Webseite /> 
   </Provider>,
 )
-//das mit undefined ist komisch, verbessern!
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

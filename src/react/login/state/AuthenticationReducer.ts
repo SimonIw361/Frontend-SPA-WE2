@@ -3,29 +3,28 @@ import { AUTHENTICATION_ERROR, AUTHENTICATION_PENDING, AUTHENTICATION_SUCCESS, H
 const initialState = {
     user: null,
     loginPending: false,
-    showLoginDialog: false
+    showLoginDialog: false,
+    error: null
 };
 
-export function authenticationReducer(state = initialState, action: any) {
+export function authenticationReducer(state = initialState, action: {type: string, user?: string, accessToken?: string, error?: string} ) {
     console.log("Authentication Reducer: " + action.type)
 
     switch (action.type) {
         case SHOW_LOGIN_DIALOG:
-            //console.log({...state, showLoginDialog: true, error: null})
             return { ...state, showLoginDialog: true, error: null };
         case HIDE_LOGIN_DIALOG:
-            //console.log({...state, showLoginDialog: false, error: null})
             return { ...state, showLoginDialog: false, error: null };
         case AUTHENTICATION_SUCCESS:
-            return { ...state, showLoginDialog: false, pending: false, user: action.user, accessToken: action.accessToken };
+            return { ...state, showLoginDialog: false, loginPending: false, user: action.user, accessToken: action.accessToken, error: null };
         case AUTHENTICATION_ERROR:
-            return { ...state, pending: false, error: "Authentication failed" };
+            console.log(action.error)
+            return { ...state, loginPending: false, error: "Authentication failed" };
         case AUTHENTICATION_PENDING:
-            return { ...state, pending: true, error: null };
+            return { ...state, loginPending: true, error: null };
         case LOGOUT:
-            return { ...state, user: null, accessToken: null};
+            return { ...state, user: null, accessToken: null, error: null };
         default:
             return state;
     }
-
 };

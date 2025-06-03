@@ -1,23 +1,22 @@
 import { Component, type ChangeEvent, type MouseEvent} from "react";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
-import { connect } from "react-redux";
-import { bindActionCreators, type Dispatch, type UnknownAction } from "redux";
+import { connect, type ConnectedProps } from "react-redux";
+import { bindActionCreators } from "redux";
 import { authenticateUser, getHideLoginDialogAction, getShowLoginDialogAction, logout } from "./state/AuthenticationAction";
+import type { AppDispatch, RootState } from "../../main";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle fuer Arrow Functions(dadurch wird this automatisch gebunden): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+// Quelle zur Definition von Props Typ: https://react-redux.js.org/using-react-redux/usage-with-typescript
+// https://react-redux.js.org/using-react-redux/connect-mapstate
+// https://react-redux.js.org/using-react-redux/connect-mapdispatch
 
-type Props = {
-    showLoginDialog: boolean,
-    showLoginDialogAction: () => void,
-    hideLoginDialogAction: () => void,
-    authenticateUser: (username:string, password: string) => void,
-    logout: any
-    authenticationReducer: any
+interface Props extends PropsFromRedux {
 };
-type State = {username: string, password: string};
 
-const mapStateToProps = (state: any) => {
+type State = {username: string, password: string}; //dieser State existiert nur in dieser Klasse, ist das was gerade in LoginDialog eingegeben ist
+
+const mapStateToProps = (state: RootState) => {
     return state;
 }
 
@@ -42,7 +41,6 @@ class UserSessionWidget extends Component<Props, State> {
 
     handleChange = (e: ChangeEvent) => {
         e.preventDefault(); //notwendig??, kann ggf weggelassen werden
-        //const {name, value} = e.target.value;
         let t = e.target as HTMLInputElement;
         let name = t.name;
         let value = t.value;
@@ -63,7 +61,7 @@ class UserSessionWidget extends Component<Props, State> {
         const {username, password} = this.state;
 
         //Warnung ignorieren, await muss da stehen, geht sonst nicht richtig
-        await this.props.authenticateUser(username, password); //eigentlich await, auf Fertigstellung muss hier aber nicht gewartet werden, mit zurueckgegebenen Wert wird ja eh nichts mehr gemacht
+        await this.props.authenticateUser(username, password);
         if(this.props.authenticationReducer.user === null){
             this.setState({"username": "", "password": ""});
         }
@@ -84,12 +82,12 @@ class UserSessionWidget extends Component<Props, State> {
     }
 
     render() {
-        let showDialog: boolean = this.props.authenticationReducer.showLoginDialog; //bestimmt, ob LoginDialog angezeigtw wird
+        let showDialog: boolean = this.props.authenticationReducer.showLoginDialog; //bestimmt, ob LoginDialog angezeigt wird
         if (showDialog === undefined) {
             showDialog = false;
         }
 
-        let errorText: string = this.props.authenticationReducer.error;
+        let errorText = this.props.authenticationReducer.error;
         let showError: boolean = false;
         if(errorText === "Authentication failed"){ //dann Fehler bei Login, falsche User ID/Password
             showError = true;
@@ -98,7 +96,7 @@ class UserSessionWidget extends Component<Props, State> {
             showError = false;
         }
 
-        let pending: boolean = this.props.authenticationReducer.pending; //Ladesymbol wird dargestellt
+        let pending: boolean = this.props.authenticationReducer.loginPending; //Ladesymbol wird dargestellt
         if(pending === undefined){
             pending = false;
         }
@@ -139,12 +137,8 @@ class UserSessionWidget extends Component<Props, State> {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3">
-                            {userIdForm}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            {paswordForm}
-                        </Form.Group>
+                        <Form.Group className="mb-3">{userIdForm}</Form.Group>
+                        <Form.Group className="mb-3">{paswordForm}</Form.Group>
                         {showError && <div><Form.Label id="textLoginUngueltig" style={{color: "red"}}>User ID oder Password falsch</Form.Label><br /></div>}
                         {pending && <div><Spinner animation="border" variant="primary"/><br /></div>}
                         {performLoginButton}
@@ -155,13 +149,16 @@ class UserSessionWidget extends Component<Props, State> {
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<UnknownAction>) => bindActionCreators({
+const mapDispatchToProps = (dispatch: AppDispatch) => bindActionCreators({
     showLoginDialogAction: getShowLoginDialogAction,
     hideLoginDialogAction: getHideLoginDialogAction,
-    authenticateUser: authenticateUser,
-    logout: logout
+    authenticateUser,
+    logout
 }, dispatch)
 
-const ConnectedUserSessionWidget = connect(mapStateToProps, mapDispatchToProps)(UserSessionWidget);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+const ConnectedUserSessionWidget = connector(UserSessionWidget);
 export default ConnectedUserSessionWidget;

@@ -6,11 +6,11 @@ import './App.css'
 import { PublicPage } from './react/login/PublicPage'
 import { PrivatePage } from './react/user/PrivatePage'
 import { TopMenu } from './react/TopMenu'
-import { connect } from 'react-redux'
+import { connect} from 'react-redux'
 
 type Props = {
-  user: any,
-  authenticationReducer: any
+  user?: any,
+  authenticationReducer?: any
 }
 
 const mapStateToProps = (state: any) => {

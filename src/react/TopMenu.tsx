@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Navbar, Container, Nav} from "react-bootstrap";
+import { Navbar, Container} from "react-bootstrap";
 import UserSessionWidget from "./login/UserSessionWidget";
 
 export class TopMenu extends Component {
@@ -16,7 +16,7 @@ export class TopMenu extends Component {
                             <Nav.Link href="#link">Link</Nav.Link>
                         </Nav>
                     </Navbar.Collapse> */}
-                    <UserSessionWidget showLoginDialog={true} showLoginDialogAction={() => { } } hideLoginDialogAction={() => { } } authenticateUser={() => { } } authenticationReducer={() => { } } logout={undefined}></UserSessionWidget>
+                    <UserSessionWidget></UserSessionWidget>
                 </Container>
             </Navbar>
         </div>;
