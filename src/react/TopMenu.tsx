@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Navbar, Container} from "react-bootstrap";
+import { Navbar, Container } from "react-bootstrap";
 import { UserSessionWidget } from "./login/UserSessionWidget";
 
 export class TopMenu extends Component {
@@ -8,7 +8,7 @@ export class TopMenu extends Component {
         return <div>
             <Navbar expand="lg" className="bg-body-tertiary">
                 <Container>
-                    <Navbar.Brand><img src="/bht.svg"/></Navbar.Brand>
+                    <Navbar.Brand><img src="/bht.svg" /></Navbar.Brand>
                     {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> //kann eigentlich weg, ist nur so Menu Items
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">

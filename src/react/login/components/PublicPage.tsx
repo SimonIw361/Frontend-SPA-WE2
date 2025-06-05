@@ -1,11 +1,11 @@
-import  LoginButton  from "./LoginButton";
+import { LoginButton } from "./LoginButton";
 
-export function PublicPage(){
+export function PublicPage() {
     return <div id="LandingPage">
-            Public Page
-            <br />
-            Diesen Bereich kann jeder sehen.
-            <br />
-            <LoginButton />
-        </div>;
+        Public Page
+        <br />
+        Diesen Bereich kann jeder sehen.
+        <br />
+        <LoginButton />
+    </div>;
 }

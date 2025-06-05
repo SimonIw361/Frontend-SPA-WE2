@@ -20,10 +20,10 @@ let root = createRoot(document.getElementById('root')!)
 root.render(
   //TODO React.Strict Mode noch davor machen??
   <React.StrictMode>
-  <Provider store={storeMain}>
-    <TopMenu />
-    <LandingPage /> 
-  </Provider>
+    <Provider store={storeMain}>
+      <TopMenu />
+      <LandingPage />
+    </Provider>
   </React.StrictMode>,
 )
 

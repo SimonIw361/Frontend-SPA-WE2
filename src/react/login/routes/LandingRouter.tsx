@@ -3,9 +3,7 @@ import { PrivatePage } from '../components/PrivatePage';
 import { PublicPage } from '../components/PublicPage';
 import { useSelector } from 'react-redux';
 
-
 // verwendete Quellen: Folien und Videos von den Vorlesungen
-// Quelle zur Definition von Props Typ: https://react-redux.js.org/using-react-redux/usage-with-typescript
 
 export function LandingPage() {
     const user = useSelector((state: RootState) => state.authentication.user);
@@ -17,5 +15,6 @@ export function LandingPage() {
         workspace = <div><PublicPage /></div>
     }
 
-    return <div style={{textAlign: "center"}}>{workspace}</div>
+    return <div style={{ textAlign: "center" }}>{workspace}</div>
+    //return <Routes><Route path="/" element={<LandingPage />}></Route></Routes>
 }
