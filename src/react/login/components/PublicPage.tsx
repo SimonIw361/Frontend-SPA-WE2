@@ -1,4 +1,4 @@
-import  LoginButton  from "./components/LoginButton";
+import  LoginButton  from "./LoginButton";
 
 export function PublicPage(){
     return <div id="LandingPage">

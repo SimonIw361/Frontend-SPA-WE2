@@ -4,15 +4,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // Quelle zum Erstellen von Slice https://redux-toolkit.js.org/api/createSlice
 // Quelle zu createAsyncThunk https://redux-toolkit.js.org/api/createAsyncThunk
 
+//login in andere Datei machen??
 
 const initialState = {
     user: null,
     loginPending: false,
-    showLoginDialog: false,
+    showLoginDialogBool: false,
     accessToken: "",
     error: "" //TODO schlechter fix mit ""
 };
-
 
 export const login = createAsyncThunk("user/login",async (user: any) => { //TODO user richtig typisieren
     const requestOptions = {
@@ -70,31 +70,30 @@ const authenticationSlicer = createSlice({
             state.error = ""
         },
         showLoginDialog(state){
-            console.log("show Dialog")
-            state.showLoginDialog = true
+            state.showLoginDialogBool = true
         },
         hideLoginDialog(state){
-            state.showLoginDialog = false
+            state.showLoginDialogBool = false
         }
         
     },
     extraReducers: (builder) => {
         builder.addCase(login.pending, (state) => {
-            state.showLoginDialog = true,
+            state.showLoginDialogBool = true,
             state.loginPending= true,
             state.user = null,
             state.accessToken = "",
             state.error = "" 
         })
         builder.addCase(login.fulfilled, (state, action) => {
-            state.showLoginDialog = false,
+            state.showLoginDialogBool = false,
             state.loginPending = false,
             state.user = action.payload.user,
             state.accessToken = action.payload.accessToken,
             state.error = ""
         })
         builder.addCase(login.rejected, (state) => {
-            state.showLoginDialog = false,
+            state.showLoginDialogBool = true,
             state.loginPending = false,
             state.user = null,
             state.accessToken = "",

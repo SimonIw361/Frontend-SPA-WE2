@@ -1,9 +1,7 @@
-import { Component, type ChangeEvent, type MouseEvent} from "react";
+import { useState, type ChangeEvent, type MouseEvent} from "react";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
-import { connect, type ConnectedProps } from "react-redux";
-import { bindActionCreators } from "redux";
-//import { authenticateUser, getHideLoginDialogAction, getShowLoginDialogAction, logout } from "./state/AuthenticationAction";
-import type { AppDispatch, RootState } from "../store";
+import {  useDispatch, useSelector} from "react-redux";
+import type { AppDispatch, RootState } from "../RootStore";
 import {login, logout, showLoginDialog, hideLoginDialog} from "./state/AuthenticationSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
@@ -12,70 +10,60 @@ import {login, logout, showLoginDialog, hideLoginDialog} from "./state/Authentic
 // https://react-redux.js.org/using-react-redux/connect-mapstate
 // https://react-redux.js.org/using-react-redux/connect-mapdispatch
 
-interface Props extends PropsFromRedux {
-}
+export const UserSessionWidget = () => {
+    const [userID, setUserID] = useState("");
+    const [password, setPassword] = useState("");
 
-type State = {username: string, password: string}; //dieser State existiert nur in dieser Klasse, ist das was gerade in LoginDialog eingegeben ist
+    //useEffect benutzen, wenn Action ausgeführt werden soll sobald sich Wert von bestimmter Variable aendert
 
-const mapStateToProps = (state: RootState) => ({
-    authentication: state.authentication
-})
+    const dispatch = useDispatch<AppDispatch>();
+    const {user, error, loginPending, showLoginDialogBool} = useSelector(
+        (state: RootState) => state.authentication
+    )
 
-class UserSessionWidget extends Component<Props, State> {
-
-    constructor(props: Props) {
-        super(props);
-        this.state = { 
-            username: "",
-            password: ""
-        };
-    }
-
-    handleShow = (e: MouseEvent) => {
+    const handleShow = (e: MouseEvent) => {
         e.preventDefault();
-        console.log("show dialog 1")
-        this.props.showLoginDialogAction();
+        dispatch(showLoginDialog());
     }
-
-    handleClose = () => {
-        this.props.hideLoginDialogAction();
+    
+    const handleClose = () => {
+        dispatch(hideLoginDialog());
     }
-
-    handleChange = (e: ChangeEvent) => {
+    
+    const handleChange = (e: ChangeEvent) => {
         e.preventDefault(); //notwendig??, kann ggf weggelassen werden
         let t = e.target as HTMLInputElement;
         let name = t.name;
         let value = t.value;
         switch(name){
             case "userID":
-                this.setState({"username": value});
+                setUserID(value);
                 break;
             case "password":
-                this.setState({"password": value});
+                setPassword(value);
                 break;
             default:
                 console.log("Error: Fehler beim Aendern von Login State in handleChange")
         }
     }
-
-    handleSubmit = async (e: MouseEvent) => {
+    
+    const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
-        const {username, password} = this.state;
-
+    
         //Warnung ignorieren, await muss da stehen, geht sonst nicht richtig
-        await this.props.login({userID: username, password: password});
-        if(this.props.authentication.user === null){
-            this.setState({"username": "", "password": ""});
+        await dispatch(login({userID: userID, password: password}));
+        if(user === null){
+            setUserID("");
+            setPassword("");
         }
     }
-
-    handleLogout = () => {
-        this.props.logout();
+    
+    const handleLogout = () => {
+        dispatch(logout());
     }
-
-    canLogin(): boolean {
-        const {username, password} = this.state;
-        if(password === "" || username === ""){
+    
+    const canLogin = () =>{
+        if(password === "" || userID === ""){
             return false;
         }
         else {
@@ -83,50 +71,47 @@ class UserSessionWidget extends Component<Props, State> {
         }
     }
 
-    render() {
-        console.log(this.props)
-        let showDialog: boolean = this.props.authentication.showLoginDialog; //bestimmt, ob LoginDialog angezeigt wird
+    
+        let showDialog: boolean = showLoginDialogBool; //bestimmt, ob LoginDialog angezeigt wird
         if (showDialog === undefined) {
             showDialog = false;
         }
 
-        let errorText = this.props.authentication.error;
         let showError: boolean = false;
-        if(errorText === "Authentication failed"){ //dann Fehler bei Login, falsche User ID/Password
+        if(error === "Authentication failed"){ //dann Fehler bei Login, falsche User ID/Password
             showError = true;
         }
         else {
             showError = false;
         }
 
-        let pending: boolean = this.props.authentication.loginPending; //Ladesymbol wird dargestellt
-        if(pending === undefined){
+        let pending: boolean = loginPending; //Ladesymbol wird dargestellt
+        if(loginPending === undefined){
             pending = false;
         }
         
         let userIdForm;
         let paswordForm;
         if(pending){ //wenn pending kann in forms nicht mehr eingetragen werden
-            userIdForm = <Form.Control id="LoginDialogUserIDText" type="text" placeholder="User ID" name="userID" onChange={this.handleChange} value={this.state.username} readOnly/>
-            paswordForm= <Form.Control id="LoginDialogPasswordText" type="password" placeholder="Password" name="password" onChange={this.handleChange} value={this.state.password} readOnly/>
+            userIdForm = <Form.Control id="LoginDialogUserIDText" type="text" placeholder="User ID" name="userID" onChange={handleChange} value={userID} readOnly/>
+            paswordForm= <Form.Control id="LoginDialogPasswordText" type="password" placeholder="Password" name="password" onChange={handleChange} value={password} readOnly/>
         }
         else {
-            userIdForm = <Form.Control id="LoginDialogUserIDText" type="text" placeholder="User ID" name="userID" onChange={this.handleChange} value={this.state.username}/>
-            paswordForm= <Form.Control id="LoginDialogPasswordText" type="password" placeholder="Password" name="password" onChange={this.handleChange} value={this.state.password}/>
+            userIdForm = <Form.Control id="LoginDialogUserIDText" type="text" placeholder="User ID" name="userID" onChange={handleChange} value={userID}/>
+            paswordForm= <Form.Control id="LoginDialogPasswordText" type="password" placeholder="Password" name="password" onChange={handleChange} value={password}/>
         }
 
-        let user = this.props.authentication.user
         let widget;
         if(user === null || user === undefined){ //wenn User eingeloggt ist soll anderes Widget dargestellt (kein Login Button)
-            widget = <Button id="OpenLoginDialogButton" variant="primary" onClick={this.handleShow}>Login</Button>
+            widget = <Button id="OpenLoginDialogButton" variant="primary" onClick={handleShow}>Login</Button>
         }
         else {
-            widget = <Button id="LogoutButton" variant="primary" onClick={this.handleLogout}>Logout</Button>//TODO das noch aendern, sollte eigentlich icon sein
+            widget = <Button id="LogoutButton" variant="primary" onClick={handleLogout}>Logout</Button>//TODO das noch aendern, sollte eigentlich icon sein
         }
 
         let performLoginButton;
-        if(this.canLogin()){ //Login Button kann nur gedrueckt werden, wenn Felder nicht leer sind
-            performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" onClick={this.handleSubmit}>Login</Button>;
+        if(canLogin()){ //Login Button kann nur gedrueckt werden, wenn Felder nicht leer sind
+            performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" onClick={handleSubmit}>Login</Button>;
         }
         else{
             performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" disabled>Login</Button>;
@@ -134,7 +119,7 @@ class UserSessionWidget extends Component<Props, State> {
 
         return <div>
             {widget}
-            <Modal show={showDialog} id="LoginDialog" onHide={this.handleClose}>
+            <Modal show={showDialog} id="LoginDialog" onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
@@ -149,19 +134,5 @@ class UserSessionWidget extends Component<Props, State> {
                 </Modal.Body>
             </Modal>
         </div>
-    }
+    
 }
-
-const mapDispatchToProps = (dispatch: AppDispatch) => bindActionCreators({
-    showLoginDialogAction: showLoginDialog,
-    hideLoginDialogAction: hideLoginDialog,
-    logout,
-    login
-}, dispatch)
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-const ConnectedUserSessionWidget = connector(UserSessionWidget);
-export default ConnectedUserSessionWidget;

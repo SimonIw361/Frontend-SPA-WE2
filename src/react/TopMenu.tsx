@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Navbar, Container} from "react-bootstrap";
-import UserSessionWidget from "./login/UserSessionWidget";
+import { UserSessionWidget } from "./login/UserSessionWidget";
 
 export class TopMenu extends Component {
 
