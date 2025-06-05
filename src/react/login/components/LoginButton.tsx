@@ -1,7 +1,8 @@
 import { Component } from "react";
 import { Button } from "react-bootstrap";
 import { connect, type ConnectedProps } from "react-redux";
-import { getShowLoginDialogAction } from "../state/AuthenticationAction";
+import { showLoginDialog } from "../state/AuthenticationSlice";
+//import { getShowLoginDialogAction } from "../state/AuthenticationAction";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zur Definition von Props Typ: https://react-redux.js.org/using-react-redux/usage-with-typescript
@@ -18,7 +19,7 @@ class LoginButton extends Component<Props> {
 
     showLoginDialog(){
         let dispatch = this.props.dispatch;
-        dispatch(getShowLoginDialogAction());
+        dispatch(showLoginDialog());
     }
 
     render() {

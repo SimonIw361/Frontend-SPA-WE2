@@ -4,7 +4,7 @@ import { PublicPage } from './react/login/PublicPage'
 import { PrivatePage } from './react/user/PrivatePage'
 import { TopMenu } from './react/TopMenu'
 import { connect, type ConnectedProps} from 'react-redux'
-import type { RootState } from './main'
+import type { RootState } from './react/store'
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zur Definition von Props Typ: https://react-redux.js.org/using-react-redux/usage-with-typescript
@@ -13,14 +13,14 @@ import type { RootState } from './main'
 interface Props extends PropsFromRedux {
 }
 
-const mapStateToProps = (state: RootState) => {
-  return state;
-}
+const mapStateToProps = (state: RootState) => ({
+  authentication: state.authentication
+})
 
 class Webseite extends Component<Props> {
   render() {
 
-    const user = this.props.authenticationReducer.user;
+    const user = this.props.authentication.user;
 
     let workspace;
     if (user) {
