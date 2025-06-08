@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
-// Quelle zum Erstellen von Slice https://redux-toolkit.js.org/api/createSlice
+// Quelle zu createSlice https://redux-toolkit.js.org/api/createSlice
 // Quelle zu createAsyncThunk https://redux-toolkit.js.org/api/createAsyncThunk
 // Quelle zu ?? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
+// Quelle zu btoa: https://developer.mozilla.org/en-US/docs/Web/API/Window/btoa
 
-//login in andere Datei machen??
 
 const initialState = {
     user: null,
@@ -15,7 +15,10 @@ const initialState = {
     error: "" //TODO schlechter fix mit ""
 };
 
-export const login = createAsyncThunk("user/login", async (user: any) => { //TODO user richtig typisieren
+
+
+export const login = createAsyncThunk("user/login", async (user: {userID: String, password: String}) => {
+
     const requestOptions = {
         method: 'GET',
         headers: { "Authorization": "Basic " + btoa(user.userID + ":" + user.password) }, //TODO: Base64 coding noch machen
@@ -25,7 +28,7 @@ export const login = createAsyncThunk("user/login", async (user: any) => { //TOD
     const authorizationHeader = response.headers.get('Authorization');
 
     let text = await response.text();
-    let data; //hat leider Typ any
+    let data; //hat leider Typ any, weil JSON.parse any zurueckgibt
     if (text) {
         data = JSON.parse(text);
     }
@@ -39,9 +42,6 @@ export const login = createAsyncThunk("user/login", async (user: any) => { //TOD
     }
 
     if (!response.ok || token === null) {
-        if (response.status === 401) {
-            //logout();
-        }
 
         let err: string;
         if (data.Error !== undefined) { //wenn es Error Meldung gibt, wird diese zurueckgegeben
@@ -50,7 +50,7 @@ export const login = createAsyncThunk("user/login", async (user: any) => { //TOD
         else {
             err = response.statusText;
         }
-        return Promise.reject(err); //reject Promise ausgeloest, wird im catch in authenticateUser gefangen
+        return Promise.reject(err); //reject Promise ausgeloest
     }
     else {
         let userSession = {
@@ -100,6 +100,7 @@ const authenticationSlicer = createSlice({
             state.user = null;
             state.accessToken = "";
             state.error = action.error.message ?? "Authentication failed";
+            console.log(state.error);
         })
     }
 })

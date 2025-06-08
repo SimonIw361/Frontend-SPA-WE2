@@ -5,7 +5,16 @@ import type { AppDispatch, RootState } from "../RootStore";
 import { login, logout, showLoginDialog, hideLoginDialog } from "./state/AuthenticationSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
+// Button https://react-bootstrap.netlify.app/docs/components/buttons/
 // Quelle fuer Arrow Functions: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+// Quelle zu Typescript in React: https://react-redux.js.org/using-react-redux/usage-with-typescript
+// Quelle zu Hooks: https://react-redux.js.org/api/hooks
+// Quelle zu useState: https://react.dev/reference/react/useState
+
+/*Quellen fuer die benutzen Icons:
+    https://www.flaticon.com/de/kostenlose-icons/avatar-benutzer
+    https://www.flaticon.com/de/kostenlose-icons/mannlicher-avatar
+*/
 
 export function UserSessionWidget() {
     const [userID, setUserID] = useState("");
@@ -13,8 +22,8 @@ export function UserSessionWidget() {
 
     //useEffect benutzen, wenn Action ausgeführt werden soll sobald sich Wert von bestimmter Variable aendert
 
-    const dispatch = useDispatch<AppDispatch>();
-    const { user, error, loginPending, showLoginDialogBool } = useSelector(
+    const dispatch = useDispatch<AppDispatch>(); //mit dispatach werden Actions ueber Reducer/Slice an den Store geschickt
+    const { user, error, loginPending, showLoginDialogBool } = useSelector( //auf Werte vom zentralen Store zugreifen
         (state: RootState) => state.authentication
     )
 
@@ -100,15 +109,16 @@ export function UserSessionWidget() {
 
     let widget;
     if (user === null || user === undefined) { //wenn User eingeloggt ist soll anderes Widget dargestellt (kein Login Button)
-        widget = <Button id="OpenLoginDialogButton" variant="primary" onClick={handleShow}>Login</Button>
+        widget = <Button id="OpenLoginDialogButton"  onClick={handleShow}><img src="/UserBildPublic.png" alt="User Symbol ausgeloggt" /></Button>
     }
     else {
-        widget = <Button id="LogoutButton" variant="primary" onClick={handleLogout}>Logout</Button>//TODO das noch aendern, sollte eigentlich icon sein
+        widget = <Button id="LogoutButton" variant="primary" onClick={handleLogout}><img src="/UserBildPrivate.png" alt="User Symbol ausgeloggt" /></Button>
     }
 
     let performLoginButton;
     if (canLogin()) { //Login Button kann nur gedrueckt werden, wenn Felder nicht leer sind
         performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" onClick={handleSubmit}>Login</Button>;
+        
     }
     else {
         performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" disabled>Login</Button>;

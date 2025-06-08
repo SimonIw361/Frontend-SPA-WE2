@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +65,61 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+
+/*
+Quellen:
+https://developer.mozilla.org/en-US/docs/Web/CSS/overflow
+https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius
+
+*/
+#OpenLoginDialogButton img,
+#LogoutButton img {
+  width: 100%;
+  height: 100%;
+  background-color: #e6e7ee;
+}
+
+#OpenLoginDialogButton,
+#LogoutButton {
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  border: 0;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+
+
+/* Layout fuer Public und Private Page:
+  https://www.w3schools.com/css/css_colors_rgb.asp
+*/
+
+#LandingPage, #StartPage {
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+}
+.ueberschrift {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 25px;
+}
+
+#LoginPublic {
+  margin-bottom: 25px;
+}
+
+#teil1Public, #teil1Private {
+  background-color: rgba(0, 136, 255, 0.24);
+}
+
+#teil2Public {
+  background-color: rgba(203, 203, 203, 0.2);
+  padding-bottom: 50px;
+}
+
+#teil1Public, #teil2Public {
+  padding: 17px;
 }
