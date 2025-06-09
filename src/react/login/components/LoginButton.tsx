@@ -14,5 +14,5 @@ export function LoginButton() {
         dispatch(showLoginDialog());
     }
 
-    return <Button variant="primary" onClick={handleShow} id="LoginPublic">Login</Button>
+    return <Button variant="primary" onClick={handleShow} id="OpenLoginDialogButtonPublic">Login</Button>
 }

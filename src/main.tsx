@@ -6,8 +6,8 @@ import "./main.css"
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { store } from './react/RootStore.ts';
-import { LandingPage } from './react/login/routes/LandingRouter.tsx';
 import { TopMenu } from './react/TopMenu.tsx';
+import { LandingPage } from './react/login/routes/LandingRouter.tsx';
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quellen zu configureStore: https://redux.js.org/introduction/why-rtk-is-redux-today

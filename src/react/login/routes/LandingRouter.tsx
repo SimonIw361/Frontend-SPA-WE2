@@ -9,12 +9,12 @@ export function LandingPage() {
     const user = useSelector((state: RootState) => state.authentication.user);
     let workspace;
     if (user) {
-        workspace = <div><PrivatePage /></div>
+        workspace = <PrivatePage />
     }
     else {
-        workspace = <div><PublicPage /></div>
+        workspace = <PublicPage />
     }
 
-    return <div style={{ textAlign: "center" }}>{workspace}</div>
+    return <div>{workspace}</div>
     //return <Routes><Route path="/" element={<LandingPage />}></Route></Routes>
 }

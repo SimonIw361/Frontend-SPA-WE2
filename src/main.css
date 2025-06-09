@@ -1,78 +1,58 @@
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
+/* Layout fuer Public und Private Page:
+  https://www.w3schools.com/css/css_colors_rgb.asp */
+#LandingPage, #StartPage {
+  text-align: center;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  flex-flow: column;
+}
+.ueberschrift {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 25px;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+#OpenLoginDialogButtonPublic {
+  margin-bottom: 25px;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+#teil1Public, #teil1Private {
+  background-color: rgba(0, 136, 255, 0.24);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+#teil2Public {
+  background-color: rgba(203, 203, 203, 0.2);
+  padding-bottom: 50px;
+}
+
+#teil1Public, #teil2Public {
+  padding: 17px;
+}
+
+
+/* Layout fuer Top Menu: */
+#TopMenu {
+  position: sticky;
+  top: 0px;
+}
+
+@media (max-width: 767px){
+  #BHTLogoTopMenu {
+    display: none;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
+}
 
-/*
-Quellen:
+@media (min-width: 768px){
+  #UserSessionWidget {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
+
+
+/* Layout fuer UserSessionWidget (Login und Logout): 
 https://developer.mozilla.org/en-US/docs/Web/CSS/overflow
-https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius
-
-*/
+https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius */
 #OpenLoginDialogButton img,
 #LogoutButton img {
   width: 100%;
@@ -88,38 +68,4 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius
   border: 0;
   border-radius: 30px;
   overflow: hidden;
-}
-
-
-
-/* Layout fuer Public und Private Page:
-  https://www.w3schools.com/css/css_colors_rgb.asp
-*/
-
-#LandingPage, #StartPage {
-  text-align: center;
-  display: flex;
-  flex-flow: column;
-}
-.ueberschrift {
-  font-size: 25px;
-  font-weight: bold;
-  margin-top: 25px;
-}
-
-#LoginPublic {
-  margin-bottom: 25px;
-}
-
-#teil1Public, #teil1Private {
-  background-color: rgba(0, 136, 255, 0.24);
-}
-
-#teil2Public {
-  background-color: rgba(203, 203, 203, 0.2);
-  padding-bottom: 50px;
-}
-
-#teil1Public, #teil2Public {
-  padding: 17px;
 }

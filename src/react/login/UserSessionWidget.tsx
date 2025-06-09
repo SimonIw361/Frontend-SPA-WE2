@@ -109,10 +109,10 @@ export function UserSessionWidget() {
 
     let widget;
     if (user === null || user === undefined) { //wenn User eingeloggt ist soll anderes Widget dargestellt (kein Login Button)
-        widget = <Button id="OpenLoginDialogButton"  onClick={handleShow}><img src="/UserBildPublic.png" alt="User Symbol ausgeloggt" /></Button>
+        widget = <Button id="OpenLoginDialogButton"  onClick={handleShow}><img src="/UserBildPublic.png" alt="Bild User ausgeloggt" /></Button>
     }
     else {
-        widget = <Button id="LogoutButton" variant="primary" onClick={handleLogout}><img src="/UserBildPrivate.png" alt="User Symbol ausgeloggt" /></Button>
+        widget = <Button id="LogoutButton" variant="primary" onClick={handleLogout}><img src="/UserBildPrivate.png" alt="Bild User eingeloggt" /></Button>
     }
 
     let performLoginButton;
