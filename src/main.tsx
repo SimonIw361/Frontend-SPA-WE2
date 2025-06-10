@@ -1,8 +1,6 @@
 import { createRoot } from 'react-dom/client'
-
-
 import { Provider } from 'react-redux'
-import "./main.css"
+import "./Main.css"
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { store } from './react/RootStore.ts';
@@ -15,9 +13,9 @@ import { LandingPage } from './react/login/routes/LandingRouter.tsx';
 // Quelle zu Typen: https://react-redux.js.org/using-react-redux/usage-with-typescript
 // Quelle React Strict MOde: https://react.dev/reference/react/StrictMode
 
-const storeMain = store//configureStore({reducer: rootReducer});
+const storeMain = store;
 
-let root = createRoot(document.getElementById('root')!)
+let root = createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
     <Provider store={storeMain}>
@@ -25,6 +23,6 @@ root.render(
       <LandingPage />
     </Provider>
   </React.StrictMode>,
-)
+);
 
 

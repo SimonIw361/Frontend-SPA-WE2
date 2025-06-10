@@ -1,5 +1,5 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
-import { UserSessionWidget } from "./login/UserSessionWidget";
+import { UserSessionWidget } from "./login/components/UserSessionWidget";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle NavBar: https://react-bootstrap.netlify.app/docs/components/navbar/
@@ -20,11 +20,6 @@ export function TopMenu() {
                     <Nav.Link>Impressum</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
-            
-            
-            
-
         </Container>
     </Navbar>;
 }
-

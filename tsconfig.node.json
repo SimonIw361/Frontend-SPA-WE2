@@ -17,7 +17,6 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    //"erasableSyntaxOnly": true, //gibt fehler, hab einfach auskommentiert
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },

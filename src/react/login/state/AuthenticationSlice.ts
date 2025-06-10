@@ -6,22 +6,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // Quelle zu ?? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
 // Quelle zu btoa: https://developer.mozilla.org/en-US/docs/Web/API/Window/btoa
 
-
 const initialState = {
     user: null,
     loginPending: false,
     showLoginDialogBool: false,
     accessToken: "",
-    error: "" //TODO schlechter fix mit ""
+    error: ""
 };
 
-
-
 export const login = createAsyncThunk("user/login", async (user: {userID: String, password: String}) => {
-
     const requestOptions = {
         method: 'GET',
-        headers: { "Authorization": "Basic " + btoa(user.userID + ":" + user.password) }, //TODO: Base64 coding noch machen
+        headers: { "Authorization": "Basic " + btoa(user.userID + ":" + user.password) }
     }
 
     let response = await fetch('https://localhost:443/api/authenticate', requestOptions);
@@ -42,7 +38,6 @@ export const login = createAsyncThunk("user/login", async (user: {userID: String
     }
 
     if (!response.ok || token === null) {
-
         let err: string;
         if (data.Error !== undefined) { //wenn es Error Meldung gibt, wird diese zurueckgegeben
             err = data.Error;

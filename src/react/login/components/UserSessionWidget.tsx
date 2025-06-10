@@ -1,17 +1,18 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../RootStore";
-import { login, logout, showLoginDialog, hideLoginDialog } from "./state/AuthenticationSlice";
+import type { AppDispatch, RootState } from "../../RootStore";
+import { login, logout, showLoginDialog, hideLoginDialog } from "../state/AuthenticationSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Button https://react-bootstrap.netlify.app/docs/components/buttons/
+// Modal Dialog https://react-bootstrap.netlify.app/docs/components/modal/
 // Quelle fuer Arrow Functions: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
 // Quelle zu Typescript in React: https://react-redux.js.org/using-react-redux/usage-with-typescript
 // Quelle zu Hooks: https://react-redux.js.org/api/hooks
 // Quelle zu useState: https://react.dev/reference/react/useState
 
-/*Quellen fuer die benutzen Icons:
+/* Quellen fuer die benutzen Icons:
     https://www.flaticon.com/de/kostenlose-icons/avatar-benutzer
     https://www.flaticon.com/de/kostenlose-icons/mannlicher-avatar
 */
@@ -37,7 +38,7 @@ export function UserSessionWidget() {
     }
 
     const handleChange = (e: ChangeEvent) => {
-        e.preventDefault(); //notwendig??, kann ggf weggelassen werden
+        e.preventDefault();
         let t = e.target as HTMLInputElement;
         let name = t.name;
         let value = t.value;
@@ -56,7 +57,6 @@ export function UserSessionWidget() {
     const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
 
-        //Warnung ignorieren, await muss da stehen, geht sonst nicht richtig
         await dispatch(login({ userID: userID, password: password }));
         if (user === null) {
             setUserID("");
