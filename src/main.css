@@ -1,5 +1,7 @@
 /* Layout fuer Public und Private Page:
-  https://www.w3schools.com/css/css_colors_rgb.asp */
+https://www.w3schools.com/css/css_colors_rgb.asp 
+https://developer.mozilla.org/de/docs/Web/CSS/z-index bestimmt was oben angezeigt wird
+*/
 #LandingPage {
   text-align: center;
   display: flex;
@@ -35,6 +37,7 @@
 #TopMenu {
   position: sticky;
   top: 0px;
+  z-index: 5;
 }
 
 @media (max-width: 767px){
@@ -54,7 +57,8 @@
 
 /* Layout fuer UserSessionWidget (Login und Logout): 
 https://developer.mozilla.org/en-US/docs/Web/CSS/overflow
-https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius */
+https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius
+*/
 #OpenLoginDialogButton img,
 #LogoutButton img {
   width: 100%;
@@ -89,6 +93,10 @@ https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
   color: black;
 }
 
+#root, html, body{
+  height: 100%;
+}
+
 #activityBar>* {
   color: black;
 }
@@ -102,13 +110,15 @@ https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
   flex-flow: row;
 }
 
+
+
 /* Layout fuer Ueber Uns, Kontakt und Impressum
 */
 #ueberuns, #kontakt, #impressum, #pagenotfound, #unauthorized{
   text-align: center;
   flex-grow: 1;
   background-color: rgba(0, 136, 255, 0.24);
-  padding-bottom: 25px;
+  padding-bottom: 45px;
 }
 
 
@@ -130,7 +140,18 @@ https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_i
 }
 
 #UserUeberschrift {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   margin-left: 12px;
+  margin-bottom: 20px;
+}
+
+#UserManagementPageCreateButton {
+  margin-right: 12px;
+}
+
+#UserUeberschrift>* {
   margin-bottom: 10px;
 }
 
@@ -140,4 +161,17 @@ Element muss beide Klassen besitzen */
   display: flex;
   justify-content: space-between;
   gap: 20px;
+}
+
+/* Layout fuer New User
+https://developer.mozilla.org/de/docs/Web/CSS/margin-left
+*/
+#UserManagementPageCreateComponent {
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#NewUserUeberschrift {
+  margin-bottom: 12px;
 }

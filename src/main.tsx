@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ActivityBar } from './react/components/ActivityBar.tsx';
 import { Impressum, Kontakt, PageNotFound, UeberUns, Unauthorized } from './react/components/Pages.tsx';
 import { UserPage } from './react/user/components/UserPage.tsx';
+import { NewUserPage } from './react/user/components/newUserPage.tsx';
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quellen zu configureStore: https://redux.js.org/introduction/why-rtk-is-redux-today
@@ -34,7 +35,10 @@ root.render(
               <Route path="/ueberuns" element={<UeberUns />}></Route>
               <Route path="/kontakt" element={<Kontakt />}></Route>
               <Route path="/impressum" element={<Impressum />}></Route>
-              <Route path="/users" element={<UserPage />}></Route>
+              <Route path="/users" >
+                <Route index element={<UserPage />}></Route>
+                <Route path="/users/newUser" element={<NewUserPage />}></Route>
+              </Route>
               <Route path="/unauthorized" element={<Unauthorized />}></Route>
               <Route path="*" element={<PageNotFound />}></Route>
             </Route>

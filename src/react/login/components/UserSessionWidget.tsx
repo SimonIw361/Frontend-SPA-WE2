@@ -41,7 +41,6 @@ export function UserSessionWidget() {
     }
 
     const handleChange = (e: ChangeEvent) => {
-        e.preventDefault();
         let t = e.target as HTMLInputElement;
         let name = t.name;
         let value = t.value;

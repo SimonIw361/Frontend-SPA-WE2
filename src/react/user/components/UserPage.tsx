@@ -1,13 +1,15 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../../components/RootStore";
 import { useEffect, useState } from "react";
-import {ListGroup } from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 import { Unauthorized } from "../../components/Pages";
+import { useNavigate } from "react-router-dom";
 import { UserComponent } from "./UserComponent";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
 // Quelle useEffect: https://www.w3schools.com/react/react_useeffect.asp
+// Quelle zu useNavigate: https://medium.com/@bobjunior542/using-usenavigate-in-react-router-6-a-complete-guide-46f51403f430
 // Quelle asynchroner Aufruf in useEffect: https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
 
 export type User = {
@@ -18,6 +20,7 @@ export type User = {
 }
 
 export function UserPage() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState<User[]>([]); //lokaler State vom Typ User[]
     const { accessToken } = useSelector((state: RootState) => state.authentication);
 
@@ -30,8 +33,6 @@ export function UserPage() {
         const fetchUserData = async () => {
             let response = await fetch('https://localhost:443/api/users', requestOptions);
             const data: User[] = await response.json();
-            console.log(response);
-            console.log(data);
             setUsers(data);
         };
 
@@ -40,10 +41,13 @@ export function UserPage() {
 
     try {
         return <div id="UserManagementPage">
-            <div id="UserUeberschrift" className="ueberschrift">User-Liste</div>
+            <div id="UserUeberschrift" className="ueberschrift">
+                <span id="UserUeberschriftText">User-Liste</span>
+                <Button id="UserManagementPageCreateButton" variant="primary" onClick={() => navigate("/users/newUser")}>User anlegen</Button>
+            </div>
             <ListGroup id="UserListe" horizontal>
                 {users.map(user => (
-                    <UserComponent user={user}/> //evtl noch mehr fuer onClick uebergeben bei edit und delete
+                    <UserComponent user={user} key={"UserItem" + user.userID}/> //evtl noch mehr fuer onClick uebergeben bei edit und delete
                 ))}
             </ListGroup>
         </div>
