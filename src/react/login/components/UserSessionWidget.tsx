@@ -1,8 +1,9 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../RootStore";
+import type { AppDispatch, RootState } from "../../components/RootStore";
 import { login, logout, showLoginDialog, hideLoginDialog } from "../state/AuthenticationSlice";
+import { useNavigate } from "react-router-dom";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Button https://react-bootstrap.netlify.app/docs/components/buttons/
@@ -11,6 +12,7 @@ import { login, logout, showLoginDialog, hideLoginDialog } from "../state/Authen
 // Quelle zu Typescript in React: https://react-redux.js.org/using-react-redux/usage-with-typescript
 // Quelle zu Hooks: https://react-redux.js.org/api/hooks
 // Quelle zu useState: https://react.dev/reference/react/useState
+// Quelle zu useNavigate: https://medium.com/@bobjunior542/using-usenavigate-in-react-router-6-a-complete-guide-46f51403f430
 
 /* Quellen fuer die benutzen Icons:
     https://www.flaticon.com/de/kostenlose-icons/avatar-benutzer
@@ -23,6 +25,7 @@ export function UserSessionWidget() {
 
     //useEffect benutzen, wenn Action ausgeführt werden soll sobald sich Wert von bestimmter Variable aendert
 
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>(); //mit dispatach werden Actions ueber Reducer/Slice an den Store geschickt
     const { user, error, loginPending, showLoginDialogBool } = useSelector( //auf Werte vom zentralen Store zugreifen
         (state: RootState) => state.authentication
@@ -56,16 +59,15 @@ export function UserSessionWidget() {
 
     const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
-
         await dispatch(login({ userID: userID, password: password }));
-        if (user === null) {
-            setUserID("");
-            setPassword("");
-        }
+        navigate("/");
+        setUserID("");
+        setPassword("");
     }
 
     const handleLogout = () => {
         dispatch(logout());
+        navigate("/");
     }
 
     const canLogin = () => {
@@ -84,7 +86,7 @@ export function UserSessionWidget() {
     }
 
     let showError: boolean = false;
-    if (error !== "") { //dann Fehler bei Login, falsche User ID/Password
+    if (error !== null) { //dann Fehler bei Login, falsche User ID/Password
         showError = true;
     }
     else {
@@ -108,8 +110,8 @@ export function UserSessionWidget() {
     }
 
     let widget;
-    if (user === null || user === undefined) { //wenn User eingeloggt ist soll anderes Widget dargestellt (kein Login Button)
-        widget = <Button id="OpenLoginDialogButton"  onClick={handleShow}><img src="/UserBildPublic.png" alt="Bild User ausgeloggt" /></Button>
+    if (user.userID === null) { //wenn User eingeloggt ist soll anderes Widget dargestellt (kein Login Button)
+        widget = <Button id="OpenLoginDialogButton" onClick={handleShow}><img src="/UserBildPublic.png" alt="Bild User ausgeloggt" /></Button>
     }
     else {
         widget = <Button id="LogoutButton" variant="primary" onClick={handleLogout}><img src="/UserBildPrivate.png" alt="Bild User eingeloggt" /></Button>
@@ -118,7 +120,7 @@ export function UserSessionWidget() {
     let performLoginButton;
     if (canLogin()) { //Login Button kann nur gedrueckt werden, wenn Felder nicht leer sind
         performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" onClick={handleSubmit}>Login</Button>;
-        
+
     }
     else {
         performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" disabled>Login</Button>;

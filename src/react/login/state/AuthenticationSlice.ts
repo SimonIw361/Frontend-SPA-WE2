@@ -1,17 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zu createSlice https://redux-toolkit.js.org/api/createSlice
 // Quelle zu createAsyncThunk https://redux-toolkit.js.org/api/createAsyncThunk
 // Quelle zu ?? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
 // Quelle zu btoa: https://developer.mozilla.org/en-US/docs/Web/API/Window/btoa
+// Quelle zu Typdefinition: https://www.typescriptlang.org/docs/handbook/2/objects.html
+//jwt Decode (Payload aus Token bestimmen): https://www.npmjs.com/package/jwt-decode
 
-const initialState = {
-    user: null,
+type State = {
+    user: {userID: string | null, isAdministrator: boolean},
+    loginPending: boolean,
+    showLoginDialogBool: boolean,
+    accessToken: string | null,
+    error: string | null
+};
+
+const initialState: State = {
+    user: {userID: null, isAdministrator: false},
     loginPending: false,
     showLoginDialogBool: false,
-    accessToken: "",
-    error: ""
+    accessToken: null,
+    error: null
 };
 
 export const login = createAsyncThunk("user/login", async (user: {userID: String, password: String}) => {
@@ -48,8 +59,9 @@ export const login = createAsyncThunk("user/login", async (user: {userID: String
         return Promise.reject(err); //reject Promise ausgeloest
     }
     else {
+        let userInfo = jwtDecode<{userID: string, isAdministrator: boolean}>(token);
         let userSession = {
-            user: data,
+            user: userInfo,
             accessToken: token
         }
         return userSession;
@@ -61,17 +73,17 @@ const authenticationSlicer = createSlice({
     initialState,
     reducers: {
         logout(state) {
-            state.user = null;
-            state.accessToken = "";
-            state.error = "";
+            state.user = {userID: null, isAdministrator: false};
+            state.accessToken = null;
+            state.error = null;
         },
         showLoginDialog(state) {
             state.showLoginDialogBool = true;
-            state.error = ""
+            state.error = null;
         },
         hideLoginDialog(state) {
             state.showLoginDialogBool = false;
-            state.error = ""
+            state.error = null;
         }
 
     },
@@ -79,21 +91,22 @@ const authenticationSlicer = createSlice({
         builder.addCase(login.pending, (state) => {
             state.showLoginDialogBool = true;
             state.loginPending = true;
-            state.accessToken = "";
-            state.error = "";
+            state.accessToken = null;
+            state.error = null;
         })
         builder.addCase(login.fulfilled, (state, action) => {
             state.showLoginDialogBool = false;
             state.loginPending = false;
             state.user = action.payload.user;
             state.accessToken = action.payload.accessToken;
-            state.error = "";
+            state.error = null;
+            
         })
         builder.addCase(login.rejected, (state, action) => {
             state.showLoginDialogBool = true;
             state.loginPending = false;
-            state.user = null;
-            state.accessToken = "";
+            state.user = {userID: null, isAdministrator: false};
+            state.accessToken = null;
             state.error = action.error.message ?? "Authentication failed";
             console.log(state.error);
         })

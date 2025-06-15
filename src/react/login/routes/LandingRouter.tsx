@@ -1,4 +1,4 @@
-import type { RootState } from '../../RootStore'
+import type { RootState } from '../../components/RootStore'
 import { PrivatePage } from '../components/PrivatePage';
 import { PublicPage } from '../components/PublicPage';
 import { useSelector } from 'react-redux';
@@ -8,13 +8,10 @@ import { useSelector } from 'react-redux';
 export function LandingPage() {
     const user = useSelector((state: RootState) => state.authentication.user);
     
-    let workspace;
-    if (user) {
-        workspace = <PrivatePage />
+    if (user.userID) {
+        return <PrivatePage />;
     }
     else {
-        workspace = <PublicPage />
+        return <PublicPage />;
     }
-
-    return <div>{workspace}</div>
 }

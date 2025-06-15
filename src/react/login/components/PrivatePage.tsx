@@ -1,21 +1,18 @@
 import { useSelector } from "react-redux";
-import type { RootState } from "../../RootStore";
-import {jwtDecode} from "jwt-decode";
+import type { RootState } from "../../components/RootStore";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
-//jwt Decode (Payload aus Token bestimmen): https://www.npmjs.com/package/jwt-decode
 
 export function PrivatePage() {
-    const accessToken = useSelector(
-        (state: RootState) =>  state.authentication.accessToken
+    const user = useSelector(
+        (state: RootState) => state.authentication.user
     )
-    let user = jwtDecode<{userID: string}>(accessToken);
 
     let name: string;
-    if(user.userID !== undefined){
-        name =", " + user.userID; 
+    if (user.userID !== null) {
+        name = ", " + user.userID;
     }
-    else{
+    else {
         name = "";
     }
     return <div id="StartPage">
@@ -23,5 +20,6 @@ export function PrivatePage() {
             <p className="ueberschrift">Hallo{name}!</p>
             <p className="text">Du kannst sofort anfangen dich für einen Studiengang zu bewerben.</p>
         </div>
+
     </div>;
 }

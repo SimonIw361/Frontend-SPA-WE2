@@ -2,7 +2,7 @@ import { type MouseEvent } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, } from "react-redux";
 import { showLoginDialog } from "../state/AuthenticationSlice";
-import type { AppDispatch } from "../../RootStore";
+import type { AppDispatch } from "../../components/RootStore";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 

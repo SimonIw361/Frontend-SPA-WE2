@@ -1,9 +1,10 @@
 /* Layout fuer Public und Private Page:
   https://www.w3schools.com/css/css_colors_rgb.asp */
-#LandingPage, #StartPage {
+#LandingPage {
   text-align: center;
   display: flex;
   flex-flow: column;
+  flex-grow: 1;
 }
 
 .ueberschrift {
@@ -37,7 +38,7 @@
 }
 
 @media (max-width: 767px){
-  #BHTLogoTopMenu {
+  #OpenStartPageButtonBild {
     display: none;
   }
 }
@@ -69,4 +70,60 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius */
   border: 0;
   border-radius: 30px;
   overflow: hidden;
+}
+
+/* Layout fuer Activity Bar auf Private Page
+https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
+*/
+#StartPage {
+  text-align: center;
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+}
+
+
+#activityBar {
+  width: 100px;
+  background-color: blue;
+}
+
+#teil1Private {
+  flex-grow: 1;
+}
+
+#inhalt {
+  display: flex;
+  flex-flow: row;
+}
+
+/* Layout fuer Ueber Uns, Kontakt und Impressum
+*/
+#ueberuns, #kontakt, #impressum, #pagenotfound, #unauthorized{
+  text-align: center;
+  flex-grow: 1;
+  background-color: rgba(0, 136, 255, 0.24);
+  padding-bottom: 25px;
+}
+
+
+/* Layout fuer User Liste
+*/
+#UserListe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.EditButton {
+  margin-right: 10px;
+}
+
+.card {
+  margin-left: 12px;
+}
+
+#UserUeberschrift {
+  margin-left: 12px;
+  margin-bottom: 10px;
 }
