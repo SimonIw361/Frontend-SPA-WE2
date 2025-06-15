@@ -26,7 +26,7 @@ export function UserEditPage() {
 
 
     const [errorAnzeigen, setErrorAnzeigen] = useState(false);
-    let errorText: string = "Es konnte kein neuer User angelegt werden.";
+    let errorText: string = "Der User konnte nicht bearbeitet werden.";
 
     const showUserListe = () => {
         navigate("/users")
@@ -95,6 +95,7 @@ export function UserEditPage() {
             await response.json();
             console.log(response)
             if (response.ok) {
+                //dispatch(setSelectedUser(null));
                 navigate("/users");
             } else {
                 setErrorAnzeigen(true);

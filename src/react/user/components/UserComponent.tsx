@@ -64,7 +64,6 @@ export function UserComponent({ user }: UserComponentProps) {
 
     let deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" onClick={handleDelete}>Delete</Button>
 
-
     //evtl auch noch card.Body hinzufuegen, ist dann noch bisschen abgetrennter
     return <div><Card id={"UserItem" + user.userID} style={{ minWidth: "200px" }}>
             <Card.Header><b>{user.firstName} {user.lastName}</b></Card.Header>

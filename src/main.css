@@ -88,7 +88,7 @@ https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
 }
 
 #activityBar {
-  width: 130px;
+  width: 120px;
   background-color: rgba(223,223,223, 0.5);
   color: black;
 }
@@ -109,7 +109,6 @@ https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
   display: flex;
   flex-flow: row;
 }
-
 
 
 /* Layout fuer Ueber Uns, Kontakt und Impressum
@@ -173,9 +172,11 @@ Element muss beide Klassen besitzen */
 https://developer.mozilla.org/de/docs/Web/CSS/margin-left
 */
 #UserManagementPageCreateComponent, #UserManagementPageEditComponent {
-  width: 350px;
+  width: 400px;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 #NewUserUeberschrift, #UserEditUeberschrift {
@@ -185,4 +186,10 @@ https://developer.mozilla.org/de/docs/Web/CSS/margin-left
 #NewUserButtons, #EditUserButtons {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+
+#NewUserButtons>*, #EditUserButtons>* {
+  margin-top: 10px;
 }
