@@ -1,3 +1,5 @@
+import { Button } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 export function UeberUns(){
     return <div id="ueberuns">
@@ -23,9 +25,12 @@ export function Impressum(){
 }
 
 export function PageNotFound(){
+    const navigate = useNavigate();
+
     return <div id="pagenotfound">
         <div className="ueberschrift">404 Page Not Found</div>
         <div className="text">Diese Seite existiert nicht.</div>
+        <Button id="404Startseite" variant="secondary" onClick={() => navigate("/")} style={{marginTop: "20px"}}>Startseite</Button>
     </div>
 
 }

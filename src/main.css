@@ -133,6 +133,12 @@ https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_i
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  
+}
+
+#UserManagementPage {
+  flex-grow: 1;
+  margin-bottom: 20px;
 }
 
 .card {
@@ -163,15 +169,20 @@ Element muss beide Klassen besitzen */
   gap: 20px;
 }
 
-/* Layout fuer New User
+/* Layout fuer New User und Edit User
 https://developer.mozilla.org/de/docs/Web/CSS/margin-left
 */
-#UserManagementPageCreateComponent {
+#UserManagementPageCreateComponent, #UserManagementPageEditComponent {
   width: 350px;
   margin-left: auto;
   margin-right: auto;
 }
 
-#NewUserUeberschrift {
+#NewUserUeberschrift, #UserEditUeberschrift {
   margin-bottom: 12px;
+}
+
+#NewUserButtons, #EditUserButtons {
+  display: flex;
+  justify-content: space-between;
 }

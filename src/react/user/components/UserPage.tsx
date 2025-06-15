@@ -23,6 +23,7 @@ export function UserPage() {
     const navigate = useNavigate();
     const [users, setUsers] = useState<User[]>([]); //lokaler State vom Typ User[]
     const { accessToken } = useSelector((state: RootState) => state.authentication);
+    const { reloadUserListe } = useSelector((state: RootState) => state.user);
 
     const requestOptions = {
         method: 'GET',
@@ -37,7 +38,7 @@ export function UserPage() {
         };
 
         fetchUserData();
-    }, []) //muss aufgerufen werden, wenn zur User Liste zurueck gegangen wird
+    }, [reloadUserListe]) //muss aufgerufen werden, wenn zur User Liste zurueck gegangen wird
 
     try {
         return <div id="UserManagementPage">
@@ -47,7 +48,7 @@ export function UserPage() {
             </div>
             <ListGroup id="UserListe" horizontal>
                 {users.map(user => (
-                    <UserComponent user={user} key={"UserItem" + user.userID}/> //evtl noch mehr fuer onClick uebergeben bei edit und delete
+                    <UserComponent user={user} key={"UserItem" + user.userID}  /> //evtl noch mehr fuer onClick uebergeben bei edit und delete
                 ))}
             </ListGroup>
         </div>
