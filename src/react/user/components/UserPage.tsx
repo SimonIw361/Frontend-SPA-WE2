@@ -1,54 +1,49 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../../components/RootStore";
 import { useEffect, useState } from "react";
-import { Button, Card, ListGroup } from "react-bootstrap";
+import {ListGroup } from "react-bootstrap";
 import { Unauthorized } from "../../components/Pages";
+import { UserComponent } from "./UserComponent";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
-//Quelle zu List Group: https://react-bootstrap.netlify.app/docs/components/list-group/
-// Quelle zu Cards: https://react-bootstrap.netlify.app/docs/components/cards/
+// Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
+// Quelle useEffect: https://www.w3schools.com/react/react_useeffect.asp
+// Quelle asynchroner Aufruf in useEffect: https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
 
-type User = {
+export type User = {
     userID: string,
     firstName?: string,
     lastName?: string
-    isAdministrator: boolean,
-    Error?: string
+    isAdministrator: boolean
 }
 
 export function UserPage() {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<User[]>([]); //lokaler State vom Typ User[]
     const { accessToken } = useSelector((state: RootState) => state.authentication);
+
     const requestOptions = {
         method: 'GET',
         headers: { "Authorization": "Basic " + accessToken }
     }
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserData = async () => {
             let response = await fetch('https://localhost:443/api/users', requestOptions);
-            const data = await response.json();
+            const data: User[] = await response.json();
+            console.log(response);
+            console.log(data);
             setUsers(data);
         };
 
-        fetchData();
-    }, [])
-    console.log(users);
-    try {
+        fetchUserData();
+    }, []) //muss aufgerufen werden, wenn zur User Liste zurueck gegangen wird
 
+    try {
         return <div id="UserManagementPage">
             <div id="UserUeberschrift" className="ueberschrift">User-Liste</div>
             <ListGroup id="UserListe" horizontal>
                 {users.map(user => (
-                    <Card id={"UserItem" + user.userID} key={"UserItem" + user.userID}>
-                        <Card.Header><b>{user.firstName} {user.lastName}</b></Card.Header>
-                        <ListGroup >
-                            <ListGroup.Item>UserID:  {user.userID}</ListGroup.Item>
-                            <ListGroup.Item>FirstName: {user.firstName}</ListGroup.Item>
-                            <ListGroup.Item>LastName: {user.lastName}</ListGroup.Item>
-                        </ListGroup>
-                        <Card.Footer><Button id={"UserItemEditButton" + user.userID} className="EditButton" variant="warning">Edit</Button><Button id={"UserItemDeleteButton" + user.userID} className="DeleteButton" variant="danger">Delete</Button></Card.Footer>
-                    </Card>
+                    <UserComponent user={user}/> //evtl noch mehr fuer onClick uebergeben bei edit und delete
                 ))}
             </ListGroup>
         </div>
@@ -57,15 +52,4 @@ export function UserPage() {
         //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
         return <Unauthorized />;
     }
-
-    // return <div id="UserManagementPage">
-    //     <div className="ueberschrift">User-Liste</div>
-
-    //         <ListGroup id="UserListe" horizontal>
-    //         {users.map(user => (
-    //             <ListGroup.Item id={"UserItem" + user.userID} key={"UserItem" + user.userID}>UserID:  {user.userID} <br />FirstName: {user.firstName} <br />LastName: {user.lastName}</ListGroup.Item>
-    //         ))}
-    //         </ListGroup>
-
-    // </div>
 }

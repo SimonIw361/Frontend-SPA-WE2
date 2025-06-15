@@ -72,6 +72,7 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius */
   overflow: hidden;
 }
 
+
 /* Layout fuer Activity Bar auf Private Page
 https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
 */
@@ -82,10 +83,14 @@ https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
   width: 100%;
 }
 
-
 #activityBar {
-  width: 100px;
-  background-color: blue;
+  width: 130px;
+  background-color: rgba(223,223,223, 0.5);
+  color: black;
+}
+
+#activityBar>* {
+  color: black;
 }
 
 #teil1Private {
@@ -108,15 +113,16 @@ https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
 
 
 /* Layout fuer User Liste
+https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap automatische Zeilenumbruch mit flex-wrap
+https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow restliche Bildschirmbreite wird ausgefuellt
+https://developer.mozilla.org/en-US/docs/Web/CSS/gap Abstand bei display flex bestimmen
+https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content 
+https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container Abnstand zwischen zwei Elemente setzen (funktioniert hier nur mit span)
 */
 #UserListe {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-.EditButton {
-  margin-right: 10px;
 }
 
 .card {
@@ -126,4 +132,12 @@ https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
 #UserUeberschrift {
   margin-left: 12px;
   margin-bottom: 10px;
+}
+
+/* hier Verkettung von Klassen (haben hoehere Prioritaet), einfach nur eine Klasse zu nehmen wird ueberschrieben, id zu nehmen ist unguenstig
+Element muss beide Klassen besitzen */
+.listUserID.list-group-item, .listUserFirstName.list-group-item, .listUserLastName.list-group-item, .listFooterButtons.card-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }

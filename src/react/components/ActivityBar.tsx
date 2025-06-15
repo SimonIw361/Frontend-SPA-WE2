@@ -23,8 +23,8 @@ export function ActivityBar() {
         return <Nav className="flex-column" id="activityBar">
             <Nav.Link as={Link} to="/" id="OpenStartPageButton">Home</Nav.Link>
             {userBearbeiten}
-            <Nav.Link>Studiengang</Nav.Link>
-            <Nav.Link>Bewerbung</Nav.Link>
+            <Nav.Link>Studiengänge</Nav.Link>
+            <Nav.Link>Bewerbungen</Nav.Link>
         </Nav>;
     }
     else {
