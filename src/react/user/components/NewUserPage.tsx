@@ -69,11 +69,11 @@ export function NewUserPage() {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
-            headers: { 
+            headers: {
                 "Authorization": "Basic " + accessToken,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ //wieso muss stringify verwendet werden??
+            body: JSON.stringify({
                 "userID": userID,
                 "firstName": firstName,
                 "lastName": lastName,
@@ -85,7 +85,7 @@ export function NewUserPage() {
         const fetchUserData = async () => {
             let response = await fetch('https://localhost:443/api/users', requestOptions);
             await response.json();
-            if(response.ok){
+            if (response.ok) {
                 navigate("/users");
             } else {
                 setErrorAnzeigen(true);
@@ -96,47 +96,45 @@ export function NewUserPage() {
     }
 
     let anlegenButton;
-    if(validatePassword() && validateUserID()){
+    if (validatePassword() && validateUserID()) {
         anlegenButton = <Button id="CreateUserComponentCreateUserButton" variant="success" type="submit" onClick={handleSubmit}>Anlegen</Button>;
     } else {
         anlegenButton = <Button id="CreateUserComponentCreateUserButton" variant="success" type="submit" disabled>Anlegen</Button>;
     }
 
-    if(accessToken !== null && user.isAdministrator){
-    return <div id="UserManagementPageCreateComponent">
-        <div id="NewUserUeberschrift" className="ueberschrift">
-            <span id="NewUserUeberschriftText">User anlegen</span>
-        </div>
-        <Form>
-            <Form.Group className="mb-3">
-                <Form.Label>User ID</Form.Label>
-                <Form.Control id="CreateUserComponentEditUserID" type="text" placeholder="User ID" name="userID" value={userID} onChange={handleChange} isValid={validateUserID()} isInvalid={!validateUserID()} />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Vorname</Form.Label>
-                <Form.Control id="CreateUserComponentEditFirstName" type="text" placeholder="Vorname" name="vorname" value={firstName} onChange={handleChange} isValid={true}/>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Nachname</Form.Label>
-                <Form.Control id="CreateUserComponentEditLastName" type="text" placeholder="Nachname" name="nachname" value={lastName} onChange={handleChange} isValid={true}/>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control id="CreateUserComponentEditPassword" type="password" placeholder="Password" name="password" value={password} onChange={handleChange} isValid={validatePassword()} isInvalid={!validatePassword()} />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Check id="CreateUserComponentEditIsAdministrator" type="checkbox" label="Administrator-Rechte" name="isAdmin" checked={isAdmin} onChange={handleChange} isValid={true}/>
-            </Form.Group>
-            {errorAnzeigen && <div style={{color: "rgb(255,0,0)"}}>{errorText}</div>}
-            <div id="NewUserButtons">
-            {anlegenButton}
-            <Button id="CreateUserComponentCancelButton" className="EditButton" variant="secondary" onClick={showUserListe}>Cancel</Button>
+    if (accessToken !== null && user.isAdministrator) {
+        return <div id="UserManagementPageCreateComponent">
+            <div id="NewUserUeberschrift" className="ueberschrift">
+                <span id="NewUserUeberschriftText">User anlegen</span>
             </div>
-        </Form>
-    </div>;
+            <Form>
+                <Form.Group className="mb-3">
+                    <Form.Label>User ID</Form.Label>
+                    <Form.Control id="CreateUserComponentEditUserID" type="text" placeholder="User ID" name="userID" value={userID} onChange={handleChange} isValid={validateUserID()} isInvalid={!validateUserID()} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Vorname</Form.Label>
+                    <Form.Control id="CreateUserComponentEditFirstName" type="text" placeholder="Vorname" name="vorname" value={firstName} onChange={handleChange} isValid={true} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Nachname</Form.Label>
+                    <Form.Control id="CreateUserComponentEditLastName" type="text" placeholder="Nachname" name="nachname" value={lastName} onChange={handleChange} isValid={true} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control id="CreateUserComponentEditPassword" type="password" placeholder="Password" name="password" value={password} onChange={handleChange} isValid={validatePassword()} isInvalid={!validatePassword()} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Check id="CreateUserComponentEditIsAdministrator" type="checkbox" label="Administrator-Rechte" name="isAdmin" checked={isAdmin} onChange={handleChange} isValid={true} />
+                </Form.Group>
+                {errorAnzeigen && <div style={{ color: "rgb(255,0,0)" }}>{errorText}</div>}
+                <div id="NewUserButtons">
+                    {anlegenButton}
+                    <Button id="CreateUserComponentCancelButton" className="EditButton" variant="secondary" onClick={showUserListe}>Cancel</Button>
+                </div>
+            </Form>
+        </div>;
     } else {
         return <Unauthorized />;
     }
-
-
 }

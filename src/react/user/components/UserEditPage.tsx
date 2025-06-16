@@ -8,12 +8,17 @@ import { Unauthorized } from "../../components/Pages";
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
 // Quelle Radios/Check https://react-bootstrap.netlify.app/docs/forms/checks-radios/
+// Quelle zu fetch Anfrage https://developer.mozilla.org/de/docs/Web/API/Fetch_API/Using_Fetch
 
 export function UserEditPage() {
     const navigate = useNavigate();
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const { selectedUser } = useSelector((state: RootState) => state.user);
 
+    // verhindern das man ohne Login auf Seite zugreifen kann
+    if(accessToken === null && !user.isAdministrator){
+        return <Unauthorized />;
+    }
     if (selectedUser === null) {
         return <div>Fehler!! selectedUser ist null</div>
     }
@@ -33,7 +38,6 @@ export function UserEditPage() {
     }
 
     const handleChange = (e: ChangeEvent) => {
-
         let t = e.target as HTMLInputElement;
         let name = t.name;
         let value = t.value;
@@ -65,8 +69,7 @@ export function UserEditPage() {
                     "Authorization": "Basic " + accessToken,
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ //wieso muss stringify verwendet werden??
-                    "userID": userID,
+                body: JSON.stringify({
                     "firstName": firstName,
                     "lastName": lastName,
                     "isAdministrator": isAdmin
@@ -79,8 +82,7 @@ export function UserEditPage() {
                     "Authorization": "Basic " + accessToken,
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ //wieso muss stringify verwendet werden??
-                    "userID": userID,
+                body: JSON.stringify({
                     "firstName": firstName,
                     "lastName": lastName,
                     "password": password,

@@ -22,7 +22,7 @@ export type User = {
 export function UserPage() {
     const navigate = useNavigate();
     const [users, setUsers] = useState<User[]>([]); //lokaler State vom Typ User[]
-    const { accessToken } = useSelector((state: RootState) => state.authentication);
+    const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const { reloadUserListe } = useSelector((state: RootState) => state.user);
 
     const requestOptions = {
@@ -40,21 +40,25 @@ export function UserPage() {
         fetchUserData();
     }, [reloadUserListe]) //muss aufgerufen werden, wenn zur User Liste zurueck gegangen wird
 
-    try {
-        return <div id="UserManagementPage">
-            <div id="UserUeberschrift" className="ueberschrift">
-                <span id="UserUeberschriftText">User-Liste</span>
-                <Button id="UserManagementPageCreateButton" variant="primary" onClick={() => navigate("/users/newUser")}>User anlegen</Button>
+    if (accessToken !== null && user.isAdministrator) {
+        try {
+            return <div id="UserManagementPage">
+                <div id="UserUeberschrift" className="ueberschrift">
+                    <span id="UserUeberschriftText">User-Liste</span>
+                    <Button id="UserManagementPageCreateButton" variant="primary" onClick={() => navigate("/users/newUser")}>User anlegen</Button>
+                </div>
+                <ListGroup id="UserListe" horizontal>
+                    {users.map(user => (
+                        <UserComponent user={user} key={"UserItem" + user.userID} />
+                    ))}
+                </ListGroup>
             </div>
-            <ListGroup id="UserListe" horizontal>
-                {users.map(user => (
-                    <UserComponent user={user} key={"UserItem" + user.userID}  /> //evtl noch mehr fuer onClick uebergeben bei edit und delete
-                ))}
-            </ListGroup>
-        </div>
-    }
-    catch (err) {
-        //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
+        }
+        catch (err) {
+            //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
+            return <Unauthorized />;
+        }
+    } else {
         return <Unauthorized />;
     }
 }

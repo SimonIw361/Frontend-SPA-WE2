@@ -1,6 +1,8 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { UserSessionWidget } from "../login/components/UserSessionWidget";
 import { Link } from "react-router-dom";
+import type { RootState } from "./RootStore";
+import { useSelector } from "react-redux";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle NavBar: https://react-bootstrap.netlify.app/docs/components/navbar/
@@ -9,6 +11,15 @@ import { Link } from "react-router-dom";
 // Quelle fuers Link setzen: https://www.geeksforgeeks.org/reactjs/how-to-add-navigation-links-to-the-react-bootstrap-navbar/
 
 export function TopMenu() {
+    const { accessToken } = useSelector((state: RootState) => state.authentication);
+
+    //noch Profil hinzufuegen, nur wenn eingeloggt (Zusatz)
+    let profilButton;
+    if(accessToken !== null){
+        profilButton = <Nav.Link id="OpenProfilButton" as={Link} to="/profil">Profil</Nav.Link>;
+    } else {
+        profilButton = <div></div>;
+    }
 
     return <Navbar id="TopMenu" expand="md" className="bg-body-tertiary">
         <Container fluid>
@@ -17,9 +28,10 @@ export function TopMenu() {
             <div id="UserSessionWidget"><UserSessionWidget></UserSessionWidget></div>
             <Navbar.Collapse>
                 <Nav className="me-auto">
-                    <Nav.Link as={Link} to="/ueberuns">Über uns</Nav.Link>
-                    <Nav.Link as={Link} to="/kontakt">Kontakt</Nav.Link>
-                    <Nav.Link as={Link} to="/impressum">Impressum</Nav.Link>
+                    {/* {profilButton} */}
+                    <Nav.Link id="OpenUeberUnsButton" as={Link} to="/ueberuns">Über uns</Nav.Link>
+                    <Nav.Link id="OpenKontaktButton" as={Link} to="/kontakt">Kontakt</Nav.Link>
+                    <Nav.Link id="OpenImpressumButton" as={Link} to="/impressum">Impressum</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Container>

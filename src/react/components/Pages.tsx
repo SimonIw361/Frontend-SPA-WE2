@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import { LoginButton } from "../login/components/LoginButton"
 
 export function UeberUns(){
     return <div id="ueberuns">
@@ -39,5 +40,6 @@ export function Unauthorized(){
     return <div id="unauthorized">
         <div className="ueberschrift">401 Unauthorized</div>
         <div className="text">Ihre Session ist abgelaufen. Bitte loggen Sie sich erneut ein.</div>
+        <LoginButton />
     </div>
 }

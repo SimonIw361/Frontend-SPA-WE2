@@ -33,6 +33,7 @@ root.render(
           <Routes>
             <Route path="/">
               <Route index element={<LandingPage />}></Route>
+              {/* <Route path="/profil" element={<ProfilPage />}></Route> */}
               <Route path="/ueberuns" element={<UeberUns />}></Route>
               <Route path="/kontakt" element={<Kontakt />}></Route>
               <Route path="/impressum" element={<Impressum />}></Route>

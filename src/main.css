@@ -17,6 +17,7 @@ https://developer.mozilla.org/de/docs/Web/CSS/z-index bestimmt was oben angezeig
 
 #OpenLoginDialogButtonPublic {
   margin-bottom: 25px;
+  margin-top: 25px;
 }
 
 #teil1Public, #teil1Private {
@@ -168,11 +169,11 @@ Element muss beide Klassen besitzen */
   gap: 20px;
 }
 
-/* Layout fuer New User und Edit User
+/* Layout fuer New User und Edit User und Profil
 https://developer.mozilla.org/de/docs/Web/CSS/margin-left
 */
-#UserManagementPageCreateComponent, #UserManagementPageEditComponent {
-  width: 400px;
+#UserManagementPageCreateComponent, #UserManagementPageEditComponent, #UserProfilPageComponent {
+  width: 450px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 20px;
@@ -183,13 +184,23 @@ https://developer.mozilla.org/de/docs/Web/CSS/margin-left
   margin-bottom: 12px;
 }
 
-#NewUserButtons, #EditUserButtons {
+#NewUserButtons, #EditUserButtons, #ProfilUserButtons {
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
   flex-wrap: wrap;
 }
 
-#NewUserButtons>*, #EditUserButtons>* {
+#NewUserButtons>*, #EditUserButtons>*, #ProfilUserButtons>* {
   margin-top: 10px;
+}
+
+#UserProfilForm {
+  margin-top: 20px;
+}
+
+#ProfilEditButtons{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
