@@ -4,6 +4,7 @@ import { Unauthorized } from "./Pages";
 import { Button, Form, Modal } from "react-bootstrap";
 import type { User } from "../user/components/UserPage";
 import { useEffect, useState, type ChangeEvent, type MouseEvent } from "react";
+import { USER_URL } from "../../config/config";
 
 //Achtung: geht nur mit meinem Server!!
 //wird nicht benutzt dezeit, nur fuer Zusatz
@@ -14,7 +15,7 @@ export function ProfilPage() {
     const [showPasswordAendern, setShowPasswordAendern] = useState(false);
     const [firstName, setFirstName] = useState(currentUser?.firstName);
     const [lastName, setLastName] = useState(currentUser?.lastName);
-    
+
 
     const [errorAnzeigen, setErrorAnzeigen] = useState(false);
     let errorText: string = "Der User konnte nicht bearbeitet werden.";
@@ -28,13 +29,13 @@ export function ProfilPage() {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            let response = await fetch('https://localhost:443/api/users/' + user.userID, requestOptions);
+            let response = await fetch(USER_URL + "/" + user.userID, requestOptions);
             const data = await response.json();
             setCurrentUser(data);
         };
 
         fetchUserData();
-        
+
     }, [firstName, lastName]);
 
 
@@ -43,7 +44,7 @@ export function ProfilPage() {
         setFirstName(currentUser?.firstName);
         setLastName(currentUser?.lastName);
     }
-    
+
 
     const handleChange = (e: ChangeEvent) => {
         let t = e.target as HTMLInputElement;
@@ -76,13 +77,17 @@ export function ProfilPage() {
         }
 
         const fetchUserData = async () => {
-            let response = await fetch('https://localhost:443/api/users/' + currentUser?.userID, requestOptions);
-            await response.json();
-            console.log(response)
-            if (response.ok) {
-                setShowProfilBearbeiten(false);
+            if (currentUser !== null) {
+                let response = await fetch(USER_URL + currentUser.userID, requestOptions);
+                await response.json();
+                console.log(response)
+                if (response.ok) {
+                    setShowProfilBearbeiten(false);
+                } else {
+                    setErrorAnzeigen(true);
+                }
             } else {
-                setErrorAnzeigen(true);
+                console.log("Error: currentUser in ProfilPage ist null")
             }
         };
 
@@ -109,7 +114,7 @@ export function ProfilPage() {
                     <Form.Control id="UserProfilComponentLastName" type="text" placeholder="Nachname" name="nachname" value={currentUser.lastName} readOnly disabled />
                 </Form.Group>
                 <div id="ProfilUserButtons">
-                    <Button id="EditUserComponentSaveUserButton" variant="success" onClick={handleShowProfilBearbeiten }>Profil bearbeiten</Button>
+                    <Button id="EditUserComponentSaveUserButton" variant="success" onClick={handleShowProfilBearbeiten}>Profil bearbeiten</Button>
                     <Button id="OpenUserManagementPageListComponentButton" className="EditButton" variant="warning" onClick={() => setShowPasswordAendern(true)}>Passwort ändern</Button>
                 </div>
             </Form>

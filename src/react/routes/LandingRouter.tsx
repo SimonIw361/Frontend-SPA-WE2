@@ -1,6 +1,6 @@
-import type { RootState } from '../../components/RootStore'
-import { PrivatePage } from '../components/PrivatePage';
-import { PublicPage } from '../components/PublicPage';
+import type { RootState } from '../components/RootStore'
+import { PrivatePage } from '../login/components/PrivatePage';
+import { PublicPage } from '../login/components/PublicPage';
 import { useSelector } from 'react-redux';
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen

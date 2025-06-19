@@ -1,0 +1,122 @@
+/* Layout fuer Public und Private Page:
+https://www.w3schools.com/css/css_colors_rgb.asp 
+https://developer.mozilla.org/de/docs/Web/CSS/z-index bestimmt was oben angezeigt wird
+*/
+#LandingPage {
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
+}
+
+.ueberschrift {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 25px;
+}
+
+#OpenLoginDialogButtonPublic {
+  margin-bottom: 25px;
+  margin-top: 25px;
+}
+
+#teil1Public, #teil1Private {
+  background-color: rgba(0, 136, 255, 0.24);
+}
+
+#teil2Public {
+  background-color: rgba(203, 203, 203, 0.2);
+  padding-bottom: 50px;
+}
+
+#teil1Public, #teil2Public {
+  padding: 17px;
+}
+
+
+/* Layout fuer Top Menu: */
+#TopMenu {
+  position: sticky;
+  top: 0px;
+  z-index: 5;
+}
+
+@media (max-width: 767px){
+  #OpenStartPageButtonBild {
+    display: none;
+  }
+}
+
+@media (min-width: 768px){
+  #UserSessionWidget {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
+
+
+/* Layout fuer UserSessionWidget (Login und Logout): 
+https://developer.mozilla.org/en-US/docs/Web/CSS/overflow
+https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius
+*/
+#OpenLoginDialogButton img,
+#LogoutButton img {
+  width: 100%;
+  height: 100%;
+  background-color: #e6e7ee;
+}
+
+#OpenLoginDialogButton,
+#LogoutButton {
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  border: 0;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+
+/* Layout fuer Activity Bar auf Private Page
+https://developer.mozilla.org/de/docs/Web/CSS/flex-grow
+*/
+#StartPage {
+  text-align: center;
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+}
+
+#activityBar {
+  width: 120px;
+  background-color: rgba(223,223,223, 0.5);
+  color: black;
+}
+
+#root, html, body{
+  height: 100%;
+}
+
+#activityBar>* {
+  color: black;
+}
+
+#teil1Private {
+  flex-grow: 1;
+}
+
+#inhalt {
+  display: flex;
+  flex-flow: row;
+}
+
+
+/* Layout fuer Ueber Uns, Kontakt und Impressum
+*/
+#ueberuns, #kontakt, #impressum, #pagenotfound, #unauthorized{
+  text-align: center;
+  flex-grow: 1;
+  background-color: rgba(0, 136, 255, 0.24);
+  padding-bottom: 45px;
+}

@@ -3,8 +3,9 @@ import type { User } from "./UserPage";
 import type { AppDispatch, RootState } from "../../components/RootStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { reloadUserListe, setSelectedUser } from "../state/UserSlice";
+import { setSelectedUser } from "../state/UserSlice";
 import { useNavigate } from "react-router-dom";
+import { USER_URL } from "../../../config/config";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zu List Group: https://react-bootstrap.netlify.app/docs/components/list-group/
@@ -12,10 +13,11 @@ import { useNavigate } from "react-router-dom";
 // Quelle Props in Funktion: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/function_components
 
 type UserComponentProps = {
-    user: User
+    user: User, 
+    userAktualisieren: () => void
 }
 
-export function UserComponent({ user }: UserComponentProps) {
+export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const { accessToken } = useSelector((state: RootState) => state.authentication);
@@ -41,16 +43,16 @@ export function UserComponent({ user }: UserComponentProps) {
         }
 
         const fetchUserData = async () => {
-            let response = await fetch('https://localhost:443/api/users/' + user.userID, requestOptions);
+            let response = await fetch(USER_URL + "/" + user.userID, requestOptions);
             if (response.ok) {
-                console.log("Loeschen erfolgreicgh")
+                console.log("Loeschen erfolgreich")
             } else {
-                console.log("Loeschen nicht erfolgreicgh")
+                console.log("Loeschen nicht erfolgreich")
             }
         };
 
         fetchUserData();
-        dispatch(reloadUserListe());
+        userAktualisieren();
         handleCloseDeleteDialog();
     }
 

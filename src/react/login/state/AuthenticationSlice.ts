@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
+import { AUTH_URL } from "../../../config/config";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zu createSlice https://redux-toolkit.js.org/api/createSlice
@@ -31,7 +32,7 @@ export const login = createAsyncThunk("user/login", async (user: {userID: String
         headers: { "Authorization": "Basic " + btoa(user.userID + ":" + user.password) }
     }
 
-    let response = await fetch('https://localhost:443/api/authenticate', requestOptions);
+    let response = await fetch(AUTH_URL, requestOptions);
     const authorizationHeader = response.headers.get('Authorization');
 
     let text = await response.text();

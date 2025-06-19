@@ -5,6 +5,8 @@ import { Button, ListGroup } from "react-bootstrap";
 import { Unauthorized } from "../../components/Pages";
 import { useNavigate } from "react-router-dom";
 import { UserComponent } from "./UserComponent";
+import "../../../styles/User.css"
+import { USER_URL } from "../../../config/config";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
@@ -23,22 +25,25 @@ export function UserPage() {
     const navigate = useNavigate();
     const [users, setUsers] = useState<User[]>([]); //lokaler State vom Typ User[]
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
-    const { reloadUserListe } = useSelector((state: RootState) => state.user);
 
     const requestOptions = {
         method: 'GET',
         headers: { "Authorization": "Basic " + accessToken }
     }
 
-    useEffect(() => {
+    useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen
+        getAllUser();
+    })
+
+    const getAllUser = () => {
         const fetchUserData = async () => {
-            let response = await fetch('https://localhost:443/api/users', requestOptions);
+            let response = await fetch(USER_URL, requestOptions);
             const data: User[] = await response.json();
             setUsers(data);
         };
 
         fetchUserData();
-    }, [reloadUserListe]) //muss aufgerufen werden, wenn zur User Liste zurueck gegangen wird
+    }
 
     if (accessToken !== null && user.isAdministrator) {
         try {
@@ -49,7 +54,7 @@ export function UserPage() {
                 </div>
                 <ListGroup id="UserListe" horizontal>
                     {users.map(user => (
-                        <UserComponent user={user} key={"UserItem" + user.userID} />
+                        <UserComponent user={user} key={"UserItem" + user.userID} userAktualisieren={getAllUser}/> //getAllUser wird uebergeben, damit diese zum Aktualisieren der UserListe aufgerufen werden kann
                     ))}
                 </ListGroup>
             </div>

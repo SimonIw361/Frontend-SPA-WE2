@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../components/RootStore";
 import { useNavigate } from "react-router-dom";
 import { Unauthorized } from "../../components/Pages";
+import "../../../styles/User.css"
+import { USER_URL } from "../../../config/config";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
@@ -83,7 +85,7 @@ export function NewUserPage() {
         }
 
         const fetchUserData = async () => {
-            let response = await fetch('https://localhost:443/api/users', requestOptions);
+            let response = await fetch(USER_URL, requestOptions);
             await response.json();
             if (response.ok) {
                 navigate("/users");
