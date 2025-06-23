@@ -1,28 +1,38 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../components/RootStore";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../components/RootStore";
 import { useNavigate } from "react-router-dom";
 import { Unauthorized } from "../../components/Pages";
 import "../../../styles/User.css"
 import { USER_URL } from "../../../config/config";
+import { showUserEditAlertSuccess } from "../state/UserSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
 // Quelle Radios/Check https://react-bootstrap.netlify.app/docs/forms/checks-radios/
 // Quelle zu fetch Anfrage https://developer.mozilla.org/de/docs/Web/API/Fetch_API/Using_Fetch
 
+//Typ fuer eingegebene Werte bei einem User der bearbeitet wird
+type UserEdit = {
+    firstName?: string,
+    lastName?: string
+    isAdministrator?: boolean
+    password?: string
+}
+
 export function UserEditPage() {
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const { selectedUser } = useSelector((state: RootState) => state.user);
 
     // verhindern das man ohne Login auf Seite zugreifen kann
-    if(accessToken === null && !user.isAdministrator){
+    if (accessToken === null && !user.isAdministrator) {
         return <Unauthorized />;
     }
-    if (selectedUser === null) {
-        return <div>Fehler!! selectedUser ist null</div>
+    if (selectedUser === null) { //TODO was zurueckgeben!!!
+        return <div>selected USer null</div>;
     }
 
     const [userID] = useState(selectedUser.userID);
@@ -30,8 +40,6 @@ export function UserEditPage() {
     const [lastName, setLastName] = useState(selectedUser.lastName);
     const [password, setPassword] = useState("");
     const [isAdmin, setIsAdmin] = useState(selectedUser.isAdministrator);
-
-
     const [errorAnzeigen, setErrorAnzeigen] = useState(false);
     let errorText: string = "Der User konnte nicht bearbeitet werden.";
 
@@ -63,50 +71,42 @@ export function UserEditPage() {
 
     const handleSubmit = (e: MouseEvent) => {
         e.preventDefault();
-        let requestOptions
-        if (password.length === 0) {
-            requestOptions = {
-                method: 'PUT',
-                headers: {
-                    "Authorization": "Basic " + accessToken,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "firstName": firstName,
-                    "lastName": lastName,
-                    "isAdministrator": isAdmin
-                })
-            }
-        } else {
-            requestOptions = {
-                method: 'PUT',
-                headers: {
-                    "Authorization": "Basic " + accessToken,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "firstName": firstName,
-                    "lastName": lastName,
-                    "password": password,
-                    "isAdministrator": isAdmin
-                })
-            }
+
+        let body: UserEdit = {
+            "firstName": firstName,
+            "lastName": lastName,
+            "isAdministrator": isAdmin
+        };
+        if (password.length > 0) {
+            body.password = password;
+        }
+        let requestOptions = {
+            method: 'PUT',
+            headers: {
+                "Authorization": "Basic " + accessToken,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
         }
 
-
-        const fetchUserData = async () => {
-            let response = await fetch(USER_URL + "/" + selectedUser.userID, requestOptions);
-            await response.json();
-            console.log(response)
-            if (response.ok) {
-                //dispatch(setSelectedUser(null));
-                navigate("/users");
-            } else {
-                setErrorAnzeigen(true);
+        const fetchUserEdit = async () => {
+            try {
+                let response = await fetch(USER_URL + "/" + selectedUser.userID, requestOptions);
+                await response.json();
+                console.log(response.status)
+                if (response.ok) {
+                    dispatch(showUserEditAlertSuccess());
+                    navigate("/users");
+                } else {
+                    setErrorAnzeigen(true); //passiert nie, man kann keine ungueltigen Werte eingeben (wenn ungueltig werden alte Werte genommen)
+                }
+            }
+            catch (err) {
+                console.log("Error bei Anfrage an Backend: " + err)
             }
         };
 
-        fetchUserData();
+        fetchUserEdit();
     }
 
     if (accessToken !== null && user.isAdministrator) {

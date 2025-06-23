@@ -36,6 +36,10 @@ https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_i
   #UserUeberschrift>* {
     margin-bottom: 10px;
   }
+
+  #AlertEditSuccess {
+    margin: 10px;
+  }
   
   /* hier Verkettung von Klassen (haben hoehere Prioritaet), einfach nur eine Klasse zu nehmen wird ueberschrieben, id zu nehmen ist unguenstig
   Element muss beide Klassen besitzen */

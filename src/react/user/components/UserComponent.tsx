@@ -3,7 +3,7 @@ import type { User } from "./UserPage";
 import type { AppDispatch, RootState } from "../../components/RootStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { setSelectedUser } from "../state/UserSlice";
+import { hideUserEditAlertSuccess, setSelectedUser } from "../state/UserSlice";
 import { useNavigate } from "react-router-dom";
 import { USER_URL } from "../../../config/config";
 
@@ -13,7 +13,7 @@ import { USER_URL } from "../../../config/config";
 // Quelle Props in Funktion: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/function_components
 
 type UserComponentProps = {
-    user: User, 
+    user: User,
     userAktualisieren: () => void
 }
 
@@ -25,6 +25,7 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
 
 
     const handleOpenDeleteDialog = () => {
+        dispatch(hideUserEditAlertSuccess());
         deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" onClick={handleDelete}>Delete</Button>
         setShowDeleteDialog(true);
     }
@@ -42,21 +43,25 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
             }
         }
 
-        const fetchUserData = async () => {
-            let response = await fetch(USER_URL + "/" + user.userID, requestOptions);
-            if (response.ok) {
-                console.log("Loeschen erfolgreich")
-            } else {
-                console.log("Loeschen nicht erfolgreich")
+        const fetchUserDelete = async () => {
+            try {
+                let response = await fetch(USER_URL + "/" + user.userID, requestOptions);
+                if (!response.ok) {
+                    console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Loeschen eines Users");
+                }
+            }
+            catch (err) {
+                console.log("Error bei Anfrage an Backend: " + err)
             }
         };
 
-        fetchUserData();
+        fetchUserDelete();
         userAktualisieren();
         handleCloseDeleteDialog();
     }
 
     const handleEditUser = () => {
+        dispatch(hideUserEditAlertSuccess());
         dispatch(setSelectedUser(user));
         navigate("/users/editUser");
     }

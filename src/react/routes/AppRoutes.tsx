@@ -1,4 +1,4 @@
-import { Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { LandingPage } from "./LandingRouter";
 import { Impressum, Kontakt, PageNotFound, UeberUns, Unauthorized } from "../components/Pages";
 import { UserPage } from "../user/components/UserPage";
@@ -9,7 +9,7 @@ import { UserEditPage } from "../user/components/UserEditPage";
 // Quelle zu React Router: https://www.w3schools.com/react/react_router.asp
 
 export function AppRoutes() {
-    return <Routes>
+  return <Routes>
     <Route path="/">
       <Route index element={<LandingPage />}></Route>
       {/* <Route path="/profil" element={<ProfilPage />}></Route> */}

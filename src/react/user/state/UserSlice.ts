@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit/react";
 import type { User } from "../components/UserPage";
 
 type State = {
-    reloadUserListe: number,
-    selectedUser: User | null
+    selectedUser: User | null,
+    showUserEditAlertSuccessBool: boolean
 };
 
 const initialState: State = {
-    reloadUserListe: 0,
-    selectedUser: null
+    selectedUser: null,
+    showUserEditAlertSuccessBool: false
 };
 
 
@@ -16,14 +16,17 @@ const userSlicer = createSlice({
     name: "user",
     initialState,
     reducers: {
-        reloadUserListe(state) {
-            state.reloadUserListe = state.reloadUserListe + 1;
-        },
         setSelectedUser(state, action) {
             state.selectedUser = action.payload;
+        },
+        showUserEditAlertSuccess(state) {
+            state.showUserEditAlertSuccessBool = true;
+        },
+        hideUserEditAlertSuccess(state) {
+            state.showUserEditAlertSuccessBool = false;
         }
     }
 })
 
 export const userReducer = userSlicer.reducer;
-export const { reloadUserListe, setSelectedUser } = userSlicer.actions;
+export const { setSelectedUser, showUserEditAlertSuccess, hideUserEditAlertSuccess } = userSlicer.actions;

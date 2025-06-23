@@ -84,17 +84,22 @@ export function NewUserPage() {
             })
         }
 
-        const fetchUserData = async () => {
-            let response = await fetch(USER_URL, requestOptions);
-            await response.json();
-            if (response.ok) {
-                navigate("/users");
-            } else {
-                setErrorAnzeigen(true);
+        const fetchNewUser = async () => {
+            try {
+                let response = await fetch(USER_URL, requestOptions);
+                await response.json();
+                if (response.ok) {
+                    navigate("/users");
+                } else {
+                    setErrorAnzeigen(true);
+                }
+            }
+            catch (err) {
+                console.log("Error bei Anfrage an Backend: " + err)
             }
         };
 
-        fetchUserData();
+        fetchNewUser();
     }
 
     let anlegenButton;
