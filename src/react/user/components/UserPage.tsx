@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../components/RootStore";
+import type { AppDispatch, RootState } from "../../../RootStore";
 import { useEffect, useState } from "react";
 import { Alert, Button, ListGroup } from "react-bootstrap";
 import { Unauthorized } from "../../components/Pages";
@@ -22,7 +22,6 @@ export type User = {
     lastName?: string
     isAdministrator: boolean
 }
-
 
 export function UserPage() {
     const navigate = useNavigate();
@@ -70,9 +69,9 @@ export function UserPage() {
                 </Alert>
                 <div id="UserUeberschrift" className="ueberschrift">
                     <span id="UserUeberschriftText">User-Liste</span>
-                    <Button id="UserManagementPageCreateButton" variant="primary" onClick={handleNewUser}>User anlegen</Button>
+                    <Button id="UserManagementPageCreateUserButton" variant="primary" onClick={handleNewUser}>User anlegen</Button>
                 </div>
-                <ListGroup id="UserListe" horizontal>
+                <ListGroup id="UserManagementPageListComponent" horizontal>
                     {users.map(user => (
                         <UserComponent user={user} key={"UserItem" + user.userID} userAktualisieren={getAllUser} /> //getAllUser wird uebergeben, damit diese zum Aktualisieren der UserListe aufgerufen werden kann
                     ))}

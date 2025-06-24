@@ -1,9 +1,9 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../components/RootStore";
+import type { AppDispatch, RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
-import { Unauthorized } from "../../components/Pages";
+import { PageNotFound, Unauthorized } from "../../components/Pages";
 import "../../../styles/User.css"
 import { USER_URL } from "../../../config/config";
 import { showUserEditAlertSuccess } from "../state/UserSlice";
@@ -27,12 +27,12 @@ export function UserEditPage() {
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const { selectedUser } = useSelector((state: RootState) => state.user);
 
-    // verhindern das man ohne Login auf Seite zugreifen kann
-    if (accessToken === null && !user.isAdministrator) {
+    if (accessToken === null && !user.isAdministrator) { // verhindern das man ohne Login auf Seite zugreifen kann
         return <Unauthorized />;
     }
-    if (selectedUser === null) { //TODO was zurueckgeben!!!
-        return <div>selected USer null</div>;
+    if (selectedUser === null) { //kein User ausgewaehlt, irgendein Fehler im Code!!
+        console.log("Error: UserEditPage soll aufgerufen werden, selectedUser ist aber null " + selectedUser);
+        return <PageNotFound />;
     }
 
     const [userID] = useState(selectedUser.userID);
@@ -47,8 +47,8 @@ export function UserEditPage() {
         navigate("/users")
     }
 
-    const handleChange = (e: ChangeEvent) => {
-        let t = e.target as HTMLInputElement;
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let t = e.target;
         let name = t.name;
         let value = t.value;
         switch (name) {
@@ -69,7 +69,7 @@ export function UserEditPage() {
         }
     }
 
-    const handleSubmit = (e: MouseEvent) => {
+    const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         let body: UserEdit = {
@@ -77,7 +77,7 @@ export function UserEditPage() {
             "lastName": lastName,
             "isAdministrator": isAdmin
         };
-        if (password.length > 0) {
+        if (password.length > 0) { //Password wird nur mit geaendert, wenn es nicht leer ist
             body.password = password;
         }
         let requestOptions = {
@@ -89,24 +89,20 @@ export function UserEditPage() {
             body: JSON.stringify(body)
         }
 
-        const fetchUserEdit = async () => {
-            try {
-                let response = await fetch(USER_URL + "/" + selectedUser.userID, requestOptions);
-                await response.json();
-                console.log(response.status)
-                if (response.ok) {
-                    dispatch(showUserEditAlertSuccess());
-                    navigate("/users");
-                } else {
-                    setErrorAnzeigen(true); //passiert nie, man kann keine ungueltigen Werte eingeben (wenn ungueltig werden alte Werte genommen)
-                }
+        try {
+            let response = await fetch(USER_URL + "/" + selectedUser.userID, requestOptions);
+            await response.json();
+            console.log(response.status)
+            if (response.ok) {
+                dispatch(showUserEditAlertSuccess());
+                navigate("/users");
+            } else {
+                setErrorAnzeigen(true); //passiert nie, man kann keine ungueltigen Werte eingeben (wenn ungueltig werden alte Werte genommen)
             }
-            catch (err) {
-                console.log("Error bei Anfrage an Backend: " + err)
-            }
-        };
-
-        fetchUserEdit();
+        }
+        catch (err) {
+            console.log("Error bei Anfrage an Backend: " + err)
+        }
     }
 
     if (accessToken !== null && user.isAdministrator) {
@@ -144,6 +140,4 @@ export function UserEditPage() {
     } else {
         return <Unauthorized />;
     }
-
-
 }

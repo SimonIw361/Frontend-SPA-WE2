@@ -14,7 +14,7 @@ export function TopMenu() {
     return <Navbar id="TopMenu" expand="md" className="bg-body-tertiary">
         <Container fluid>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Brand id="OpenStartPageButtonBild" as={Link} to="/" ><img src="/bht.svg" /></Navbar.Brand>
+            <Navbar.Brand id="OpenStartPageButtonBild" as={Link} to="/" ><img src="/bht.svg" alt="BHT Logo"/></Navbar.Brand>
             <div id="UserSessionWidget"><UserSessionWidget></UserSessionWidget></div>
             <Navbar.Collapse>
                 <Nav className="me-auto">

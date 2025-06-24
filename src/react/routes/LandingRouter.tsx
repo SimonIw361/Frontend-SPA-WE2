@@ -1,4 +1,4 @@
-import type { RootState } from '../components/RootStore'
+import type { RootState } from '../../RootStore'
 import { PrivatePage } from '../login/components/PrivatePage';
 import { PublicPage } from '../login/components/PublicPage';
 import { useSelector } from 'react-redux';

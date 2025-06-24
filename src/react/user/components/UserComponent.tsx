@@ -1,6 +1,6 @@
 import { Button, Card, ListGroup, Modal } from "react-bootstrap";
 import type { User } from "./UserPage";
-import type { AppDispatch, RootState } from "../../components/RootStore";
+import type { AppDispatch, RootState } from "../../../RootStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { hideUserEditAlertSuccess, setSelectedUser } from "../state/UserSlice";
@@ -23,7 +23,6 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
     const { accessToken } = useSelector((state: RootState) => state.authentication);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-
     const handleOpenDeleteDialog = () => {
         dispatch(hideUserEditAlertSuccess());
         deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" onClick={handleDelete}>Delete</Button>
@@ -34,7 +33,7 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
         setShowDeleteDialog(false);
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" disabled>Delete</Button>
         const requestOptions = {
             method: 'DELETE',
@@ -43,19 +42,16 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
             }
         }
 
-        const fetchUserDelete = async () => {
-            try {
-                let response = await fetch(USER_URL + "/" + user.userID, requestOptions);
-                if (!response.ok) {
-                    console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Loeschen eines Users");
-                }
+        try {
+            let response = await fetch(USER_URL + "/" + user.userID, requestOptions);
+            if (!response.ok) {
+                console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Loeschen eines Users");
             }
-            catch (err) {
-                console.log("Error bei Anfrage an Backend: " + err)
-            }
-        };
+        }
+        catch (err) {
+            console.log("Error bei Anfrage an Backend: " + err)
+        }
 
-        fetchUserDelete();
         userAktualisieren();
         handleCloseDeleteDialog();
     }
@@ -86,7 +82,6 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
             </Modal.Header>
             <Modal.Body>
                 <div>Soll User {user.firstName} {user.lastName} gelöscht werden?</div>
-
             </Modal.Body>
             <Modal.Footer>
                 <Button id="DeleteDialogCancelButton" className="EditButton" variant="secondary" onClick={handleCloseDeleteDialog}>Cancel</Button>

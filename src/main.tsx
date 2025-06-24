@@ -8,8 +8,8 @@ import { App } from './react/components/App.tsx';
 // Quelle zu createRoot: https://react.dev/reference/react-dom/client/createRoot
 // Quelle React Strict MOde: https://react.dev/reference/react/StrictMode
 
-
 let root = createRoot(document.getElementById('root')!);
+
 root.render(
   <React.StrictMode>
     <App />

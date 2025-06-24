@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit/react";
-import { authenticationReducer } from "../login/state/AuthenticationSlice";
-import { userReducer } from "../user/state/UserSlice";
+import { authenticationReducer } from "./react/login/state/AuthenticationSlice";
+import { userReducer } from "./react/user/state/UserSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zu Typescript in React: https://react-redux.js.org/using-react-redux/usage-with-typescript

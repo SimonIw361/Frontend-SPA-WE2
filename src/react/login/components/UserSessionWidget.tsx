@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../components/RootStore";
+import type { AppDispatch, RootState } from "../../../RootStore";
 import { login, logout, showLoginDialog, hideLoginDialog } from "../state/AuthenticationSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 // Quelle zu Hooks: https://react-redux.js.org/api/hooks
 // Quelle zu useState: https://react.dev/reference/react/useState
 // Quelle zu useNavigate: https://medium.com/@bobjunior542/using-usenavigate-in-react-router-6-a-complete-guide-46f51403f430
+// Typen fuer Events TypeScript https://nishanthan-k.medium.com/typescript-event-types-and-event-handling-in-react-a-complete-guide-for-beginners-22293ff4b8a0
 
 /* Quellen fuer die benutzen Icons:
     https://www.flaticon.com/de/kostenlose-icons/avatar-benutzer
@@ -20,18 +21,13 @@ import { useNavigate } from "react-router-dom";
 */
 
 export function UserSessionWidget() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>(); //mit dispatch werden Actions ueber Reducer/Slice an den Store geschickt
+    const { user, error, loginPending, showLoginDialogBool } = useSelector((state: RootState) => state.authentication);
     const [userID, setUserID] = useState("");
     const [password, setPassword] = useState("");
 
-    //useEffect benutzen, wenn Action ausgeführt werden soll sobald sich Wert von bestimmter Variable aendert
-
-    const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>(); //mit dispatach werden Actions ueber Reducer/Slice an den Store geschickt
-    const { user, error, loginPending, showLoginDialogBool } = useSelector( //auf Werte vom zentralen Store zugreifen
-        (state: RootState) => state.authentication
-    )
-
-    const handleShow = (e: MouseEvent) => {
+    const handleShow = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         dispatch(showLoginDialog());
     }
@@ -40,8 +36,8 @@ export function UserSessionWidget() {
         dispatch(hideLoginDialog());
     }
 
-    const handleChange = (e: ChangeEvent) => {
-        let t = e.target as HTMLInputElement;
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let t = e.target;
         let name = t.name;
         let value = t.value;
         switch (name) {
@@ -56,7 +52,7 @@ export function UserSessionWidget() {
         }
     }
 
-    const handleSubmit = async (e: MouseEvent) => {
+    const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         await dispatch(login({ userID: userID, password: password }));
         navigate("/");
@@ -78,12 +74,6 @@ export function UserSessionWidget() {
         }
     }
 
-
-    let showDialog: boolean = showLoginDialogBool; //bestimmt, ob LoginDialog angezeigt wird
-    if (showDialog === undefined) {
-        showDialog = false;
-    }
-
     let showError: boolean = false;
     if (error !== null) { //dann Fehler bei Login, falsche User ID/Password
         showError = true;
@@ -92,14 +82,9 @@ export function UserSessionWidget() {
         showError = false;
     }
 
-    let pending: boolean = loginPending; //Ladesymbol wird dargestellt
-    if (loginPending === undefined) {
-        pending = false;
-    }
-
     let userIdForm;
     let paswordForm;
-    if (pending) { //wenn pending kann in forms nicht mehr eingetragen werden
+    if (loginPending) { //wenn pending kann in forms nicht mehr eingetragen werden
         userIdForm = <Form.Control id="LoginDialogUserIDText" type="text" placeholder="User ID" name="userID" onChange={handleChange} value={userID} readOnly />
         paswordForm = <Form.Control id="LoginDialogPasswordText" type="password" placeholder="Password" name="password" onChange={handleChange} value={password} readOnly />
     }
@@ -119,7 +104,6 @@ export function UserSessionWidget() {
     let performLoginButton;
     if (canLogin()) { //Login Button kann nur gedrueckt werden, wenn Felder nicht leer sind
         performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" onClick={handleSubmit}>Login</Button>;
-
     }
     else {
         performLoginButton = <Button id="PerformLoginButton" variant="primary" type="submit" disabled>Login</Button>;
@@ -127,7 +111,7 @@ export function UserSessionWidget() {
 
     return <div>
         {widget}
-        <Modal show={showDialog} id="LoginDialog" onHide={handleClose} >
+        <Modal show={showLoginDialogBool} id="LoginDialog" onHide={handleClose} >
             <Modal.Header closeButton>
                 <Modal.Title>Login</Modal.Title>
             </Modal.Header>
@@ -136,7 +120,7 @@ export function UserSessionWidget() {
                     <Form.Group className="mb-3">{userIdForm}</Form.Group>
                     <Form.Group className="mb-3">{paswordForm}</Form.Group>
                     {showError && <div><Form.Label id="textLoginUngueltig" style={{ color: "red" }}>User ID oder Password falsch</Form.Label><br /></div>}
-                    {pending && <div><Spinner animation="border" variant="primary" /><br /></div>}
+                    {loginPending && <div><Spinner animation="border" variant="primary" /><br /></div>}
                     {performLoginButton}
                 </Form>
             </Modal.Body>

@@ -6,23 +6,21 @@ export function UeberUns(){
     return <div id="ueberuns">
         <div className="ueberschrift">Über Uns</div>
         <div className="text">Die BHT ist eine sehr bekannte Hochschule in Berlin.</div>
-    </div>
-
+    </div>;
 }
 
 export function Kontakt(){
     return <div id="kontakt">
         <div className="ueberschrift">Kontakt</div>
         <div className="text">Sie haben Fragen?<br /> Schreiben Sie gerne an siiw1213@bht-berlin.de</div>
-    </div>
-
+    </div>;
 }
 
 export function Impressum(){
     return <div id="impressum">
         <div className="ueberschrift">Impressum</div>
         <div className="text">BHT - Berliner Hochschule für Technik</div>
-    </div>
+    </div>;
 }
 
 export function PageNotFound(){
@@ -32,7 +30,7 @@ export function PageNotFound(){
         <div className="ueberschrift">404 Page Not Found</div>
         <div className="text">Diese Seite existiert nicht.</div>
         <Button id="404Startseite" variant="secondary" onClick={() => navigate("/")} style={{marginTop: "20px"}}>Startseite</Button>
-    </div>
+    </div>;
 
 }
 
@@ -41,5 +39,5 @@ export function Unauthorized(){
         <div className="ueberschrift">401 Unauthorized</div>
         <div className="text">Ihre Session ist abgelaufen. Bitte loggen Sie sich erneut ein.</div>
         <LoginButton />
-    </div>
+    </div>;
 }

@@ -11,7 +11,6 @@ const initialState: State = {
     showUserEditAlertSuccessBool: false
 };
 
-
 const userSlicer = createSlice({
     name: "user",
     initialState,

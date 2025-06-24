@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../components/RootStore";
+import type { RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
 import { Unauthorized } from "../../components/Pages";
 import "../../../styles/User.css"
@@ -137,7 +137,7 @@ export function NewUserPage() {
                 {errorAnzeigen && <div style={{ color: "rgb(255,0,0)" }}>{errorText}</div>}
                 <div id="NewUserButtons">
                     {anlegenButton}
-                    <Button id="CreateUserComponentCancelButton" className="EditButton" variant="secondary" onClick={showUserListe}>Cancel</Button>
+                    <Button id="OpenUserManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showUserListe}>Cancel</Button>
                 </div>
             </Form>
         </div>;
