@@ -28,7 +28,7 @@ export function ActivityBar() {
         return <div><Nav className="flex-column" id="activityBar">
             <Nav.Link as={Link} to="/" id="OpenStartPageButton"><img className="ActivityBarItemBild" src="/home.png" alt="Home"/></Nav.Link>
             {userBearbeiten}
-            <Nav.Link><img className="ActivityBarItemBild" src="/studiengang.png" alt="Studiengänge"/></Nav.Link>
+            <Nav.Link as={Link} to="/degreeCourse" id="OpenDegreeCourseManagementPageButton"><img className="ActivityBarItemBild" src="/studiengang.png" alt="Studiengänge"/></Nav.Link>
             <Nav.Link><img className="ActivityBarItemBild" src="/bewerbung.png" alt="Bewerbungen"/></Nav.Link>
         </Nav>
             <div id="hintergrundActivityBarFarbe"></div>

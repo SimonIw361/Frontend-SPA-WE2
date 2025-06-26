@@ -4,6 +4,9 @@ import { Impressum, Kontakt, PageNotFound, UeberUns, Unauthorized } from "../com
 import { UserPage } from "../user/components/UserPage";
 import { NewUserPage } from "../user/components/NewUserPage";
 import { UserEditPage } from "../user/components/UserEditPage";
+import { DegreeCoursePage } from "../degreeCourse/components/DegreeCoursePage";
+import { NewDegreeCoursePage } from "../degreeCourse/components/NewDegreeCoursePage";
+import { DegreeCourseEditPage } from "../degreeCourse/components/DegreeCourseEditPage";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zu React Router: https://www.w3schools.com/react/react_router.asp
@@ -21,6 +24,11 @@ export function AppRoutes() {
         <Route index element={<UserPage />}></Route>
         <Route path="/users/newUser" element={<NewUserPage />}></Route>
         <Route path="/users/editUser" element={<UserEditPage />}></Route>
+      </Route>
+      <Route path="/degreeCourse" >
+        <Route index element={<DegreeCoursePage />}></Route>
+        <Route path="/degreeCourse/newDegreeCourse" element={<NewDegreeCoursePage />}></Route>
+        <Route path="/degreeCourse/editDegreeCourse" element={<DegreeCourseEditPage />}></Route>
       </Route>
 
       <Route path="/unauthorized" element={<Unauthorized />}></Route>
