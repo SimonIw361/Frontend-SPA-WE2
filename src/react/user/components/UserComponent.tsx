@@ -59,7 +59,7 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
     const handleEditUser = () => {
         dispatch(hideUserEditAlertSuccess());
         dispatch(setSelectedUser(user));
-        navigate("/users/editUser");
+        navigate("/user/editUser");
     }
 
     let deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" onClick={handleDelete}>Delete</Button>

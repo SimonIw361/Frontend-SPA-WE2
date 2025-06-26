@@ -11,6 +11,8 @@ import { DEGREE_COURSE_URL} from "../../../config/config";
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
 // Quelle Radios/Check https://react-bootstrap.netlify.app/docs/forms/checks-radios/
 
+
+
 export function NewDegreeCoursePage() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -24,7 +26,7 @@ export function NewDegreeCoursePage() {
     let errorText: string = "Es konnte kein neuer Studiengang angelegt werden.";
 
     const showStudiengangListe = () => {
-        navigate("/degreeCourses")
+        navigate("/degreeCourse")
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +79,7 @@ export function NewDegreeCoursePage() {
             let response = await fetch(DEGREE_COURSE_URL, requestOptions);
             await response.json();
             if (response.ok) {
-                navigate("/degreeCourses");
+                navigate("/degreeCourse");
             } else {
                 setErrorAnzeigen(true);
             }

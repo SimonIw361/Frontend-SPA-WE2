@@ -6,7 +6,7 @@ import { Unauthorized } from "../../components/Pages";
 import { useNavigate } from "react-router-dom";
 import { DegreeCourseComponent } from "./DegreeCourseComponent";
 import "../../../styles/DegreeCourse.css"
-import { DEGREE_COURSE_URL} from "../../../config/config";
+import { DEGREE_COURSE_URL } from "../../../config/config";
 import { hideDegreeCourseEditAlertSuccess } from "../state/DegreeCourseSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
@@ -31,7 +31,7 @@ export function DegreeCoursePage() {
     const dispatch = useDispatch<AppDispatch>();
     const [studiengaenge, setStudiengaenge] = useState<DegreeCourse[]>([]); //lokaler State vom Typ DegreeCourse[]
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
-    const {showDegreeCourseEditAlertSuccessBool} = useSelector((state: RootState) => state.degreeCourse);
+    const { showDegreeCourseEditAlertSuccessBool } = useSelector((state: RootState) => state.degreeCourse);
 
     const requestOptions = {
         method: 'GET',
@@ -40,7 +40,7 @@ export function DegreeCoursePage() {
 
     useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen
         getAllStudiengaenge();
-    },[])
+    }, [])
 
     const getAllStudiengaenge = async () => {
         try {
@@ -59,32 +59,35 @@ export function DegreeCoursePage() {
 
     const handleNewDegreeCourse = () => {
         dispatch(hideDegreeCourseEditAlertSuccess());
-        navigate("/degreeCourses/newDegreeCourse");
+        navigate("/degreeCourse/newDegreeCourse");
     }
-    
-    if (accessToken !== null && user.isAdministrator) {
-        try {
-            //Success Alert ist hier eingebunden, Einblenden/Ausblenden davon wird durch Redux Store gesteuert
-            //show wird in DegreeCourseEditPage aufgerufen, hide wird bei Verlassen der DegreeCoursePage aufgerufen
-            return <div id="DegreeCourseManagementPage">
-                <Alert show={showDegreeCourseEditAlertSuccessBool} id="AlertDegreeCourseEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseEditAlertSuccess())} dismissible>
-                    Studiengang wurde erfolgreich bearbeitet
-                </Alert>
-                <div id="DegreeCourseUeberschrift" className="ueberschrift">
-                    <span id="DegreeCourseUeberschriftText">Studiengang-Liste</span>
-                    <Button id="DegreeCourseManagementPageCreateDegreeCourseButton" variant="primary" onClick={handleNewDegreeCourse}>Studiengang anlegen</Button>
-                </div>
-                <ListGroup id="DegreeCourseManagementPageListComponent" horizontal>
-                    {studiengaenge.map(studiengang => (
-                        <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={getAllStudiengaenge} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der DegreeCourseListe aufgerufen werden kann
-                    ))}
-                </ListGroup>
-            </div>
-        }
-        catch (err) {
-            return <Unauthorized />; //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
-        }
+
+    let newDegreeCourseButton;
+    if(user.isAdministrator){
+        newDegreeCourseButton = <Button id="DegreeCourseManagementPageCreateDegreeCourseButton" variant="primary" onClick={handleNewDegreeCourse}>Studiengang anlegen</Button>;
     } else {
-        return <Unauthorized />;
+        newDegreeCourseButton = <div></div>
+    }
+
+    try {
+        //Success Alert ist hier eingebunden, Einblenden/Ausblenden davon wird durch Redux Store gesteuert
+        //show wird in DegreeCourseEditPage aufgerufen, hide wird bei Verlassen der DegreeCoursePage aufgerufen
+        return <div id="DegreeCourseManagementPage">
+            <Alert show={showDegreeCourseEditAlertSuccessBool} id="AlertDegreeCourseEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseEditAlertSuccess())} dismissible>
+                Studiengang wurde erfolgreich bearbeitet
+            </Alert>
+            <div id="DegreeCourseUeberschrift" className="ueberschrift">
+                <span id="DegreeCourseUeberschriftText">Studiengang-Liste</span>
+                {newDegreeCourseButton}
+            </div>
+            <ListGroup id="DegreeCourseManagementPageListComponent" horizontal>
+                {studiengaenge.map(studiengang => (
+                    <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={getAllStudiengaenge} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der DegreeCourseListe aufgerufen werden kann
+                ))}
+            </ListGroup>
+        </div>
+    }
+    catch (err) {
+        return <Unauthorized />; //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
     }
 }

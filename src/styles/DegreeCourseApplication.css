@@ -1,0 +1,89 @@
+/* Layout fuer DegreeCourse Liste
+https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap automatische Zeilenumbruch mit flex-wrap
+https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow restliche Bildschirmbreite wird ausgefuellt
+https://developer.mozilla.org/en-US/docs/Web/CSS/gap Abstand bei display flex bestimmen
+https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content 
+https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container Abnstand zwischen zwei Elemente setzen (funktioniert hier nur mit span)
+*/
+#DegreeCourseApplicationManagementPageListComponent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+}
+
+#DegreeCourseApplicationManagementPage {
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.card {
+  margin-left: 12px;
+}
+
+#DegreeCourseApplicationUeberschrift {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-left: 12px;
+  margin-bottom: 20px;
+}
+
+#DegreeCourseApplicationManagementPageCreateDegreeCourseButton {
+  margin-right: 12px;
+}
+
+#DegreeCourseApplicationUeberschrift>* {
+  margin-bottom: 10px;
+}
+
+#AlertDegreeCourseApplicationEditSuccess {
+  margin: 10px;
+}
+
+/* hier Verkettung von Klassen (haben hoehere Prioritaet), einfach nur eine Klasse zu nehmen wird ueberschrieben, id zu nehmen ist unguenstig
+  Element muss beide Klassen besitzen */
+.listApplicantUserID.list-group-item,
+.listDegreeCourseName.list-group-item,
+.listTargetPeriodYear.list-group-item,
+.listTargetPeriodShortName.list-group-item,
+.listUniversityShortName.list-group-item,
+.listDepartmentShortName.list-group-item,
+.listFooterButtons.card-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Layout fuer New DegreeCourse und Edit DegreeCourse
+  https://developer.mozilla.org/de/docs/Web/CSS/margin-left
+  */
+#DegreeCourseApplicationManagementPageCreateComponent,
+#DegreeCourseApplicationManagementPageEditComponent,
+#DegreeCourseApplicationProfilPageComponent {
+  width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#NewDegreeCourseApplicationUeberschrift,
+#DegreeCourseApplicationEditUeberschrift {
+  margin-bottom: 12px;
+}
+
+#NewDegreeCourseApplicationButtons,
+#EditDegreeCourseApplicationButtons,
+#ProfilDegreeCourseApplicationButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+
+#NewDegreeCourseApplicationButtons>*,
+#EditDegreeCourseApplicationButtons>*,
+#ProfilDegreeCourseApplicationButtons>* {
+  margin-top: 10px;
+}

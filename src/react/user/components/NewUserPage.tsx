@@ -23,7 +23,7 @@ export function NewUserPage() {
     let errorText: string = "Es konnte kein neuer User angelegt werden.";
 
     const showUserListe = () => {
-        navigate("/users")
+        navigate("/user")
     }
 
     const validatePassword = () => {
@@ -88,7 +88,7 @@ export function NewUserPage() {
             let response = await fetch(USER_URL, requestOptions);
             await response.json();
             if (response.ok) {
-                navigate("/users");
+                navigate("/user");
             } else {
                 setErrorAnzeigen(true);
             }

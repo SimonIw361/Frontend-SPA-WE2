@@ -56,7 +56,7 @@ export function UserPage() {
 
     const handleNewUser = () => {
         dispatch(hideUserEditAlertSuccess());
-        navigate("/users/newUser");
+        navigate("/user/newUser");
     }
     
     if (accessToken !== null && user.isAdministrator) {

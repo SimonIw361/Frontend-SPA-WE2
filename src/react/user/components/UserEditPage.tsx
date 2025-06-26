@@ -44,7 +44,7 @@ export function UserEditPage() {
     let errorText: string = "Der User konnte nicht bearbeitet werden.";
 
     const showUserListe = () => {
-        navigate("/users")
+        navigate("/user")
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +95,7 @@ export function UserEditPage() {
             console.log(response.status)
             if (response.ok) {
                 dispatch(showUserEditAlertSuccess());
-                navigate("/users");
+                navigate("/user");
             } else {
                 setErrorAnzeigen(true); //passiert nie, man kann keine ungueltigen Werte eingeben (wenn ungueltig werden alte Werte genommen)
             }

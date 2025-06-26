@@ -7,6 +7,8 @@ import { UserEditPage } from "../user/components/UserEditPage";
 import { DegreeCoursePage } from "../degreeCourse/components/DegreeCoursePage";
 import { NewDegreeCoursePage } from "../degreeCourse/components/NewDegreeCoursePage";
 import { DegreeCourseEditPage } from "../degreeCourse/components/DegreeCourseEditPage";
+import { NewDegreeCourseApplicationPage } from "../degreeCourseApplication/components/NewDegreeCourseApplicationPage";
+import { DegreeCourseApplicationPage } from "../degreeCourseApplication/components/DegreeCourseApplicationPage";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zu React Router: https://www.w3schools.com/react/react_router.asp
@@ -20,15 +22,20 @@ export function AppRoutes() {
       <Route path="/kontakt" element={<Kontakt />}></Route>
       <Route path="/impressum" element={<Impressum />}></Route>
 
-      <Route path="/users" >
+      <Route path="/user" >
         <Route index element={<UserPage />}></Route>
-        <Route path="/users/newUser" element={<NewUserPage />}></Route>
-        <Route path="/users/editUser" element={<UserEditPage />}></Route>
+        <Route path="/user/newUser" element={<NewUserPage />}></Route>
+        <Route path="/user/editUser" element={<UserEditPage />}></Route>
       </Route>
-      <Route path="/degreeCourses" >
+      <Route path="/degreeCourse" >
         <Route index element={<DegreeCoursePage />}></Route>
-        <Route path="/degreeCourses/newDegreeCourse" element={<NewDegreeCoursePage />}></Route>
-        <Route path="/degreeCourses/editDegreeCourse" element={<DegreeCourseEditPage />}></Route>
+        <Route path="/degreeCourse/newDegreeCourse" element={<NewDegreeCoursePage />}></Route>
+        <Route path="/degreeCourse/editDegreeCourse" element={<DegreeCourseEditPage />}></Route>
+      </Route>
+      <Route path="/degreeCourseApplication" >
+        <Route index element={<DegreeCourseApplicationPage />}></Route>
+        <Route path="/degreeCourseApplication/newDegreeCourseApplication" element={<NewDegreeCourseApplicationPage/>}></Route>
+        <Route path="/degreeCourseApplication/editDegreeCourseApplication" element={<DegreeCourseEditPage />}></Route>
       </Route>
 
       <Route path="/unauthorized" element={<Unauthorized />}></Route>

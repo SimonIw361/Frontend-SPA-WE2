@@ -20,7 +20,7 @@ type DegreeCourseComponentProps = {
 export function DegreeCourseComponent({ studiengang, degreeCourseAktualisieren }: DegreeCourseComponentProps) {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const { accessToken } = useSelector((state: RootState) => state.authentication);
+    const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const handleOpenDeleteDialog = () => {
@@ -59,41 +59,60 @@ export function DegreeCourseComponent({ studiengang, degreeCourseAktualisieren }
     const handleEditDegreeCourse = () => {
         dispatch(hideDegreeCourseEditAlertSuccess());
         dispatch(setSelectedDegreeCourse(studiengang));
-        navigate("/degreeCourses/editDegreeCourse");
+        navigate("/degreeCourse/editDegreeCourse");
+    }
+
+    const handleCraeteDegreeCourseApplication = () => {
+        dispatch(hideDegreeCourseEditAlertSuccess());
+        dispatch(setSelectedDegreeCourse(studiengang));
+        navigate("/degreeCourseApplication/newDegreeCourseApplication");
     }
 
     let deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" onClick={handleDelete}>Delete</Button>
 
     let header;
-    if(studiengang.shortName == ""){
+    if (studiengang.shortName == "") {
         header = <Card.Header><b>{studiengang.name}</b></Card.Header>
     } else {
         header = <Card.Header><b>{studiengang.shortName}: {studiengang.name}</b></Card.Header>
     }
 
-    return <div><Card id={"DegreeCourseItem" + studiengang.id} style={{ minWidth: "200px" }}>
-        {header}
-        <ListGroup>
-            <ListGroup.Item id="UniversityName" className="listUniversityName" ><span>Universität:</span> <span>{studiengang.universityName}</span></ListGroup.Item>
-            <ListGroup.Item id="DepartmentName" className="listDepartmentName"><span>Fachbereich:</span> <span>{studiengang.departmentName}</span></ListGroup.Item>
-            <ListGroup.Item id="Name" className="listName"><span>Studiengang:</span> <span>{studiengang.name}</span></ListGroup.Item>
-        </ListGroup>
-        <Card.Footer className="listFooterButtons">
-            <Button id={"DegreeCourseItemEditButton" + studiengang.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourse}>Edit</Button>
-            <Button id={"DegreeCourseItemDeleteButton" + studiengang.id} className="DeleteButton" variant="danger" onClick={handleOpenDeleteDialog}>Delete</Button>
-        </Card.Footer>
-    </Card>
-        <Modal show={showDeleteDialog} id={"DeleteDialogDegreeCourse" + studiengang.id} onHide={handleCloseDeleteDialog} >
-            <Modal.Header closeButton>
-                <Modal.Title>Studiengang {studiengang.shortName}: {studiengang.name} löschen?</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div>Soll Studiengang {studiengang.shortName}: {studiengang.name} gelöscht werden?</div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button id="DeleteDialogCancelButton" className="EditButton" variant="secondary" onClick={handleCloseDeleteDialog}>Cancel</Button>
-                {deleteButton}
-            </Modal.Footer>
-        </Modal>
-    </div>
+    let editButtonComponent;
+    let deleteButtonComponent;
+    if (user.isAdministrator) {
+        deleteButtonComponent = <Button id={"DegreeCourseItemDeleteButton" + studiengang.id} className="DeleteButton" variant="danger" onClick={handleOpenDeleteDialog}>Delete</Button>;
+        editButtonComponent = <Button id={"DegreeCourseItemEditButton" + studiengang.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourse}>Edit</Button>;
+    } else {
+        editButtonComponent = <div></div>;
+        deleteButtonComponent = <div></div>;
+    }
+
+    if (accessToken !== null) {
+        return <div><Card id={"DegreeCourseItem" + studiengang.id} style={{ minWidth: "200px" }}>
+            {header}
+            <ListGroup>
+                <ListGroup.Item id="UniversityName" className="listUniversityName" ><span>Universität:</span> <span>{studiengang.universityName}</span></ListGroup.Item>
+                <ListGroup.Item id="DepartmentName" className="listDepartmentName"><span>Fachbereich:</span> <span>{studiengang.departmentName}</span></ListGroup.Item>
+                <ListGroup.Item id="Name" className="listName"><span>Studiengang:</span> <span>{studiengang.name}</span></ListGroup.Item>
+            </ListGroup>
+            <Card.Footer className="listFooterButtons">
+                {editButtonComponent}
+                {deleteButtonComponent}
+                <Button id={"CreateDegreeCourseApplicationForDegreeCourse" + studiengang.id} className="???" variant="success" onClick={handleCraeteDegreeCourseApplication}>Create Application</Button>
+            </Card.Footer>
+        </Card>
+            <Modal show={showDeleteDialog} id={"DeleteDialogDegreeCourse" + studiengang.id} onHide={handleCloseDeleteDialog} >
+                <Modal.Header closeButton>
+                    <Modal.Title>Studiengang {studiengang.shortName}: {studiengang.name} löschen?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>Soll Studiengang {studiengang.shortName}: {studiengang.name} gelöscht werden?</div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button id="DeleteDialogCancelButton" className="EditButton" variant="secondary" onClick={handleCloseDeleteDialog}>Cancel</Button>
+                    {deleteButton}
+                </Modal.Footer>
+            </Modal>
+        </div>;
+    }
 }

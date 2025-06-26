@@ -18,7 +18,7 @@ export function ActivityBar() {
 
     let userBearbeiten;
     if (user.isAdministrator) {
-        userBearbeiten = <Nav.Link as={Link} to="/users" id="OpenUserManagementPageButton"><img className="ActivityBarItemBild" src="/user.png" alt="User"/></Nav.Link>;
+        userBearbeiten = <Nav.Link as={Link} to="/user" id="OpenUserManagementPageButton"><img className="ActivityBarItemBild" src="/user.png" alt="User"/></Nav.Link>;
     }
     else {
         userBearbeiten = <div></div>;
@@ -28,8 +28,8 @@ export function ActivityBar() {
         return <div><Nav className="flex-column" id="activityBar">
             <Nav.Link as={Link} to="/" id="OpenStartPageButton"><img className="ActivityBarItemBild" src="/home.png" alt="Home"/></Nav.Link>
             {userBearbeiten}
-            <Nav.Link as={Link} to="/degreeCourses" id="OpenDegreeCourseManagementPageButton"><img className="ActivityBarItemBild" src="/studiengang.png" alt="Studiengänge"/></Nav.Link>
-            <Nav.Link><img className="ActivityBarItemBild" src="/bewerbung.png" alt="Bewerbungen"/></Nav.Link>
+            <Nav.Link as={Link} to="/degreeCourse" id="OpenDegreeCourseManagementPageButton"><img className="ActivityBarItemBild" src="/studiengang.png" alt="Studiengänge"/></Nav.Link>
+            <Nav.Link as={Link} to="/degreeCourseApplication" id="OpenDegreeCourseApplicationManagementPageButton"><img className="ActivityBarItemBild" src="/bewerbung.png" alt="Bewerbungen"/></Nav.Link>
         </Nav>
             <div id="hintergrundActivityBarFarbe"></div>
         </div>;

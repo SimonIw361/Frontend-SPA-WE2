@@ -5,7 +5,7 @@ import type { AppDispatch, RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
 import { PageNotFound, Unauthorized } from "../../components/Pages";
 import "../../../styles/DegreeCourse.css"
-import { showDegreeCourseEditAlertSuccess } from "../state/DegreeCourseSlice";
+import { showDegreeCourseApplicationEditAlertSuccess } from "../state/DegreeCourseApplicationSlice";
 import { DEGREE_COURSE_URL } from "../../../config/config";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
@@ -13,7 +13,9 @@ import { DEGREE_COURSE_URL } from "../../../config/config";
 // Quelle Radios/Check https://react-bootstrap.netlify.app/docs/forms/checks-radios/
 // Quelle zu fetch Anfrage https://developer.mozilla.org/de/docs/Web/API/Fetch_API/Using_Fetch
 
-export function DegreeCourseEditPage() {
+//noch fast keien Aenderung gemacht, fast komplett kopiert von DegreeCourse
+
+export function DegreeCourseApplicationEditPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
@@ -92,7 +94,7 @@ export function DegreeCourseEditPage() {
             await response.json();
             console.log(response.status)
             if (response.ok) {
-                dispatch(showDegreeCourseEditAlertSuccess());
+                dispatch(showDegreeCourseApplicationEditAlertSuccess());
                 navigate("/degreeCourse");
             } else {
                 setErrorAnzeigen(true); //passiert nie, man kann keine ungueltigen Werte eingeben (wenn ungueltig werden alte Werte genommen)
