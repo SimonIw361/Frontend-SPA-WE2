@@ -67,9 +67,9 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
     return <div><Card id={"UserItem" + user.userID} style={{ minWidth: "200px" }}>
         <Card.Header><b>{user.firstName} {user.lastName}</b></Card.Header>
         <ListGroup>
-            <ListGroup.Item className="listUserID" ><span>UserID:</span> <span>{user.userID}</span></ListGroup.Item>
-            <ListGroup.Item className="listUserFirstName"><span>FirstName:</span> <span>{user.firstName}</span></ListGroup.Item>
-            <ListGroup.Item className="listUserLastName"><span>LastName:</span> <span>{user.lastName}</span></ListGroup.Item>
+            <ListGroup.Item id="UserID" className="listUserID" ><span>UserID:</span> <span>{user.userID}</span></ListGroup.Item>
+            <ListGroup.Item id="FirstName" className="listUserFirstName"><span>FirstName:</span> <span>{user.firstName}</span></ListGroup.Item>
+            <ListGroup.Item id="LastName" className="listUserLastName"><span>LastName:</span> <span>{user.lastName}</span></ListGroup.Item>
         </ListGroup>
         <Card.Footer className="listFooterButtons">
             <Button id={"UserItemEditButton" + user.userID} className="EditButton" variant="warning" onClick={handleEditUser}>Edit</Button>
