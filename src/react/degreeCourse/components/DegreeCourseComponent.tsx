@@ -59,29 +59,36 @@ export function DegreeCourseComponent({ studiengang, degreeCourseAktualisieren }
     const handleEditDegreeCourse = () => {
         dispatch(hideDegreeCourseEditAlertSuccess());
         dispatch(setSelectedDegreeCourse(studiengang));
-        navigate("/users/editUser");
+        navigate("/degreeCourses/editDegreeCourse");
     }
 
     let deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" onClick={handleDelete}>Delete</Button>
 
+    let header;
+    if(studiengang.shortName == ""){
+        header = <Card.Header><b>{studiengang.name}</b></Card.Header>
+    } else {
+        header = <Card.Header><b>{studiengang.shortName}: {studiengang.name}</b></Card.Header>
+    }
+
     return <div><Card id={"DegreeCourseItem" + studiengang.id} style={{ minWidth: "200px" }}>
-        <Card.Header><b>{studiengang.shortName}: {studiengang.name}</b></Card.Header>
+        {header}
         <ListGroup>
-            <ListGroup.Item id="University" className="listUniversity" ><span>Universität:</span> <span>{studiengang.universityName}</span></ListGroup.Item>
-            <ListGroup.Item className="listUserFirstName"><span>FirstName:</span> <span>{studiengang.id}</span></ListGroup.Item>
-            <ListGroup.Item className="listUserLastName"><span>LastName:</span> <span>{studiengang.id}</span></ListGroup.Item>
+            <ListGroup.Item id="UniversityName" className="listUniversityName" ><span>Universität:</span> <span>{studiengang.universityName}</span></ListGroup.Item>
+            <ListGroup.Item id="DepartmentName" className="listDepartmentName"><span>Fachbereich:</span> <span>{studiengang.departmentName}</span></ListGroup.Item>
+            <ListGroup.Item id="Name" className="listName"><span>Studiengang:</span> <span>{studiengang.name}</span></ListGroup.Item>
         </ListGroup>
         <Card.Footer className="listFooterButtons">
-            <Button id={"UserItemEditButton" + studiengang.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourse}>Edit</Button>
-            <Button id={"UserItemDeleteButton" + studiengang.id} className="DeleteButton" variant="danger" onClick={handleOpenDeleteDialog}>Delete</Button>
+            <Button id={"DegreeCourseItemEditButton" + studiengang.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourse}>Edit</Button>
+            <Button id={"DegreeCourseItemDeleteButton" + studiengang.id} className="DeleteButton" variant="danger" onClick={handleOpenDeleteDialog}>Delete</Button>
         </Card.Footer>
     </Card>
-        <Modal show={showDeleteDialog} id={"DeleteDialogUser" + studiengang.id} onHide={handleCloseDeleteDialog} >
+        <Modal show={showDeleteDialog} id={"DeleteDialogDegreeCourse" + studiengang.id} onHide={handleCloseDeleteDialog} >
             <Modal.Header closeButton>
-                <Modal.Title>User {studiengang.id} löschen?</Modal.Title>
+                <Modal.Title>Studiengang {studiengang.shortName}: {studiengang.name} löschen?</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div>Soll User {studiengang.id} {studiengang.id} gelöscht werden?</div>
+                <div>Soll Studiengang {studiengang.shortName}: {studiengang.name} gelöscht werden?</div>
             </Modal.Body>
             <Modal.Footer>
                 <Button id="DeleteDialogCancelButton" className="EditButton" variant="secondary" onClick={handleCloseDeleteDialog}>Cancel</Button>

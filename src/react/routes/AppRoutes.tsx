@@ -25,10 +25,10 @@ export function AppRoutes() {
         <Route path="/users/newUser" element={<NewUserPage />}></Route>
         <Route path="/users/editUser" element={<UserEditPage />}></Route>
       </Route>
-      <Route path="/degreeCourse" >
+      <Route path="/degreeCourses" >
         <Route index element={<DegreeCoursePage />}></Route>
-        <Route path="/degreeCourse/newDegreeCourse" element={<NewDegreeCoursePage />}></Route>
-        <Route path="/degreeCourse/editDegreeCourse" element={<DegreeCourseEditPage />}></Route>
+        <Route path="/degreeCourses/newDegreeCourse" element={<NewDegreeCoursePage />}></Route>
+        <Route path="/degreeCourses/editDegreeCourse" element={<DegreeCourseEditPage />}></Route>
       </Route>
 
       <Route path="/unauthorized" element={<Unauthorized />}></Route>

@@ -59,24 +59,24 @@ export function DegreeCoursePage() {
 
     const handleNewDegreeCourse = () => {
         dispatch(hideDegreeCourseEditAlertSuccess());
-        navigate("/users/newDegreeCourse");
+        navigate("/degreeCourses/newDegreeCourse");
     }
     
     if (accessToken !== null && user.isAdministrator) {
         try {
             //Success Alert ist hier eingebunden, Einblenden/Ausblenden davon wird durch Redux Store gesteuert
-            //show wird in UserEditPage aufgerufen, hide wird bei Verlassen der UserPage aufgerufen
+            //show wird in DegreeCourseEditPage aufgerufen, hide wird bei Verlassen der DegreeCoursePage aufgerufen
             return <div id="DegreeCourseManagementPage">
-                <Alert show={showDegreeCourseEditAlertSuccessBool} id="AlertEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseEditAlertSuccess())} dismissible>
+                <Alert show={showDegreeCourseEditAlertSuccessBool} id="AlertDegreeCourseEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseEditAlertSuccess())} dismissible>
                     Studiengang wurde erfolgreich bearbeitet
                 </Alert>
-                <div id="UserUeberschrift" className="ueberschrift">
-                    <span id="UserUeberschriftText">Studiengang-Liste</span>
-                    <Button id="DegreeCourseManagementPageCreateDegreeCourseButton" variant="primary" onClick={handleNewDegreeCourse}>User anlegen</Button>
+                <div id="DegreeCourseUeberschrift" className="ueberschrift">
+                    <span id="DegreeCourseUeberschriftText">Studiengang-Liste</span>
+                    <Button id="DegreeCourseManagementPageCreateDegreeCourseButton" variant="primary" onClick={handleNewDegreeCourse}>Studiengang anlegen</Button>
                 </div>
                 <ListGroup id="DegreeCourseManagementPageListComponent" horizontal>
                     {studiengaenge.map(studiengang => (
-                        <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={getAllStudiengaenge} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der UserListe aufgerufen werden kann
+                        <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={getAllStudiengaenge} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der DegreeCourseListe aufgerufen werden kann
                     ))}
                 </ListGroup>
             </div>

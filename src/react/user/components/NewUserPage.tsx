@@ -42,8 +42,8 @@ export function NewUserPage() {
         }
     }
 
-    const handleChange = (e: ChangeEvent) => {
-        let t = e.target as HTMLInputElement;
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let t = e.target;
         let name = t.name;
         let value = t.value;
         switch (name) {
@@ -67,7 +67,7 @@ export function NewUserPage() {
         }
     }
 
-    const handleSubmit = (e: MouseEvent) => {
+    const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
@@ -84,22 +84,18 @@ export function NewUserPage() {
             })
         }
 
-        const fetchNewUser = async () => {
-            try {
-                let response = await fetch(USER_URL, requestOptions);
-                await response.json();
-                if (response.ok) {
-                    navigate("/users");
-                } else {
-                    setErrorAnzeigen(true);
-                }
+        try {
+            let response = await fetch(USER_URL, requestOptions);
+            await response.json();
+            if (response.ok) {
+                navigate("/users");
+            } else {
+                setErrorAnzeigen(true);
             }
-            catch (err) {
-                console.log("Error bei Anfrage an Backend: " + err)
-            }
-        };
-
-        fetchNewUser();
+        }
+        catch (err) {
+            console.log("Error bei Anfrage an Backend: " + err)
+        }
     }
 
     let anlegenButton;

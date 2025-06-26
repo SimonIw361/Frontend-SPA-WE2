@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
 import { Unauthorized } from "../../components/Pages";
-import "../../../styles/User.css"
-import { USER_URL } from "../../../config/config";
+import "../../../styles/DegreeCourse.css"
+import { DEGREE_COURSE_URL} from "../../../config/config";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
@@ -13,61 +13,49 @@ import { USER_URL } from "../../../config/config";
 
 export function NewDegreeCoursePage() {
     const navigate = useNavigate();
-    const [userID, setUserID] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [password, setPassword] = useState("");
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [name, setName] = useState("");
+    const [shortName, setShortName] = useState("");
+    const [universityName, setUniversityName] = useState("");
+    const [universityShortName, setUniversityShortName] = useState("");
+    const [departmentName, setDepartmentName] = useState("");
+    const [departmentShortName, setDepartmentShortName] = useState("");
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const [errorAnzeigen, setErrorAnzeigen] = useState(false);
-    let errorText: string = "Es konnte kein neuer User angelegt werden.";
+    let errorText: string = "Es konnte kein neuer Studiengang angelegt werden.";
 
-    const showUserListe = () => {
-        navigate("/users")
+    const showStudiengangListe = () => {
+        navigate("/degreeCourses")
     }
 
-    const validatePassword = () => {
-        if (password.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    const validateUserID = () => {
-        if (userID.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    const handleChange = (e: ChangeEvent) => {
-        let t = e.target as HTMLInputElement;
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let t = e.target;
         let name = t.name;
         let value = t.value;
         switch (name) {
-            case "userID":
-                setUserID(value);
+            case "name":
+                setName(value);
                 break;
-            case "vorname":
-                setFirstName(value);
+            case "shortName":
+                setShortName(value);
                 break;
-            case "nachname":
-                setLastName(value);
+            case "universityName":
+                setUniversityName(value);
                 break;
-            case "password":
-                setPassword(value);
+            case "universityShortName":
+                setUniversityShortName(value);
                 break;
-            case "isAdmin":
-                setIsAdmin(t.checked);
+            case "departmentName":
+                setDepartmentName(value);
+                break;
+            case "departmentShortName":
+                setDepartmentShortName(value);
                 break;
             default:
-                console.log("Error: Fehler beim Aendern von NewUser State in handleChange")
+                console.log("Error: Fehler beim Aendern von NewDegreeCourse State in handleChange")
         }
     }
 
-    const handleSubmit = (e: MouseEvent) => {
+    const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
@@ -76,68 +64,70 @@ export function NewDegreeCoursePage() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "userID": userID,
-                "firstName": firstName,
-                "lastName": lastName,
-                "password": password,
-                "isAdministrator": isAdmin
+                "name": name,
+                "shortName": shortName,
+                "universityName": universityName,
+                "universityShortName": universityShortName,
+                "departmentName": departmentName,
+                "departmentShortName": departmentShortName
             })
         }
 
-        const fetchNewUser = async () => {
-            try {
-                let response = await fetch(USER_URL, requestOptions);
-                await response.json();
-                if (response.ok) {
-                    navigate("/users");
-                } else {
-                    setErrorAnzeigen(true);
-                }
+        try {
+            let response = await fetch(DEGREE_COURSE_URL, requestOptions);
+            await response.json();
+            if (response.ok) {
+                navigate("/degreeCourses");
+            } else {
+                setErrorAnzeigen(true);
             }
-            catch (err) {
-                console.log("Error bei Anfrage an Backend: " + err)
-            }
-        };
-
-        fetchNewUser();
+        }
+        catch (err) {
+            console.log("Error bei Anfrage an Backend: " + err)
+        }
     }
 
     let anlegenButton;
-    if (validatePassword() && validateUserID()) {
-        anlegenButton = <Button id="CreateUserComponentCreateUserButton" variant="success" type="submit" onClick={handleSubmit}>Anlegen</Button>;
+    if (name.length !== 0 && shortName.length !== 0 && universityName.length !== 0 && universityShortName.length !== 0 && departmentName.length !== 0 && departmentShortName.length !== 0) {
+        anlegenButton = <Button id="CreateDegreeCourseComponentCreateDegreeCourseButton" variant="success" type="submit" onClick={handleSubmit}>Anlegen</Button>;
     } else {
-        anlegenButton = <Button id="CreateUserComponentCreateUserButton" variant="success" type="submit" disabled>Anlegen</Button>;
+        anlegenButton = <Button id="CreateDegreeCourseComponentCreateDegreeCourseButton" variant="success" type="submit" disabled>Anlegen</Button>;
     }
 
     if (accessToken !== null && user.isAdministrator) {
-        return <div id="UserManagementPageCreateComponent">
-            <div id="NewUserUeberschrift" className="ueberschrift">
-                <span id="NewUserUeberschriftText">User anlegen</span>
+        return <div id="DegreeCourseManagementPageCreateComponent">
+            <div id="NewDegreeCourseUeberschrift" className="ueberschrift">
+                <span id="NewDegreeCourseUeberschriftText">Studiengang anlegen</span>
             </div>
             <Form>
                 <Form.Group className="mb-3">
-                    <Form.Label>User ID</Form.Label>
-                    <Form.Control id="CreateUserComponentEditUserID" type="text" placeholder="User ID" name="userID" value={userID} onChange={handleChange} isValid={validateUserID()} isInvalid={!validateUserID()} />
+                    <Form.Label>Studiengang-Name</Form.Label>
+                    <Form.Control id="CreateDegreeCourseComponentEditName" type="text" placeholder="Studiengang-Name" name="name" value={name} onChange={handleChange} isValid={name.length !== 0} isInvalid={!(name.length !== 0)}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Vorname</Form.Label>
-                    <Form.Control id="CreateUserComponentEditFirstName" type="text" placeholder="Vorname" name="vorname" value={firstName} onChange={handleChange} isValid={true} />
+                    <Form.Label>Studiengang-Kurzbezeichnung</Form.Label>
+                    <Form.Control id="CreateDegreeCourseComponentEditShortName" type="text" placeholder="Studiengang-Kurzbezeichnung" name="shortName" value={shortName} onChange={handleChange} isValid={shortName.length !== 0} isInvalid={!(shortName.length !== 0)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Nachname</Form.Label>
-                    <Form.Control id="CreateUserComponentEditLastName" type="text" placeholder="Nachname" name="nachname" value={lastName} onChange={handleChange} isValid={true} />
+                    <Form.Label>Universität-Name</Form.Label>
+                    <Form.Control id="CreateDegreeCourseComponentEditUniversityName" type="text" placeholder="Universität-Name" name="universityName" value={universityName} onChange={handleChange} isValid={universityName.length !== 0} isInvalid={!(universityName.length !== 0)}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control id="CreateUserComponentEditPassword" type="password" placeholder="Password" name="password" value={password} onChange={handleChange} isValid={validatePassword()} isInvalid={!validatePassword()} />
+                    <Form.Label>Universität-Kurzbezeichnung</Form.Label>
+                    <Form.Control id="CreateDegreeCourseComponentEditUniversityShortName" type="text" placeholder="Universität-Kurzbezeichnung" name="universityShortName" value={universityShortName} onChange={handleChange} isValid={universityShortName.length !== 0} isInvalid={!(universityShortName.length !== 0)}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Check id="CreateUserComponentEditIsAdministrator" type="checkbox" label="Administrator-Rechte" name="isAdmin" checked={isAdmin} onChange={handleChange} isValid={true} />
+                    <Form.Label>Fachbereich-Name</Form.Label>
+                    <Form.Control id="CreateDegreeCourseComponentEditDepartmentName" type="text" placeholder="Fachbereich-Name" name="departmentName" value={departmentName} onChange={handleChange} isValid={departmentName.length !== 0} isInvalid={!(departmentName.length !== 0)}/>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Fachbereich-Kurzbezeichnung</Form.Label>
+                    <Form.Control id="CreateDegreeCourseComponentEditDepartmentShortName" type="text" placeholder="Fachbereich-Kurzbezeichnung" name="departmentShortName" value={departmentShortName} onChange={handleChange} isValid={departmentShortName.length !== 0} isInvalid={!(departmentShortName.length !== 0)}/>
                 </Form.Group>
                 {errorAnzeigen && <div style={{ color: "rgb(255,0,0)" }}>{errorText}</div>}
-                <div id="NewUserButtons">
+                <div id="NewDegreeCourseButtons">
                     {anlegenButton}
-                    <Button id="OpenUserManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showUserListe}>Cancel</Button>
+                    <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showStudiengangListe}>Cancel</Button>
                 </div>
             </Form>
         </div>;

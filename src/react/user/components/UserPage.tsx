@@ -64,7 +64,7 @@ export function UserPage() {
             //Success Alert ist hier eingebunden, Einblenden/Ausblenden davon wird durch Redux Store gesteuert
             //show wird in UserEditPage aufgerufen, hide wird bei Verlassen der UserPage aufgerufen
             return <div id="UserManagementPage">
-                <Alert show={showUserEditAlertSuccessBool} id="AlertEditSuccess" variant="success" onClose={() => dispatch(hideUserEditAlertSuccess())} dismissible>
+                <Alert show={showUserEditAlertSuccessBool} id="AlertUserEditSuccess" variant="success" onClose={() => dispatch(hideUserEditAlertSuccess())} dismissible>
                     User wurde erfolgreich bearbeitet
                 </Alert>
                 <div id="UserUeberschrift" className="ueberschrift">

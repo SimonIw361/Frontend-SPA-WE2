@@ -1,18 +1,18 @@
-/* Layout fuer User Liste
+/* Layout fuer DegreeCourse Liste
 https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap automatische Zeilenumbruch mit flex-wrap
 https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow restliche Bildschirmbreite wird ausgefuellt
 https://developer.mozilla.org/en-US/docs/Web/CSS/gap Abstand bei display flex bestimmen
 https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content 
 https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container Abnstand zwischen zwei Elemente setzen (funktioniert hier nur mit span)
 */
-#UserManagementPageListComponent {
+#DegreeCourseManagementPageListComponent {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 
 }
 
-#UserManagementPage {
+#DegreeCourseManagementPage {
   flex-grow: 1;
   margin-bottom: 20px;
 }
@@ -21,7 +21,7 @@ https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_i
   margin-left: 12px;
 }
 
-#UserUeberschrift {
+#DegreeCourseUeberschrift {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -29,35 +29,35 @@ https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_i
   margin-bottom: 20px;
 }
 
-#UserManagementPageCreateUserButton {
+#DegreeCourseManagementPageCreateDegreeCourseButton {
   margin-right: 12px;
 }
 
-#UserUeberschrift>* {
+#DegreeCourseUeberschrift>* {
   margin-bottom: 10px;
 }
 
-#AlertEditSuccess {
+#AlertDegreeCourseEditSuccess {
   margin: 10px;
 }
 
 /* hier Verkettung von Klassen (haben hoehere Prioritaet), einfach nur eine Klasse zu nehmen wird ueberschrieben, id zu nehmen ist unguenstig
   Element muss beide Klassen besitzen */
-.listUserID.list-group-item,
-.listUserFirstName.list-group-item,
-.listUserLastName.list-group-item,
+.listUniversityName.list-group-item,
+.listDepartmentName.list-group-item,
+.listName.list-group-item,
 .listFooterButtons.card-footer {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
 
-/* Layout fuer New User und Edit User und Profil
+/* Layout fuer New DegreeCourse und Edit DegreeCourse
   https://developer.mozilla.org/de/docs/Web/CSS/margin-left
   */
-#UserManagementPageCreateComponent,
-#UserManagementPageEditComponent,
-#UserProfilPageComponent {
+#DegreeCourseManagementPageCreateComponent,
+#DegreeCourseManagementPageEditComponent,
+#DegreeCourseProfilPageComponent {
   width: 450px;
   margin-left: auto;
   margin-right: auto;
@@ -65,32 +65,22 @@ https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_i
   padding-right: 20px;
 }
 
-#NewUserUeberschrift,
-#UserEditUeberschrift {
+#NewDegreeCourseUeberschrift,
+#DegreeCourseEditUeberschrift {
   margin-bottom: 12px;
 }
 
-#NewUserButtons,
-#EditUserButtons,
-#ProfilUserButtons {
+#NewDegreeCourseButtons,
+#EditDegreeCourseButtons,
+#ProfilDegreeCourseButtons {
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
   flex-wrap: wrap;
 }
 
-#NewUserButtons>*,
-#EditUserButtons>*,
-#ProfilUserButtons>* {
+#NewDegreeCourseButtons>*,
+#EditDegreeCourseButtons>*,
+#ProfilDegreeCourseButtons>* {
   margin-top: 10px;
-}
-
-#UserProfilForm {
-  margin-top: 20px;
-}
-
-#ProfilEditButtons {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
 }
