@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type MouseEvent } from "react";
+import {useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../RootStore";
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { PageNotFound, Unauthorized } from "../../components/Pages";
 import "../../../styles/User.css"
 import { USER_URL } from "../../../config/config";
-import { showUserEditAlertSuccess } from "../state/UserSlice";
+import {showUserEditAlertSuccess } from "../state/UserSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
@@ -26,7 +26,7 @@ export function UserEditPage() {
     const dispatch = useDispatch<AppDispatch>();
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const { selectedUser } = useSelector((state: RootState) => state.user);
-
+    
     if (accessToken === null && !user.isAdministrator) { // verhindern das man ohne Login auf Seite zugreifen kann
         return <Unauthorized />;
     }

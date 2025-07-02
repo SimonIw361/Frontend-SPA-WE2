@@ -1,7 +1,10 @@
 import { Nav } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../RootStore";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../RootStore";
 import { Link } from "react-router-dom";
+import { hideDegreeCourseEditAlertSuccess } from "../degreeCourse/state/DegreeCourseSlice";
+import { hideDegreeCourseApplicationEditAlertSuccess } from "../degreeCourseApplication/state/DegreeCourseApplicationSlice";
+import { hideUserEditAlertSuccess } from "../user/state/UserSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Navbar: https://react-bootstrap.netlify.app/docs/components/navs/
@@ -14,11 +17,18 @@ import { Link } from "react-router-dom";
 */
 
 export function ActivityBar() {
+    const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.authentication.user);
+
+    const handleHideEditAlert = () => { //blendet den Alert zum erfolgreichen Bearbeiten auf allen Seiten aus, weil Seite gewechselt wird
+        dispatch(hideDegreeCourseApplicationEditAlertSuccess());
+        dispatch(hideUserEditAlertSuccess());
+        dispatch(hideDegreeCourseEditAlertSuccess());
+    }
 
     let userBearbeiten;
     if (user.isAdministrator) {
-        userBearbeiten = <Nav.Link as={Link} to="/user" id="OpenUserManagementPageButton"><img className="ActivityBarItemBild" src="/user.png" alt="User"/></Nav.Link>;
+        userBearbeiten = <Nav.Link as={Link} to="/user" id="OpenUserManagementPageButton" onClick={handleHideEditAlert}><img className="ActivityBarItemBild" src="/user.png" alt="User"/></Nav.Link>;
     }
     else {
         userBearbeiten = <div></div>;
@@ -26,10 +36,10 @@ export function ActivityBar() {
 
     if (user.userID !== null) {
         return <div><Nav className="flex-column" id="activityBar">
-            <Nav.Link as={Link} to="/" id="OpenStartPageButton"><img className="ActivityBarItemBild" src="/home.png" alt="Home"/></Nav.Link>
+            <Nav.Link as={Link} to="/" id="OpenStartPageButton" onClick={handleHideEditAlert}><img className="ActivityBarItemBild" src="/home.png" alt="Home"/></Nav.Link>
             {userBearbeiten}
-            <Nav.Link as={Link} to="/degreeCourse" id="OpenDegreeCourseManagementPageButton"><img className="ActivityBarItemBild" src="/studiengang.png" alt="Studiengänge"/></Nav.Link>
-            <Nav.Link as={Link} to="/degreeCourseApplication" id="OpenDegreeCourseApplicationManagementPageButton"><img className="ActivityBarItemBild" src="/bewerbung.png" alt="Bewerbungen"/></Nav.Link>
+            <Nav.Link as={Link} to="/degreeCourse" id="OpenDegreeCourseManagementPageButton" onClick={handleHideEditAlert}><img className="ActivityBarItemBild" src="/studiengang.png" alt="Studiengänge"/></Nav.Link>
+            <Nav.Link as={Link} to="/degreeCourseApplication" id="OpenDegreeCourseApplicationManagementPageButton" onClick={handleHideEditAlert}><img className="ActivityBarItemBild" src="/bewerbung.png" alt="Bewerbungen"/></Nav.Link>
         </Nav>
             <div id="hintergrundActivityBarFarbe"></div>
         </div>;

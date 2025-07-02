@@ -19,27 +19,27 @@ export function DegreeCourseApplicationEditPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
-    const { selectedDegreeCourse } = useSelector((state: RootState) => state.degreeCourse);
+    const { selectedDegreeCourseApplication } = useSelector((state: RootState) => state.degreeCourseApplication);
 
     if (accessToken === null && !user.isAdministrator) { // verhindern das man ohne Login auf Seite zugreifen kann
         return <Unauthorized />;
     }
-    if (selectedDegreeCourse === null) { //kein User ausgewaehlt, irgendein Fehler im Code!!
-        console.log("Error: DegreeCourseEditPage soll aufgerufen werden, selectedUser ist aber null " + selectedDegreeCourse);
+    if (selectedDegreeCourseApplication === null) { //kein User ausgewaehlt, irgendein Fehler im Code!!
+        console.log("Error: DegreeCourseApplicationEditPage soll aufgerufen werden, selectedUser ist aber null " + selectedDegreeCourseApplication);
         return <PageNotFound />;
     }
 
-    const [name, setName] = useState(selectedDegreeCourse.name);
-    const [shortName, setShortName] = useState(selectedDegreeCourse.shortName);
-    const [universityName, setUniversityName] = useState(selectedDegreeCourse.universityName);
-    const [universityShortName, setUniversityShortName] = useState(selectedDegreeCourse.universityShortName);
-    const [departmentName, setDepartmentName] = useState(selectedDegreeCourse.departmentName);
-    const [departmentShortName, setDepartmentShortName] = useState(selectedDegreeCourse.departmentShortName);
+    const [name, setName] = useState(selectedDegreeCourseApplication.name);
+    const [shortName, setShortName] = useState(selectedDegreeCourseApplication.shortName);
+    const [universityName, setUniversityName] = useState(selectedDegreeCourseApplication.universityName);
+    const [universityShortName, setUniversityShortName] = useState(selectedDegreeCourseApplication.universityShortName);
+    const [departmentName, setDepartmentName] = useState(selectedDegreeCourseApplication.departmentName);
+    const [departmentShortName, setDepartmentShortName] = useState(selectedDegreeCourseApplication.departmentShortName);
     const [errorAnzeigen, setErrorAnzeigen] = useState(false);
     let errorText: string = "Der Studiengang konnte nicht bearbeitet werden.";
 
     const showStudiengangListe = () => {
-        navigate("/degreeCourse")
+        navigate("/degreeCourse");
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

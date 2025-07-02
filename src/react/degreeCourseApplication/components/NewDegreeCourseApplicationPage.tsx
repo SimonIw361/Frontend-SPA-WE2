@@ -1,7 +1,7 @@
 import { useEffect, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../../RootStore";
+import type {RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
 import { PageNotFound} from "../../components/Pages";
 import "../../../styles/DegreeCourse.css"
@@ -48,8 +48,12 @@ export function NewDegreeCourseApplicationPage() {
         }
     }, []);
 
-    const showBewerbungListe = () => {
-        navigate("/degreeCourseApplication");
+    // const showBewerbungListe = () => {
+    //     navigate("/degreeCourseApplication");
+    // }
+
+    const showStudiengangListe = () => {
+        navigate("/degreeCourse");
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -105,6 +109,7 @@ export function NewDegreeCourseApplicationPage() {
                 navigate("/degreeCourse");
             } else {
                 setErrorAnzeigen(true);
+                console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Anlegen einer Bewerbung auf NewDegreeCourseApplicationPage");
             }
         }
         catch (err) {
@@ -155,7 +160,7 @@ export function NewDegreeCourseApplicationPage() {
                 {errorAnzeigen && <div style={{ color: "rgb(255,0,0)" }}>{errorText}</div>}
                 <div id="NewDegreeCourseButtons">
                     {anlegenButton}
-                    <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showBewerbungListe}>Cancel</Button>
+                    <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showStudiengangListe}>Cancel</Button>
                 </div>
             </Form>
         </div>;

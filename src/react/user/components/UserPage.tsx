@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { UserComponent } from "./UserComponent";
 import "../../../styles/User.css"
 import { USER_URL } from "../../../config/config";
-import { hideUserEditAlertSuccess } from "../state/UserSlice";
+import { hideUserEditAlertSuccess, setSelectedUser } from "../state/UserSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
@@ -36,6 +36,7 @@ export function UserPage() {
     }
 
     useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen
+        dispatch(setSelectedUser(null));
         getAllUser();
     },[])
 

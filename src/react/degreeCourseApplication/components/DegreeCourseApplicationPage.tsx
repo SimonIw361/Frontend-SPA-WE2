@@ -5,7 +5,7 @@ import { Alert, ListGroup } from "react-bootstrap";
 import { Unauthorized } from "../../components/Pages";
 import "../../../styles/DegreeCourseApplication.css"
 import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_MY_APPLICATION_URL} from "../../../config/config";
-import { hideDegreeCourseApplicationEditAlertSuccess } from "../state/DegreeCourseApplicationSlice";
+import { hideDegreeCourseApplicationEditAlertSuccess, setSelectedDegreeCourseApplication } from "../state/DegreeCourseApplicationSlice";
 import { DegreeCourseApplicationComponent } from "./DegreeCourseApplicationComponent";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
@@ -27,7 +27,7 @@ export function DegreeCourseApplicationPage() {
     const dispatch = useDispatch<AppDispatch>();
     const [bewerbungen, setBewerbungen] = useState<DegreeCourseApplication[]>([]); //lokaler State vom Typ DegreeCourse[]
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
-    const {showDegreeCourseEditAlertSuccessBool} = useSelector((state: RootState) => state.degreeCourse);
+    const {showDegreeCourseApplicationEditAlertSuccessBool} = useSelector((state: RootState) => state.degreeCourseApplication);
 
     const requestOptions = {
         method: 'GET',
@@ -35,6 +35,7 @@ export function DegreeCourseApplicationPage() {
     }
 
     useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen
+        dispatch(setSelectedDegreeCourseApplication(null));
         getAllBewerbungen();
     },[])
 
@@ -64,8 +65,8 @@ export function DegreeCourseApplicationPage() {
             //Success Alert ist hier eingebunden, Einblenden/Ausblenden davon wird durch Redux Store gesteuert
             //show wird in DegreeCourseEditPage aufgerufen, hide wird bei Verlassen der DegreeCoursePage aufgerufen
             return <div id="DegreeCourseApplicationManagementPage">
-                <Alert show={showDegreeCourseEditAlertSuccessBool} id="AlertDegreeCourseEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseApplicationEditAlertSuccess())} dismissible>
-                    Studiengang wurde erfolgreich bearbeitet
+                <Alert show={showDegreeCourseApplicationEditAlertSuccessBool} id="AlertDegreeCourseEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseApplicationEditAlertSuccess())} dismissible>
+                    Bewerbung wurde erfolgreich bearbeitet
                 </Alert>
                 <div id="DegreeCourseApplicationUeberschrift" className="ueberschrift">
                     <span id="DegreeCourseApplicationUeberschriftText">Studiengangbewerbung-Liste</span>

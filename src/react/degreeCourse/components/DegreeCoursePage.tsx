@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { DegreeCourseComponent } from "./DegreeCourseComponent";
 import "../../../styles/DegreeCourse.css"
 import { DEGREE_COURSE_URL } from "../../../config/config";
-import { hideDegreeCourseEditAlertSuccess } from "../state/DegreeCourseSlice";
+import { hideDegreeCourseEditAlertSuccess, setSelectedDegreeCourse } from "../state/DegreeCourseSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
@@ -39,6 +39,7 @@ export function DegreeCoursePage() {
     }
 
     useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen
+        dispatch(setSelectedDegreeCourse(null));
         getAllStudiengaenge();
     }, [])
 
@@ -63,31 +64,35 @@ export function DegreeCoursePage() {
     }
 
     let newDegreeCourseButton;
-    if(user.isAdministrator){
+    if (user.isAdministrator) {
         newDegreeCourseButton = <Button id="DegreeCourseManagementPageCreateDegreeCourseButton" variant="primary" onClick={handleNewDegreeCourse}>Studiengang anlegen</Button>;
     } else {
         newDegreeCourseButton = <div></div>
     }
 
-    try {
-        //Success Alert ist hier eingebunden, Einblenden/Ausblenden davon wird durch Redux Store gesteuert
-        //show wird in DegreeCourseEditPage aufgerufen, hide wird bei Verlassen der DegreeCoursePage aufgerufen
-        return <div id="DegreeCourseManagementPage">
-            <Alert show={showDegreeCourseEditAlertSuccessBool} id="AlertDegreeCourseEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseEditAlertSuccess())} dismissible>
-                Studiengang wurde erfolgreich bearbeitet
-            </Alert>
-            <div id="DegreeCourseUeberschrift" className="ueberschrift">
-                <span id="DegreeCourseUeberschriftText">Studiengang-Liste</span>
-                {newDegreeCourseButton}
+    if (accessToken !== null) {
+        try {
+            //Success Alert ist hier eingebunden, Einblenden/Ausblenden davon wird durch Redux Store gesteuert
+            //show wird in DegreeCourseEditPage aufgerufen, hide wird bei Verlassen der DegreeCoursePage aufgerufen
+            return <div id="DegreeCourseManagementPage">
+                <Alert show={showDegreeCourseEditAlertSuccessBool} id="AlertDegreeCourseEditSuccess" variant="success" onClose={() => dispatch(hideDegreeCourseEditAlertSuccess())} dismissible>
+                    Studiengang wurde erfolgreich bearbeitet
+                </Alert>
+                <div id="DegreeCourseUeberschrift" className="ueberschrift">
+                    <span id="DegreeCourseUeberschriftText">Studiengang-Liste</span>
+                    {newDegreeCourseButton}
+                </div>
+                <ListGroup id="DegreeCourseManagementPageListComponent" horizontal>
+                    {studiengaenge.map(studiengang => (
+                        <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={getAllStudiengaenge} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der DegreeCourseListe aufgerufen werden kann
+                    ))}
+                </ListGroup>
             </div>
-            <ListGroup id="DegreeCourseManagementPageListComponent" horizontal>
-                {studiengaenge.map(studiengang => (
-                    <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={getAllStudiengaenge} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der DegreeCourseListe aufgerufen werden kann
-                ))}
-            </ListGroup>
-        </div>
-    }
-    catch (err) {
-        return <Unauthorized />; //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
+        }
+        catch (err) {
+            return <Unauthorized />; //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
+        }
+    } else {
+        return <Unauthorized />;
     }
 }

@@ -11,8 +11,6 @@ import { DEGREE_COURSE_URL} from "../../../config/config";
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
 // Quelle Radios/Check https://react-bootstrap.netlify.app/docs/forms/checks-radios/
 
-
-
 export function NewDegreeCoursePage() {
     const navigate = useNavigate();
     const [name, setName] = useState("");

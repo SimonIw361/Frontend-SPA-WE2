@@ -9,6 +9,7 @@ import { NewDegreeCoursePage } from "../degreeCourse/components/NewDegreeCourseP
 import { DegreeCourseEditPage } from "../degreeCourse/components/DegreeCourseEditPage";
 import { NewDegreeCourseApplicationPage } from "../degreeCourseApplication/components/NewDegreeCourseApplicationPage";
 import { DegreeCourseApplicationPage } from "../degreeCourseApplication/components/DegreeCourseApplicationPage";
+import { DegreeCourseApplicationEditPage } from "../degreeCourseApplication/components/DegreeCourseApplicationEditPage";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle zu React Router: https://www.w3schools.com/react/react_router.asp
@@ -35,7 +36,7 @@ export function AppRoutes() {
       <Route path="/degreeCourseApplication" >
         <Route index element={<DegreeCourseApplicationPage />}></Route>
         <Route path="/degreeCourseApplication/newDegreeCourseApplication" element={<NewDegreeCourseApplicationPage/>}></Route>
-        <Route path="/degreeCourseApplication/editDegreeCourseApplication" element={<DegreeCourseEditPage />}></Route>
+        <Route path="/degreeCourseApplication/editDegreeCourseApplication" element={<DegreeCourseApplicationEditPage />}></Route>
       </Route>
 
       <Route path="/unauthorized" element={<Unauthorized />}></Route>

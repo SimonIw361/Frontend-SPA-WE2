@@ -5,7 +5,7 @@ import type { AppDispatch, RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
 import { PageNotFound, Unauthorized } from "../../components/Pages";
 import "../../../styles/DegreeCourse.css"
-import { showDegreeCourseEditAlertSuccess } from "../state/DegreeCourseSlice";
+import {showDegreeCourseEditAlertSuccess } from "../state/DegreeCourseSlice";
 import { DEGREE_COURSE_URL } from "../../../config/config";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
@@ -22,8 +22,8 @@ export function DegreeCourseEditPage() {
     if (accessToken === null && !user.isAdministrator) { // verhindern das man ohne Login auf Seite zugreifen kann
         return <Unauthorized />;
     }
-    if (selectedDegreeCourse === null) { //kein User ausgewaehlt, irgendein Fehler im Code!!
-        console.log("Error: DegreeCourseEditPage soll aufgerufen werden, selectedUser ist aber null " + selectedDegreeCourse);
+    if (selectedDegreeCourse === null) { //kein Studiengang ausgewaehlt, irgendein Fehler im Code!!
+        console.log("Error: DegreeCourseEditPage soll aufgerufen werden, selectedDegreeCourse ist aber null " + selectedDegreeCourse);
         return <PageNotFound />;
     }
 
@@ -37,7 +37,7 @@ export function DegreeCourseEditPage() {
     let errorText: string = "Der Studiengang konnte nicht bearbeitet werden.";
 
     const showStudiengangListe = () => {
-        navigate("/degreeCourse")
+        navigate("/degreeCourse");
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -120,11 +120,11 @@ export function DegreeCourseEditPage() {
     if (accessToken !== null && user.isAdministrator) {
         return <div id="DegreeCourseManagementPageEditComponent">
             <div id="DegreeCourseEditUeberschrift" className="ueberschrift">
-                <span id="DegreeCourseEditUeberschriftText">DegreeCourse bearbeiten: {bezeichnungStudiengang}</span>
+                <span id="DegreeCourseEditUeberschriftText">Studiengang bearbeiten: {bezeichnungStudiengang}</span>
             </div>
             <Form>
             <Form.Group className="mb-3">
-                    <Form.Label>Studiengang-Name</Form.Label>sV
+                    <Form.Label>Studiengang-Name</Form.Label>
                     <Form.Control id="EditDegreeCourseComponentEditName" type="text" placeholder="Studiengang-Name" name="name" value={name} onChange={handleChange} isValid={name.length !== 0} isInvalid={!(name.length !== 0)}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
