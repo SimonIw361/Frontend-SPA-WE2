@@ -102,13 +102,6 @@ export function DegreeCourseEditPage() {
             console.log("Error bei Anfrage an Backend: " + err)
         }
     }
-
-    let bezeichnungStudiengang;
-    if(selectedDegreeCourse.shortName == ""){
-        bezeichnungStudiengang = selectedDegreeCourse.name
-    } else {
-        bezeichnungStudiengang = selectedDegreeCourse.shortName + ": "+ selectedDegreeCourse.name
-    }
         
     let saveButton;
     if (name.length !== 0 && shortName.length !== 0 && universityName.length !== 0 && universityShortName.length !== 0 && departmentName.length !== 0 && departmentShortName.length !== 0) {
@@ -120,7 +113,7 @@ export function DegreeCourseEditPage() {
     if (accessToken !== null && user.isAdministrator) {
         return <div id="DegreeCourseManagementPageEditComponent">
             <div id="DegreeCourseEditUeberschrift" className="ueberschrift">
-                <span id="DegreeCourseEditUeberschriftText">Studiengang bearbeiten: {bezeichnungStudiengang}</span>
+                <span id="DegreeCourseEditUeberschriftText">Studiengang bearbeiten: {selectedDegreeCourse.name}</span>
             </div>
             <Form>
             <Form.Group className="mb-3">

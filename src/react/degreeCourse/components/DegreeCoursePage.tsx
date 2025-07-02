@@ -8,6 +8,7 @@ import { DegreeCourseComponent } from "./DegreeCourseComponent";
 import "../../../styles/DegreeCourse.css"
 import { DEGREE_COURSE_URL } from "../../../config/config";
 import { hideDegreeCourseEditAlertSuccess, setSelectedDegreeCourse } from "../state/DegreeCourseSlice";
+import { setSelectedDegreeCourseApplication } from "../../degreeCourseApplication/state/DegreeCourseApplicationSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
@@ -32,18 +33,19 @@ export function DegreeCoursePage() {
     const [studiengaenge, setStudiengaenge] = useState<DegreeCourse[]>([]); //lokaler State vom Typ DegreeCourse[]
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const { showDegreeCourseEditAlertSuccessBool } = useSelector((state: RootState) => state.degreeCourse);
-
-    const requestOptions = {
-        method: 'GET',
-        headers: { "Authorization": "Basic " + accessToken }
-    }
-
+    
     useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen
         dispatch(setSelectedDegreeCourse(null));
+        dispatch(setSelectedDegreeCourseApplication(null));
         getAllStudiengaenge();
     }, [])
 
     const getAllStudiengaenge = async () => {
+        const requestOptions = {
+            method: 'GET',
+            headers: { "Authorization": "Basic " + accessToken }
+        }
+
         try {
             let response = await fetch(DEGREE_COURSE_URL, requestOptions);
             if (response.ok) {

@@ -88,7 +88,7 @@ export function DegreeCourseApplicationComponent({ bewerbung, degreeCourseApplic
 
     const handleEditDegreeCourseApplication = () => {
         dispatch(hideDegreeCourseApplicationEditAlertSuccess());
-        dispatch(setSelectedDegreeCourseApplication(studiengang));
+        dispatch(setSelectedDegreeCourseApplication(bewerbung));
         navigate("/degreeCourseApplication/editDegreeCourseApplication");
     }
 
@@ -97,12 +97,12 @@ export function DegreeCourseApplicationComponent({ bewerbung, degreeCourseApplic
     //falls edit machen hier auch noch Buttons hinzufuegen
     let editButtonComponent;
     let deleteButtonComponent;
-    if (user.isAdministrator) {
+    if (user.isAdministrator) { //delete kann nur admin machen, Server laesst delete von nicht admin nicht zu
         deleteButtonComponent = <Button id={"DegreeCourseApplicationItemDeleteButton" + bewerbung.id} className="EditButton" variant="danger" onClick={handleOpenDeleteDialog}>Delete</Button>;
         editButtonComponent = <Button id={"DegreeCourseApplicationItemEditButton" + bewerbung.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourseApplication}>Edit</Button>;
     } else {
         deleteButtonComponent = <div></div>;
-        editButtonComponent = <div></div>;
+        editButtonComponent = <Button id={"DegreeCourseApplicationItemEditButton" + bewerbung.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourseApplication}>Edit</Button>;
     }
 
     if (accessToken !== null) {

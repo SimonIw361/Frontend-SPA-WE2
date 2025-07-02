@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type MouseEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../RootStore";
@@ -6,14 +6,21 @@ import { useNavigate } from "react-router-dom";
 import { PageNotFound, Unauthorized } from "../../components/Pages";
 import "../../../styles/DegreeCourse.css"
 import { showDegreeCourseApplicationEditAlertSuccess } from "../state/DegreeCourseApplicationSlice";
-import { DEGREE_COURSE_URL } from "../../../config/config";
+import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_URL } from "../../../config/config";
+import type { DegreeCourse } from "../../degreeCourse/components/DegreeCoursePage";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
 // Quelle Radios/Check https://react-bootstrap.netlify.app/docs/forms/checks-radios/
 // Quelle zu fetch Anfrage https://developer.mozilla.org/de/docs/Web/API/Fetch_API/Using_Fetch
 
-//noch fast keien Aenderung gemacht, fast komplett kopiert von DegreeCourse
+export type DegreeCourseApplicationEdit = {
+    id?: string
+    applicantUserID?: string,
+    degreeCourseID?: string,
+    targetPeriodYear?: string,
+    targetPeriodShortName?: string
+}
 
 export function DegreeCourseApplicationEditPage() {
     const navigate = useNavigate();
@@ -21,25 +28,57 @@ export function DegreeCourseApplicationEditPage() {
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const { selectedDegreeCourseApplication } = useSelector((state: RootState) => state.degreeCourseApplication);
 
-    if (accessToken === null && !user.isAdministrator) { // verhindern das man ohne Login auf Seite zugreifen kann
+    if (accessToken === null && !user.isAdministrator) { //verhindern das man ohne Login auf Seite zugreifen kann
         return <Unauthorized />;
     }
-    if (selectedDegreeCourseApplication === null) { //kein User ausgewaehlt, irgendein Fehler im Code!!
+    if (selectedDegreeCourseApplication === null) { //keine Bewerbung ausgewaehlt, irgendein Fehler im Code!!
         console.log("Error: DegreeCourseApplicationEditPage soll aufgerufen werden, selectedUser ist aber null " + selectedDegreeCourseApplication);
         return <PageNotFound />;
     }
 
-    const [name, setName] = useState(selectedDegreeCourseApplication.name);
-    const [shortName, setShortName] = useState(selectedDegreeCourseApplication.shortName);
-    const [universityName, setUniversityName] = useState(selectedDegreeCourseApplication.universityName);
-    const [universityShortName, setUniversityShortName] = useState(selectedDegreeCourseApplication.universityShortName);
-    const [departmentName, setDepartmentName] = useState(selectedDegreeCourseApplication.departmentName);
-    const [departmentShortName, setDepartmentShortName] = useState(selectedDegreeCourseApplication.departmentShortName);
+    const [applicantUserID, setApplicantUserID] = useState("");
+    const [degreeCourseName, setDegreeCourseName] = useState("");
+    const [targetPeriodYear, setTargetPeriodYear] = useState("");
+    const [targetPeriodShortName, setTargetPeriodShortName] = useState("");
+    const [studiengang, setStudiengaeng] = useState<DegreeCourse>();
     const [errorAnzeigen, setErrorAnzeigen] = useState(false);
-    let errorText: string = "Der Studiengang konnte nicht bearbeitet werden.";
+    let errorText: string = "Es konnte keine neue Bewerbung angelegt werden.";
 
-    const showStudiengangListe = () => {
-        navigate("/degreeCourse");
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                "Authorization": "Basic " + accessToken,
+                "Content-Type": "application/json"
+            }
+        }
+
+        const fetchStudiengang = async () => {//Daten fuer aktuellen Studiengang abfragen
+            try {
+                let response = await fetch(DEGREE_COURSE_URL + "/" + selectedDegreeCourseApplication.degreeCourseID, requestOptions);
+                if (response.ok) {
+                    setStudiengaeng(await response.json());
+                } else {
+                    //darf im Normalfall nicht passieren, passiert nur wenn Studiengang geloescht wird und Bewerbung noch existiert
+                    console.log("Error " + response.status + " " + response.statusText + ": Es gibt keinen passenden Studiengang zu dieser Bewerbung");
+                }
+            }
+            catch (err) {
+                console.log("Error bei Anfrage an Backend: " + err);
+            }
+        }
+        fetchStudiengang();
+    }, [])
+
+    useEffect(() => {
+        setApplicantUserID(selectedDegreeCourseApplication.applicantUserID);
+        setDegreeCourseName(studiengang?.shortName + ": " + studiengang?.name);
+        setTargetPeriodYear("" + selectedDegreeCourseApplication.targetPeriodYear);
+        setTargetPeriodShortName(selectedDegreeCourseApplication.targetPeriodShortName);
+    }, [studiengang])
+
+    const showBewerbungListe = () => {
+        navigate("/degreeCourseApplication");
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,112 +86,105 @@ export function DegreeCourseApplicationEditPage() {
         let name = t.name;
         let value = t.value;
         switch (name) {
-            case "name":
-                setName(value);
+            case "applicantUserID":
+                setApplicantUserID(value);
                 break;
-            case "shortName":
-                setShortName(value);
+            case "degreeCourseName":
+                setDegreeCourseName(value);
                 break;
-            case "universityName":
-                setUniversityName(value);
+            case "targetPeriodYear":
+                setTargetPeriodYear(value);
                 break;
-            case "universityShortName":
-                setUniversityShortName(value);
-                break;
-            case "departmentName":
-                setDepartmentName(value);
-                break;
-            case "departmentShortName":
-                setDepartmentShortName(value);
+            case "targetPeriodShortName":
+                setTargetPeriodShortName(value);
                 break;
             default:
-                console.log("Error: Fehler beim Aendern von NewDegreeCourse State in handleChange")
+                console.log("Error: Fehler beim Aendern von NewDegreeCourseApplication State in handleChange");
         }
     }
 
     const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        e.preventDefault();
 
-        let requestOptions = {
+        let body: DegreeCourseApplicationEdit = {
+            "degreeCourseID": selectedDegreeCourseApplication.degreeCourseID,
+            "targetPeriodYear": targetPeriodYear,
+            "targetPeriodShortName": targetPeriodShortName
+        }
+        if (user.isAdministrator) {
+            body.applicantUserID = applicantUserID;
+        }
+
+        const requestOptions = {
             method: 'PUT',
             headers: {
                 "Authorization": "Basic " + accessToken,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                "name": name,
-                "shortName": shortName,
-                "universityName": universityName,
-                "universityShortName": universityShortName,
-                "departmentName": departmentName,
-                "departmentShortName": departmentShortName
-            })
+            body: JSON.stringify(body)
         }
 
         try {
-            let response = await fetch(DEGREE_COURSE_URL + "/" + selectedDegreeCourse.id, requestOptions);
+            let response = await fetch(DEGREE_COURSE_APPLICATION_URL + "/" + selectedDegreeCourseApplication.id, requestOptions);
             await response.json();
-            console.log(response.status)
             if (response.ok) {
                 dispatch(showDegreeCourseApplicationEditAlertSuccess());
-                navigate("/degreeCourse");
+                navigate("/degreeCourseApplication");
             } else {
-                setErrorAnzeigen(true); //passiert nie, man kann keine ungueltigen Werte eingeben (wenn ungueltig werden alte Werte genommen)
+                setErrorAnzeigen(true);
+                console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Anlegen einer Bewerbung auf DegreeCourseApplicationEditPage");
             }
         }
         catch (err) {
-            console.log("Error bei Anfrage an Backend: " + err)
+            console.log("Error bei Anfrage an Backend: " + err);
         }
     }
 
-    let bezeichnungStudiengang;
-    if(selectedDegreeCourse.shortName == ""){
-        bezeichnungStudiengang = selectedDegreeCourse.name
-    } else {
-        bezeichnungStudiengang = selectedDegreeCourse.shortName + ": "+ selectedDegreeCourse.name
-    }
-        
     let saveButton;
-    if (name.length !== 0 && shortName.length !== 0 && universityName.length !== 0 && universityShortName.length !== 0 && departmentName.length !== 0 && departmentShortName.length !== 0) {
-        saveButton = <Button id="EditDegreeCourseComponentSaveDegreeCourseButton" variant="success" type="submit" onClick={handleSubmit}>Speichern</Button>;
+    if (applicantUserID.length !== 0 && degreeCourseName.length !== 0 && targetPeriodYear.length !== 0 && targetPeriodShortName.length !== 0) {
+        saveButton = <Button id="EditDegreeCourseApplicationSaveDegreeCourseApplictionButton" variant="success" type="submit" onClick={handleSubmit}>Speichern</Button>;
     } else {
-        saveButton = <Button id="EditDegreeCourseComponentSaveDegreeCourseButton" variant="success" type="submit" disabled>Speichern</Button>;
+        saveButton = <Button id="EditDegreeCourseApplicationSaveDegreeCourseApplictionButton" variant="success" type="submit" disabled>Speichern</Button>;
     }
 
-    if (accessToken !== null && user.isAdministrator) {
-        return <div id="DegreeCourseManagementPageEditComponent">
-            <div id="DegreeCourseEditUeberschrift" className="ueberschrift">
-                <span id="DegreeCourseEditUeberschriftText">DegreeCourse bearbeiten: {bezeichnungStudiengang}</span>
+    let formUserID;
+    if (user.isAdministrator) {
+        formUserID = <Form.Control id="EditDegreeCourseApplicationEditUserID" type="text" placeholder="User-ID" name="applicantUserID" value={applicantUserID} onChange={handleChange} isValid={applicantUserID.length !== 0} isInvalid={!(applicantUserID.length !== 0)} />
+    } else {
+        formUserID = <Form.Control id="EditDegreeCourseApplicationEditUserID" type="text" placeholder="User-ID" name="applicantUserID" value={applicantUserID} isValid={applicantUserID.length !== 0} isInvalid={!(applicantUserID.length !== 0)} disabled readOnly />
+    }
+
+    if (accessToken !== null) {
+        return <div id="DegreeCourseApplicationManagementPageEditComponent">
+            <div id="DegreeCourseApplicationEditUeberschrift" className="ueberschrift">
+                <span id="DegreeCourseApplicationEditUeberschriftText">Bewerbung bearbeiten: {studiengang?.name}</span>
             </div>
             <Form>
-            <Form.Group className="mb-3">
-                    <Form.Label>Studiengang-Name</Form.Label>sV
-                    <Form.Control id="EditDegreeCourseComponentEditName" type="text" placeholder="Studiengang-Name" name="name" value={name} onChange={handleChange} isValid={name.length !== 0} isInvalid={!(name.length !== 0)}/>
+                <Form.Group className="mb-3">
+                    <Form.Label>Studiengang</Form.Label>
+                    <Form.Control id="EditDegreeCourseApplicationEditDegreeCourse" type="text" placeholder="Studiengang" name="degreeCourseName" value={degreeCourseName} isValid={degreeCourseName.length !== 0} isInvalid={!(degreeCourseName.length !== 0)} disabled readOnly />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Studiengang-Kuzbezeichnung</Form.Label>
-                    <Form.Control id="EditDegreeCourseComponentEditShortName" type="text" placeholder="Studiengang-Kuzbezeichnung" name="shortName" value={shortName} onChange={handleChange} isValid={shortName.length !== 0} isInvalid={!(shortName.length !== 0)} />
+                    <Form.Label>User-ID</Form.Label>
+                    {formUserID}
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Universität-Name</Form.Label>
-                    <Form.Control id="EditDegreeCourseComponentEditUniversityName" type="text" placeholder="Universität-Name" name="universityName" value={universityName} onChange={handleChange} isValid={universityName.length !== 0} isInvalid={!(universityName.length !== 0)}/>
+                    <Form.Label>Jahr</Form.Label>
+                    <Form.Control id="EditDegreeCourseApplicationEditTargetPeriodYear" type="number" placeholder="Jahr" name="targetPeriodYear" value={targetPeriodYear} onChange={handleChange} isValid={targetPeriodYear.length === 4} isInvalid={!(targetPeriodYear.length === 4)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Universität-Kurzbezeichnung</Form.Label>
-                    <Form.Control id="EditDegreeCourseComponentEditUniversityShortName" type="text" placeholder="Universität-Kurzbezeichnung" name="universityShortName" value={universityShortName} onChange={handleChange} isValid={universityShortName.length !== 0} isInvalid={!(universityShortName.length !== 0)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Fachbereich-Name</Form.Label>
-                    <Form.Control id="EditDegreeCourseComponentEditDepartmentName" type="text" placeholder="Fachbereich-Name" name="departmentName" value={departmentName} onChange={handleChange} isValid={departmentName.length !== 0} isInvalid={!(departmentName.length !== 0)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Fachbereich-Kurzbezeichnung</Form.Label>
-                    <Form.Control id="EditDegreeCourseComponentEditDepartmentShortName" type="text" placeholder="Fachbereich-Kurzbezeichnung" name="departmentShortName" value={departmentShortName} onChange={handleChange} isValid={departmentShortName.length !== 0} isInvalid={!(departmentShortName.length !== 0)}/>
+                    <Form.Label>Semester</Form.Label>
+                    <Form.Control id="EditDegreeCourseApplicationEditTargetPeriodShortName" as="select" name="targetPeriodShortName" value={targetPeriodShortName} onChange={handleChange} isValid={targetPeriodShortName.length !== 0} isInvalid={!(targetPeriodShortName.length !== 0)} >
+                        <option value="">Bitte Semester auswählen</option>
+                        <option value="WiSe">Wintersemester</option>
+                        <option value="SoSe">Sommersemester</option>
+                    </Form.Control>
                 </Form.Group>
                 {errorAnzeigen && <div style={{ color: "rgb(255,0,0)" }}>{errorText}</div>}
-                <div id="EditDegreeCourseButtons">
+                <div id="EditDegreeCourseApplicationButtons">
                     {saveButton}
-                    <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showStudiengangListe}>Cancel</Button>
+                    <Button id="OpenDegreeCourseApplicationManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showBewerbungListe}>Cancel</Button>
                 </div>
             </Form>
         </div>;

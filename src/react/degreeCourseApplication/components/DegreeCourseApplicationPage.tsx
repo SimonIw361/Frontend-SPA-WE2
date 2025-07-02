@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../RootStore";
 import { useEffect, useState } from "react";
-import { Alert, ListGroup } from "react-bootstrap";
+import { Alert, Button, ListGroup } from "react-bootstrap";
 import { Unauthorized } from "../../components/Pages";
 import "../../../styles/DegreeCourseApplication.css"
 import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_MY_APPLICATION_URL} from "../../../config/config";
 import { hideDegreeCourseApplicationEditAlertSuccess, setSelectedDegreeCourseApplication } from "../state/DegreeCourseApplicationSlice";
 import { DegreeCourseApplicationComponent } from "./DegreeCourseApplicationComponent";
+import { useNavigate } from "react-router-dom";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
@@ -25,6 +26,7 @@ export type DegreeCourseApplication = {
 
 export function DegreeCourseApplicationPage() {
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const [bewerbungen, setBewerbungen] = useState<DegreeCourseApplication[]>([]); //lokaler State vom Typ DegreeCourse[]
     const { user, accessToken } = useSelector((state: RootState) => state.authentication);
     const {showDegreeCourseApplicationEditAlertSuccessBool} = useSelector((state: RootState) => state.degreeCourseApplication);
@@ -59,6 +61,11 @@ export function DegreeCourseApplicationPage() {
             console.log("Error bei Anfrage an Backend: " + err)
         }
     }
+
+    const handleNewDegreeCourseApplication = () => {
+        dispatch(hideDegreeCourseApplicationEditAlertSuccess());
+        navigate("/degreeCourseApplication/newDegreeCourseApplication");
+    }
     
     if (accessToken !== null) {
         try {
@@ -70,6 +77,7 @@ export function DegreeCourseApplicationPage() {
                 </Alert>
                 <div id="DegreeCourseApplicationUeberschrift" className="ueberschrift">
                     <span id="DegreeCourseApplicationUeberschriftText">Studiengangbewerbung-Liste</span>
+                    <span><Button id="DegreeCourseManagementPageCreateDegreeCourseButton" variant="primary" onClick={handleNewDegreeCourseApplication}>Bewerbung anlegen</Button></span>
                 </div>
                 <ListGroup id="DegreeCourseApplicationManagementPageListComponent" horizontal>
                     {bewerbungen.map(bewerbung => (
