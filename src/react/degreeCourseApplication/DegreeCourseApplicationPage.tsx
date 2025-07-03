@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../RootStore";
+import type { AppDispatch, RootState } from "../../RootStore";
 import { useEffect, useState } from "react";
 import { Alert, Button, ListGroup } from "react-bootstrap";
-import { Unauthorized } from "../../components/Pages";
-import "../../../styles/DegreeCourseApplication.css"
-import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_MY_APPLICATION_URL} from "../../../config/config";
-import { hideDegreeCourseApplicationEditAlertSuccess, setSelectedDegreeCourseApplication } from "../state/DegreeCourseApplicationSlice";
-import { DegreeCourseApplicationComponent } from "./DegreeCourseApplicationComponent";
+import { Unauthorized } from "../components/Pages";
+import "../../styles/DegreeCourseApplication.css"
+import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_MY_APPLICATION_URL} from "../../config/config";
+import { hideDegreeCourseApplicationEditAlertSuccess, setSelectedDegreeCourseApplication } from "./state/DegreeCourseApplicationSlice";
+import { DegreeCourseApplicationComponent } from "./components/DegreeCourseApplicationComponent";
 import { useNavigate } from "react-router-dom";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen

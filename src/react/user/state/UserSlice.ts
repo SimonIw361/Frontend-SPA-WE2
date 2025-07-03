@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit/react";
-import type { User } from "../components/UserPage";
+import type { User } from "../UserPage";
 
 type State = {
     selectedUser: User | null,

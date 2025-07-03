@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import { LandingPage } from "./LandingRouter";
 import { Impressum, Kontakt, PageNotFound, UeberUns, Unauthorized } from "../components/Pages";
-import { UserPage } from "../user/components/UserPage";
+import { UserPage } from "../user/UserPage";
 import { NewUserPage } from "../user/components/NewUserPage";
 import { UserEditPage } from "../user/components/UserEditPage";
-import { DegreeCoursePage } from "../degreeCourse/components/DegreeCoursePage";
+import { DegreeCoursePage } from "../degreeCourse/DegreeCoursePage";
 import { NewDegreeCoursePage } from "../degreeCourse/components/NewDegreeCoursePage";
 import { DegreeCourseEditPage } from "../degreeCourse/components/DegreeCourseEditPage";
 import { NewDegreeCourseApplicationPage } from "../degreeCourseApplication/components/NewDegreeCourseApplicationPage";
-import { DegreeCourseApplicationPage } from "../degreeCourseApplication/components/DegreeCourseApplicationPage";
+import { DegreeCourseApplicationPage } from "../degreeCourseApplication/DegreeCourseApplicationPage";
 import { DegreeCourseApplicationEditPage } from "../degreeCourseApplication/components/DegreeCourseApplicationEditPage";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen

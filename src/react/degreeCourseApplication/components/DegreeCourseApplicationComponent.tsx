@@ -3,9 +3,9 @@ import type { AppDispatch, RootState } from "../../../RootStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_URL } from "../../../config/config";
-import type { DegreeCourseApplication } from "./DegreeCourseApplicationPage";
+import type { DegreeCourseApplication } from "../DegreeCourseApplicationPage";
 import { hideDegreeCourseApplicationEditAlertSuccess, setSelectedDegreeCourseApplication } from "../state/DegreeCourseApplicationSlice";
-import type { DegreeCourse } from "../../degreeCourse/components/DegreeCoursePage";
+import type { DegreeCourse } from "../../degreeCourse/DegreeCoursePage";
 import { useNavigate } from "react-router-dom";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
@@ -21,7 +21,7 @@ type DegreeCourseApplicationComponentProps = {
 export function DegreeCourseApplicationComponent({ bewerbung, degreeCourseApplicationAktualisieren }: DegreeCourseApplicationComponentProps) {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const { user, accessToken } = useSelector((state: RootState) => state.authentication);
+    const { accessToken } = useSelector((state: RootState) => state.authentication);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [studiengang, setStudiengaeng] = useState<DegreeCourse>();//TODO Typ hinschreiben!!
 
@@ -94,16 +94,9 @@ export function DegreeCourseApplicationComponent({ bewerbung, degreeCourseApplic
 
     let deleteButton = <Button id="DeleteDialogConfirmButton" className="DeleteButton" variant="danger" onClick={handleDelete}>Delete</Button>
 
-    //falls edit machen hier auch noch Buttons hinzufuegen
-    let editButtonComponent;
-    let deleteButtonComponent;
-    if (user.isAdministrator) { //delete kann nur admin machen, Server laesst delete von nicht admin nicht zu
-        deleteButtonComponent = <Button id={"DegreeCourseApplicationItemDeleteButton" + bewerbung.id} className="EditButton" variant="danger" onClick={handleOpenDeleteDialog}>Delete</Button>;
-        editButtonComponent = <Button id={"DegreeCourseApplicationItemEditButton" + bewerbung.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourseApplication}>Edit</Button>;
-    } else {
-        deleteButtonComponent = <div></div>;
-        editButtonComponent = <Button id={"DegreeCourseApplicationItemEditButton" + bewerbung.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourseApplication}>Edit</Button>;
-    }
+    //delete kann nur admin machen, Server laesst delete von nicht admin nicht zu (Delete Button wird trotzdem immer angezeigt, da es laut Rechten gehen sollte (beim Klicken von nicht admin kommt 403))
+    let deleteButtonComponent = <Button id={"DegreeCourseApplicationItemDeleteButton" + bewerbung.id} className="EditButton" variant="danger" onClick={handleOpenDeleteDialog}>Delete</Button>;
+    let editButtonComponent = <Button id={"DegreeCourseApplicationItemEditButton" + bewerbung.id} className="EditButton" variant="warning" onClick={handleEditDegreeCourseApplication}>Edit</Button>;
 
     if (accessToken !== null) {
         return <div><Card id={"DegreeCourseApplicationItem" + bewerbung.id} style={{ minWidth: "200px" }}>

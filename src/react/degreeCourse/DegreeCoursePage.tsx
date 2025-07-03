@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../RootStore";
+import type { AppDispatch, RootState } from "../../RootStore";
 import { useEffect, useState } from "react";
 import { Alert, Button, ListGroup } from "react-bootstrap";
-import { Unauthorized } from "../../components/Pages";
+import { Unauthorized } from "../components/Pages";
 import { useNavigate } from "react-router-dom";
-import { DegreeCourseComponent } from "./DegreeCourseComponent";
-import "../../../styles/DegreeCourse.css"
-import { DEGREE_COURSE_URL } from "../../../config/config";
-import { hideDegreeCourseEditAlertSuccess, setSelectedDegreeCourse } from "../state/DegreeCourseSlice";
-import { setSelectedDegreeCourseApplication } from "../../degreeCourseApplication/state/DegreeCourseApplicationSlice";
+import { DegreeCourseComponent } from "./components/DegreeCourseComponent";
+import "../../styles/DegreeCourse.css"
+import { DEGREE_COURSE_URL } from "../../config/config";
+import { hideDegreeCourseEditAlertSuccess, setSelectedDegreeCourse } from "./state/DegreeCourseSlice";
+import { setSelectedDegreeCourseApplication } from "../degreeCourseApplication/state/DegreeCourseApplicationSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript
@@ -27,6 +27,29 @@ export type DegreeCourse = {
     departmentShortName: string
 }
 
+//ruft alle Studiengaenge vom Backend ab und gibt diese als Array zurueck
+export const getAllStudiengaenge = async (token: string | null) => {
+    const requestOptions = {
+        method: 'GET',
+        headers: { "Authorization": "Basic " + token }
+    }
+
+    try {
+        let response = await fetch(DEGREE_COURSE_URL, requestOptions);
+        if (response.ok) {
+            const data: DegreeCourse[] = await response.json();
+            return data;
+        } else {
+            console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Abfragen aller Studiengaange auf DegreeCoursePage");
+            return null;
+        }
+    }
+    catch (err) {
+        console.log("Error bei Anfrage an Backend: " + err);
+        return null;
+    }
+}
+
 export function DegreeCoursePage() {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
@@ -37,26 +60,13 @@ export function DegreeCoursePage() {
     useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen
         dispatch(setSelectedDegreeCourse(null));
         dispatch(setSelectedDegreeCourseApplication(null));
-        getAllStudiengaenge();
+        studiengaengeSetzen();
     }, [])
 
-    const getAllStudiengaenge = async () => {
-        const requestOptions = {
-            method: 'GET',
-            headers: { "Authorization": "Basic " + accessToken }
-        }
-
-        try {
-            let response = await fetch(DEGREE_COURSE_URL, requestOptions);
-            if (response.ok) {
-                const data: DegreeCourse[] = await response.json();
-                setStudiengaenge(data);
-            } else {
-                console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Abfragen aller Studiengaange auf DegreeCoursePage");
-            }
-        }
-        catch (err) {
-            console.log("Error bei Anfrage an Backend: " + err)
+    const studiengaengeSetzen = async () => {
+        let allStudiengaenge = await getAllStudiengaenge(accessToken);
+        if(allStudiengaenge){
+            setStudiengaenge(allStudiengaenge);
         }
     }
 
@@ -86,7 +96,7 @@ export function DegreeCoursePage() {
                 </div>
                 <ListGroup id="DegreeCourseManagementPageListComponent" horizontal>
                     {studiengaenge.map(studiengang => (
-                        <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={getAllStudiengaenge} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der DegreeCourseListe aufgerufen werden kann
+                        <DegreeCourseComponent studiengang={studiengang} key={"DegreeCourseItem" + studiengang.id} degreeCourseAktualisieren={studiengaengeSetzen} /> //getAllStudiengaenge wird uebergeben, damit diese zum Aktualisieren der DegreeCourseListe aufgerufen werden kann
                     ))}
                 </ListGroup>
             </div>

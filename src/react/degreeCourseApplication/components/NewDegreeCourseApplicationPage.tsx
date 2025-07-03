@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/DegreeCourse.css"
-import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_URL } from "../../../config/config";
+import { DEGREE_COURSE_APPLICATION_URL} from "../../../config/config";
 import type { DegreeCourseApplicationEdit } from "./DegreeCourseApplicationEditPage";
-import type { DegreeCourse } from "../../degreeCourse/components/DegreeCoursePage";
+import { getAllStudiengaenge, type DegreeCourse } from "../../degreeCourse/DegreeCoursePage";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
@@ -43,26 +43,13 @@ export function NewDegreeCourseApplicationPage() {
             }
         }
 
-        getAllStudiengaenge();
+        studiengaengeSetzen();
     }, []);
 
-    const getAllStudiengaenge = async () => {
-        const requestOptions = {
-            method: 'GET',
-            headers: { "Authorization": "Basic " + accessToken }
-        }
-
-        try {
-            let response = await fetch(DEGREE_COURSE_URL, requestOptions);
-            if (response.ok) {
-                const data: DegreeCourse[] = await response.json();
-                setStudiengaenge(data);
-            } else {
-                console.log("Error " + response.status + " " + response.statusText + ": Fehler beim Abfragen aller Studiengaange auf NewDegreeCoursePage");
-            }
-        }
-        catch (err) {
-            console.log("Error bei Anfrage an Backend: " + err)
+    const studiengaengeSetzen = async () => {
+        let allStudiengaenge = await getAllStudiengaenge(accessToken);
+        if(allStudiengaenge){
+            setStudiengaenge(allStudiengaenge);
         }
     }
 
@@ -160,7 +147,7 @@ export function NewDegreeCourseApplicationPage() {
         auswahlStudiengang = <Form.Control id="CreateDegreeCourseApplicationEditDegreeCourse" as="select" name="degreeCourseName" value={degreeCourseID} onChange={handleChange} isValid={degreeCourseID.length !== 0} isInvalid={!(degreeCourseID.length !== 0)} >
             <option value="">Bitte Studiengang auswählen</option>
             {studiengaenge?.map(studiengang => (
-                <option value={studiengang.id}>{studiengang.name} ({studiengang.shortName})</option>
+                <option key={studiengang.id} value={studiengang.id}>{studiengang.name} ({studiengang.shortName})</option>
             ))}
         </Form.Control>;
         cancelButton = <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showBewerbungListe}>Cancel</Button>;

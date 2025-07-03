@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../RootStore";
+import type { AppDispatch, RootState } from "../../RootStore";
 import { useEffect, useState } from "react";
 import { Alert, Button, ListGroup } from "react-bootstrap";
-import { Unauthorized } from "../../components/Pages";
+import { Unauthorized } from "../components/Pages";
 import { useNavigate } from "react-router-dom";
-import { UserComponent } from "./UserComponent";
-import "../../../styles/User.css"
-import { USER_URL } from "../../../config/config";
-import { hideUserEditAlertSuccess, setSelectedUser } from "../state/UserSlice";
+import { UserComponent } from "./components/UserComponent";
+import "../../styles/User.css"
+import { USER_URL } from "../../config/config";
+import { hideUserEditAlertSuccess, setSelectedUser } from "./state/UserSlice";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle useState typisieren: https://stackoverflow.com/questions/53650468/set-types-on-usestate-react-hook-with-typescript

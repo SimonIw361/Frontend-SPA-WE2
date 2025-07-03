@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit/react";
-import type { DegreeCourseApplication } from "../components/DegreeCourseApplicationPage";
+import type { DegreeCourseApplication } from "../DegreeCourseApplicationPage";
 
 type State = {
     selectedDegreeCourseApplication: DegreeCourseApplication | null,

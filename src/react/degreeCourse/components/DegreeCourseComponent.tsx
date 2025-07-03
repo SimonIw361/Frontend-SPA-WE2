@@ -1,5 +1,5 @@
 import { Button, Card, ListGroup, Modal } from "react-bootstrap";
-import type { DegreeCourse } from "./DegreeCoursePage";
+import type { DegreeCourse } from "../DegreeCoursePage";
 import type { AppDispatch, RootState } from "../../../RootStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";

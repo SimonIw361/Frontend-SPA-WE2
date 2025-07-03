@@ -7,12 +7,13 @@ import { PageNotFound, Unauthorized } from "../../components/Pages";
 import "../../../styles/DegreeCourse.css"
 import { showDegreeCourseApplicationEditAlertSuccess } from "../state/DegreeCourseApplicationSlice";
 import { DEGREE_COURSE_APPLICATION_URL, DEGREE_COURSE_URL } from "../../../config/config";
-import type { DegreeCourse } from "../../degreeCourse/components/DegreeCoursePage";
+import { getAllStudiengaenge, type DegreeCourse } from "../../degreeCourse/DegreeCoursePage";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
 // Quelle Radios/Check https://react-bootstrap.netlify.app/docs/forms/checks-radios/
 // Quelle zu fetch Anfrage https://developer.mozilla.org/de/docs/Web/API/Fetch_API/Using_Fetch
+// Quelle mehrere Hooks useEffect: https://de.legacy.reactjs.org/docs/hooks-rules.html
 
 export type DegreeCourseApplicationEdit = {
     id?: string
@@ -22,6 +23,7 @@ export type DegreeCourseApplicationEdit = {
     targetPeriodShortName?: string
 }
 
+//Bearbeiten von UserID und Studiengang der Bewerbung geht nur mit meinem Server, sonst wird es enfach ignoeriert
 export function DegreeCourseApplicationEditPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
@@ -38,9 +40,11 @@ export function DegreeCourseApplicationEditPage() {
 
     const [applicantUserID, setApplicantUserID] = useState("");
     const [degreeCourseName, setDegreeCourseName] = useState("");
+    const [degreeCourseID, setDegreeCourseID] = useState("");
     const [targetPeriodYear, setTargetPeriodYear] = useState("");
     const [targetPeriodShortName, setTargetPeriodShortName] = useState("");
     const [studiengang, setStudiengaeng] = useState<DegreeCourse>();
+    const [studiengaenge, setStudiengaenge] = useState<DegreeCourse[]>();
     const [errorAnzeigen, setErrorAnzeigen] = useState(false);
     let errorText: string = "Es konnte keine neue Bewerbung angelegt werden.";
 
@@ -71,11 +75,23 @@ export function DegreeCourseApplicationEditPage() {
     }, [])
 
     useEffect(() => {
+        if(studiengang){
+            setDegreeCourseName(studiengang.name + " (" + studiengang.shortName + ")");
+        } 
+
         setApplicantUserID(selectedDegreeCourseApplication.applicantUserID);
-        setDegreeCourseName(studiengang?.shortName + ": " + studiengang?.name);
         setTargetPeriodYear("" + selectedDegreeCourseApplication.targetPeriodYear);
         setTargetPeriodShortName(selectedDegreeCourseApplication.targetPeriodShortName);
-    }, [studiengang])
+        setDegreeCourseID(selectedDegreeCourseApplication.degreeCourseID);
+        studiengaengeSetzen();
+    }, [studiengang]);
+
+    const studiengaengeSetzen = async () => {
+        let allStudiengaenge = await getAllStudiengaenge(accessToken);
+        if(allStudiengaenge){
+            setStudiengaenge(allStudiengaenge);
+        }
+    }
 
     const showBewerbungListe = () => {
         navigate("/degreeCourseApplication");
@@ -91,6 +107,7 @@ export function DegreeCourseApplicationEditPage() {
                 break;
             case "degreeCourseName":
                 setDegreeCourseName(value);
+                setDegreeCourseID(value);
                 break;
             case "targetPeriodYear":
                 setTargetPeriodYear(value);
@@ -104,7 +121,6 @@ export function DegreeCourseApplicationEditPage() {
     }
 
     const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
         e.preventDefault();
 
         let body: DegreeCourseApplicationEdit = {
@@ -155,6 +171,18 @@ export function DegreeCourseApplicationEditPage() {
         formUserID = <Form.Control id="EditDegreeCourseApplicationEditUserID" type="text" placeholder="User-ID" name="applicantUserID" value={applicantUserID} isValid={applicantUserID.length !== 0} isInvalid={!(applicantUserID.length !== 0)} disabled readOnly />
     }
 
+    let auswahlStudiengang;
+    if (user.isAdministrator === false) {
+        auswahlStudiengang = <Form.Control id="EditDegreeCourseApplicationEditDegreeCourse" type="text" placeholder="Studiengang" name="degreeCourseName" value={degreeCourseName} isValid={degreeCourseName.length !== 0} isInvalid={!(degreeCourseName.length !== 0)} disabled readOnly />
+    } else {
+        auswahlStudiengang = <Form.Control id="EditDegreeCourseApplicationEditDegreeCourse" as="select" name="degreeCourseName" value={degreeCourseID} onChange={handleChange} isValid={degreeCourseID.length !== 0} isInvalid={!(degreeCourseID.length !== 0)} >
+            <option value="">Bitte Studiengang auswählen</option>
+            {studiengaenge?.map(studiengang => (
+                <option key={studiengang.id} value={studiengang.id}>{studiengang.name} ({studiengang.shortName})</option>
+            ))}
+        </Form.Control>;
+    }
+
     if (accessToken !== null) {
         return <div id="DegreeCourseApplicationManagementPageEditComponent">
             <div id="DegreeCourseApplicationEditUeberschrift" className="ueberschrift">
@@ -163,7 +191,7 @@ export function DegreeCourseApplicationEditPage() {
             <Form>
                 <Form.Group className="mb-3">
                     <Form.Label>Studiengang</Form.Label>
-                    <Form.Control id="EditDegreeCourseApplicationEditDegreeCourse" type="text" placeholder="Studiengang" name="degreeCourseName" value={degreeCourseName} isValid={degreeCourseName.length !== 0} isInvalid={!(degreeCourseName.length !== 0)} disabled readOnly />
+                    {auswahlStudiengang}
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>User-ID</Form.Label>
