@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 
 export function TopMenu() {
 
+    //durch as={Link} wird verhindert das es als a Tag dargestellt wird (dadurch kann Reload verhindert werden)
     return <Navbar id="TopMenu" expand="md" className="bg-body-tertiary">
         <Container fluid>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />

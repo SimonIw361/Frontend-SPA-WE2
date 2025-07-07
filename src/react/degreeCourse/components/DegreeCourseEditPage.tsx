@@ -90,7 +90,6 @@ export function DegreeCourseEditPage() {
         try {
             let response = await fetch(DEGREE_COURSE_URL + "/" + selectedDegreeCourse.id, requestOptions);
             await response.json();
-            console.log(response.status)
             if (response.ok) {
                 dispatch(showDegreeCourseEditAlertSuccess());
                 navigate("/degreeCourse");

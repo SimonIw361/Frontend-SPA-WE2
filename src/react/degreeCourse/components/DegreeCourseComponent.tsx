@@ -98,7 +98,7 @@ export function DegreeCourseComponent({ studiengang, degreeCourseAktualisieren }
             <Card.Footer className="listFooterButtons">
                 {editButtonComponent}
                 {deleteButtonComponent}
-                <Button id={"CreateDegreeCourseApplicationForDegreeCourse" + studiengang.id} className="???" variant="success" onClick={handleCreateDegreeCourseApplication}>Create Application</Button>
+                <Button id={"CreateDegreeCourseApplicationForDegreeCourse" + studiengang.id} variant="success" onClick={handleCreateDegreeCourseApplication}>Create Application</Button>
             </Card.Footer>
         </Card>
             <Modal show={showDeleteDialog} id={"DeleteDialogDegreeCourse" + studiengang.id} onHide={handleCloseDeleteDialog} >

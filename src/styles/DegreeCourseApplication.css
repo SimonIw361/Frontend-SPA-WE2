@@ -1,4 +1,4 @@
-/* Layout fuer DegreeCourse Liste
+/* Layout fuer DegreeCourse Application Liste
 https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap automatische Zeilenumbruch mit flex-wrap
 https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow restliche Bildschirmbreite wird ausgefuellt
 https://developer.mozilla.org/en-US/docs/Web/CSS/gap Abstand bei display flex bestimmen
@@ -55,7 +55,7 @@ https://developer.mozilla.org/de/docs/Web/CSS/CSS_flexible_box_layout/Aligning_i
   gap: 20px;
 }
 
-/* Layout fuer New DegreeCourse und Edit DegreeCourse
+/* Layout fuer New DegreeCourse Application und Edit DegreeCourse Application
   https://developer.mozilla.org/de/docs/Web/CSS/margin-left
   */
 #DegreeCourseApplicationManagementPageCreateComponent,

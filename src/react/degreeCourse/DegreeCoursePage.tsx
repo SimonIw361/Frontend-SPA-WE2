@@ -27,7 +27,7 @@ export type DegreeCourse = {
     departmentShortName: string
 }
 
-//ruft alle Studiengaenge vom Backend ab und gibt diese als Array zurueck
+//ruft alle Studiengaenge vom Backend ab und gibt diese als Array zurueck, wird in mehreren Komponenten verwendet
 export const getAllStudiengaenge = async (token: string | null) => {
     const requestOptions = {
         method: 'GET',

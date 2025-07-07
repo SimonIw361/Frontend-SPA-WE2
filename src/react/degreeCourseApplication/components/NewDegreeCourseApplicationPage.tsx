@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../RootStore";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/DegreeCourse.css"
-import { DEGREE_COURSE_APPLICATION_URL} from "../../../config/config";
+import { DEGREE_COURSE_APPLICATION_URL } from "../../../config/config";
 import type { DegreeCourseApplicationEdit } from "./DegreeCourseApplicationEditPage";
 import { getAllStudiengaenge, type DegreeCourse } from "../../degreeCourse/DegreeCoursePage";
+import { Unauthorized } from "../../components/Pages";
 
 // verwendete Quellen: Folien und Videos von den Vorlesungen
 // Quelle Form: https://react-bootstrap.netlify.app/docs/forms/form-control/
@@ -48,7 +49,7 @@ export function NewDegreeCourseApplicationPage() {
 
     const studiengaengeSetzen = async () => {
         let allStudiengaenge = await getAllStudiengaenge(accessToken);
-        if(allStudiengaenge){
+        if (allStudiengaenge) {
             setStudiengaenge(allStudiengaenge);
         }
     }
@@ -109,7 +110,7 @@ export function NewDegreeCourseApplicationPage() {
             let response = await fetch(DEGREE_COURSE_APPLICATION_URL, requestOptions);
             await response.json();
             if (response.ok) {
-                if(selectedDegreeCourse !== null){
+                if (selectedDegreeCourse !== null) {
                     navigate("/degreeCourse");
                 } else {
                     navigate("/degreeCourseApplication");
@@ -144,13 +145,18 @@ export function NewDegreeCourseApplicationPage() {
         auswahlStudiengang = <Form.Control id="CreateDegreeCourseApplicationEditDegreeCourse" type="text" placeholder="Studiengang" name="degreeCourseName" value={degreeCourseName} isValid={degreeCourseName.length !== 0} isInvalid={!(degreeCourseName.length !== 0)} disabled readOnly />;
         cancelButton = <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showStudiengangListe}>Cancel</Button>;
     } else {
-        auswahlStudiengang = <Form.Control id="CreateDegreeCourseApplicationEditDegreeCourse" as="select" name="degreeCourseName" value={degreeCourseID} onChange={handleChange} isValid={degreeCourseID.length !== 0} isInvalid={!(degreeCourseID.length !== 0)} >
-            <option value="">Bitte Studiengang auswählen</option>
-            {studiengaenge?.map(studiengang => (
-                <option key={studiengang.id} value={studiengang.id}>{studiengang.name} ({studiengang.shortName})</option>
-            ))}
-        </Form.Control>;
-        cancelButton = <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showBewerbungListe}>Cancel</Button>;
+        try {
+            auswahlStudiengang = <Form.Control id="CreateDegreeCourseApplicationEditDegreeCourse" as="select" name="degreeCourseName" value={degreeCourseID} onChange={handleChange} isValid={degreeCourseID.length !== 0} isInvalid={!(degreeCourseID.length !== 0)} >
+                <option value="">Bitte Studiengang auswählen</option>
+                {studiengaenge?.map(studiengang => (
+                    <option key={studiengang.id} value={studiengang.id}>{studiengang.name} ({studiengang.shortName})</option>
+                ))}
+            </Form.Control>;
+            cancelButton = <Button id="OpenDegreeCourseManagementPageListComponentButton" className="EditButton" variant="secondary" onClick={showBewerbungListe}>Cancel</Button>;
+        }
+        catch (err) {
+            return <Unauthorized />; //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
+        }
     }
 
     if (accessToken !== null) {
@@ -186,6 +192,8 @@ export function NewDegreeCourseApplicationPage() {
                 </div>
             </Form>
         </div>;
+    } else {
+        return <Unauthorized />;
     }
 
 }

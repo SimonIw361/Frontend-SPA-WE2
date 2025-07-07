@@ -2,6 +2,8 @@ import { Button } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { LoginButton } from "../login/components/LoginButton"
 
+//einige kleine Seiteninhalte die oefters angezeigt werden
+
 export function UeberUns(){
     return <div id="ueberuns">
         <div className="ueberschrift">Über Uns</div>
