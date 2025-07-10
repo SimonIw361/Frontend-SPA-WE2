@@ -172,21 +172,18 @@ export function DegreeCourseApplicationEditPage() {
     }
 
     let auswahlStudiengang;
-    if (user.isAdministrator === false) {
-        auswahlStudiengang = <Form.Control id="EditDegreeCourseApplicationEditDegreeCourse" type="text" placeholder="Studiengang" name="degreeCourseName" value={degreeCourseName} isValid={degreeCourseName.length !== 0} isInvalid={!(degreeCourseName.length !== 0)} disabled readOnly />
-    } else {
-        try {
-            auswahlStudiengang = <Form.Control id="EditDegreeCourseApplicationEditDegreeCourse" as="select" name="degreeCourseName" value={degreeCourseID} onChange={handleChange} isValid={degreeCourseID.length !== 0} isInvalid={!(degreeCourseID.length !== 0)} >
-                <option value="">Bitte Studiengang auswählen</option>
-                {studiengaenge?.map(studiengang => (
-                    <option key={studiengang.id} value={studiengang.id}>{studiengang.name} ({studiengang.shortName})</option>
-                ))}
-            </Form.Control>;
-        }
-        catch (err) {
-            return <Unauthorized />; //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
-        }
+    try {
+        auswahlStudiengang = <Form.Control id="EditDegreeCourseApplicationEditDegreeCourse" as="select" name="degreeCourseName" value={degreeCourseID} onChange={handleChange} isValid={degreeCourseID.length !== 0} isInvalid={!(degreeCourseID.length !== 0)} >
+            <option value="">Bitte Studiengang auswählen</option>
+            {studiengaenge?.map(studiengang => (
+                <option key={studiengang.id} value={studiengang.id}>{studiengang.name} ({studiengang.shortName})</option>
+            ))}
+        </Form.Control>;
     }
+    catch (err) {
+        return <Unauthorized />; //tritt auf wenn Token ungueltig ist, bei map wird dann Fehler geworfen
+    }
+
 
     if (accessToken !== null) {
         return <div id="DegreeCourseApplicationManagementPageEditComponent">
