@@ -74,7 +74,7 @@ export function DegreeCourseEditPage() {
         let requestOptions = {
             method: 'PUT',
             headers: {
-                "Authorization": "Basic " + accessToken,
+                "Authorization": "Bearer " + accessToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({

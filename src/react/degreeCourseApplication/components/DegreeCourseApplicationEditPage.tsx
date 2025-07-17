@@ -52,7 +52,7 @@ export function DegreeCourseApplicationEditPage() {
         const requestOptions = {
             method: 'GET',
             headers: {
-                "Authorization": "Basic " + accessToken,
+                "Authorization": "Bearer " + accessToken,
                 "Content-Type": "application/json"
             }
         }
@@ -135,7 +135,7 @@ export function DegreeCourseApplicationEditPage() {
         const requestOptions = {
             method: 'PUT',
             headers: {
-                "Authorization": "Basic " + accessToken,
+                "Authorization": "Bearer " + accessToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(body)

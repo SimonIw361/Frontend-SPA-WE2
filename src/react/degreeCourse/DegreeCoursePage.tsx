@@ -31,7 +31,7 @@ export type DegreeCourse = {
 export const getAllStudiengaenge = async (token: string | null) => {
     const requestOptions = {
         method: 'GET',
-        headers: { "Authorization": "Basic " + token }
+        headers: { "Authorization": "Bearer " + token }
     }
 
     try {

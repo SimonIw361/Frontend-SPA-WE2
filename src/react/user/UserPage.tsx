@@ -32,7 +32,7 @@ export function UserPage() {
 
     const requestOptions = {
         method: 'GET',
-        headers: { "Authorization": "Basic " + accessToken }
+        headers: { "Authorization": "Bearer " + accessToken }
     }
 
     useEffect(() => { //wird einmal am Anfang beim Laden der Seite aufgerufen

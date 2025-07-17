@@ -31,7 +31,7 @@ export function DegreeCourseApplicationComponent({ bewerbung, degreeCourseApplic
             const requestOptions = {
                 method: 'GET',
                 headers: {
-                    "Authorization": "Basic " + accessToken
+                    "Authorization": "Bearer " + accessToken
                 }
             }
 
@@ -67,7 +67,7 @@ export function DegreeCourseApplicationComponent({ bewerbung, degreeCourseApplic
         const requestOptions = {
             method: 'DELETE',
             headers: {
-                "Authorization": "Basic " + accessToken
+                "Authorization": "Bearer " + accessToken
             }
         }
 

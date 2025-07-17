@@ -60,7 +60,7 @@ export function NewDegreeCoursePage() {
         const requestOptions = {
             method: 'POST',
             headers: {
-                "Authorization": "Basic " + accessToken,
+                "Authorization": "Bearer " + accessToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({

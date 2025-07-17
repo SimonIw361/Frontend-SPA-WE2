@@ -38,7 +38,7 @@ export function DegreeCourseComponent({ studiengang, degreeCourseAktualisieren }
         const requestOptions = {
             method: 'DELETE',
             headers: {
-                "Authorization": "Basic " + accessToken
+                "Authorization": "Bearer " + accessToken
             }
         }
 

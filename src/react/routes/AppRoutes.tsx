@@ -28,18 +28,18 @@ export function AppRoutes() {
         <Route path="/user/newUser" element={<NewUserPage />}></Route>
         <Route path="/user/editUser" element={<UserEditPage />}></Route>
       </Route>
-      <Route path="/degreeCourse" >
+      <Route path="degreeCourse" >
         <Route index element={<DegreeCoursePage />}></Route>
-        <Route path="/degreeCourse/newDegreeCourse" element={<NewDegreeCoursePage />}></Route>
-        <Route path="/degreeCourse/editDegreeCourse" element={<DegreeCourseEditPage />}></Route>
+        <Route path="newDegreeCourse" element={<NewDegreeCoursePage />}></Route>
+        <Route path="editDegreeCourse" element={<DegreeCourseEditPage />}></Route>
       </Route>
-      <Route path="/degreeCourseApplication" >
+      <Route path="degreeCourseApplication" >
         <Route index element={<DegreeCourseApplicationPage />}></Route>
-        <Route path="/degreeCourseApplication/newDegreeCourseApplication" element={<NewDegreeCourseApplicationPage/>}></Route>
-        <Route path="/degreeCourseApplication/editDegreeCourseApplication" element={<DegreeCourseApplicationEditPage />}></Route>
+        <Route path="newDegreeCourseApplication" element={<NewDegreeCourseApplicationPage/>}></Route>
+        <Route path="editDegreeCourseApplication" element={<DegreeCourseApplicationEditPage />}></Route>
       </Route>
 
-      <Route path="/unauthorized" element={<Unauthorized />}></Route>
+      <Route path="unauthorized" element={<Unauthorized />}></Route>
       <Route path="*" element={<PageNotFound />}></Route>
     </Route>
     

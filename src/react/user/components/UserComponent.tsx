@@ -38,7 +38,7 @@ export function UserComponent({ user, userAktualisieren }: UserComponentProps) {
         const requestOptions = {
             method: 'DELETE',
             headers: {
-                "Authorization": "Basic " + accessToken
+                "Authorization": "Bearer " + accessToken
             }
         }
 
