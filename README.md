@@ -1,7 +1,10 @@
-# Web Engineering 2
+# Frontend Server Web Engineering 2 Simon Iwanowski
 
-Uebung 2 Frontend Web Engineering 2 SoSe2025
+Das Frontend zur der Studienverwaltung als Single-Page-Application. Studenten, Studiengaenge und Bewerbungen koennen angezeigt, erstellt, bearbeitet und geloescht werden.
 
-Das funktionierende Backend aus Uebung 1 muss parallel laufen.
+- in TypeScript programmiert
+- React und Redux wird verwendet
 
-Einige weitere Funktionen die ich hinzugefuegt habe funktionieren nur mit meinem Backend.
+## Server starten
+- npm install (alle Abhaengigkeiten werden installiert)
+- npm start
